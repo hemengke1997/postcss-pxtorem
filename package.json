@@ -2,7 +2,20 @@
   "name": "@minko-fe/postcss-pxtorem",
   "version": "0.0.0",
   "description": "✨ A CSS post-processor that converts px to rem.",
-  "main": "index.js",
+  "main": "dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "index.d.ts",
+  "files": ["dist"],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hemengke1997/any-config.git"
+  },
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup",
