@@ -17,8 +17,19 @@ pnpm install postcss @minko-fe/postcss-pxtorem -D
 
 ## Usage
 
-Pixels are the easiest unit to use (*opinion*). The only issue with them is that they don't let browsers change the default font size of 16. This script converts every px value to a rem from the properties you choose to allow the browser to set the font size.
+> Pixels are the easiest unit to use (*opinion*). The only issue with them is that they don't let browsers change the default font size of 16. This script converts every px value to a rem from the properties you choose to allow the browser to set the font size.
 
+### postcss.config.js
+
+```js
+module.exports = {
+  plugins: [
+    require('@minko-fe/postcss-pxtorem')({
+      propList: ['*'],
+    }),
+  ],
+}
+```
 
 ### options
 
@@ -66,7 +77,7 @@ const defaultOption = {
 
 ## ✨ About new feature
 
-### 在css中，动态设置插件选项
+### ⚙️ Dynamically set plugin options in css
 
 #### disable plugin
 ```css
@@ -85,6 +96,15 @@ const defaultOption = {
 ```
 
 🌰 The above is just a simple example, you can set any of the options supported by `postcss-pxtorem` in the css file
+
+You may have seen that he is very much like the browser url?😼.
+That's right. For the specification, just refer to: https://www.npmjs.com/package/query-string
+
+#### example
+
+```css
+/* postcss-pxtorem?disable=false&rootValue=32&propList[]=*&replace=false&selectorBlackList[]=/some-class/i */
+```
 
 ### disable the next line in css file
 ```css

@@ -1,5 +1,7 @@
 # @minko-fe/postcss-pxtorem
 
+English docs: [[README-en.md](./READEME-en.md)]
+
 [PostCSS](https://github.com/ai/postcss)插件，可以从像素单位生成rem单位
 
 fork from [postcss-pxtorem](https://github.com/cuth/postcss-pxtorem)
@@ -17,7 +19,20 @@ pnpm install postcss @minko-fe/postcss-pxtorem -D
 
 ## 用法
 
-像素是最容易使用的单位。它们的唯一问题是，它们不能让浏览器改变默认的16号字体大小。postcss-pxtorem将每一个px值转换为你所选择的属性中的rem，以便让浏览器设置字体大小。
+> 像素是最容易使用的单位。它们的唯一问题是，它们不能让浏览器改变默认的16号字体大小。postcss-pxtorem将每一个px值转换为你所选择的属性中的rem，以便让浏览器设置字体大小。
+
+
+### postcss.config.js
+
+```js
+module.exports = {
+  plugins: [
+    require('@minko-fe/postcss-pxtorem')({
+      propList: ['*'],
+    }),
+  ],
+}
+```
 
 ### options
 
@@ -64,7 +79,7 @@ const defaultOption = {
 
 ## ✨ 关于新特性
 
-### 在css中，动态设置插件选项
+### ⚙️ 在css中，动态设置插件选项
 
 #### 当前文件禁用插件
 ```css
@@ -83,6 +98,15 @@ const defaultOption = {
 ```
 
 🌰 以上只是简单的栗子，你可以在css文件中设置任意 `postcss-pxtorem` 支持的选项
+
+聪明的你，或许已经看出来了，`/* pxtorem?disabled=true */` 很像浏览器url？😼
+没错。关于规范，只需参考：https://www.npmjs.com/package/query-string
+
+#### 例子
+
+```css
+/* postcss-pxtorem?disable=false&rootValue=32&propList[]=*&replace=false&selectorBlackList[]=/some-class/i */
+```
 
 ### 在css中，忽略某一行
 ```css
