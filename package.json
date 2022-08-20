@@ -6,7 +6,8 @@
   "module": "./dist/index.js",
   "types": "index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "README-en.md"
   ],
   "exports": {
     ".": {

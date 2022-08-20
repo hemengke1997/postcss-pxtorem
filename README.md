@@ -8,7 +8,7 @@ English docs: [[README-en.md](./README-en.md)]
 ## 新功能
 
 - 在样式文件中设置任意 `postcss-pxtorem` 支持的选项
-- ignore line in css. 在样式文件中忽略某一行
+- 在样式文件中忽略某一行
 
 ## 安装
 
@@ -99,7 +99,7 @@ const defaultOption = {
 🌰 以上只是简单的栗子，你可以在css文件中设置任意 `postcss-pxtorem` 支持的选项
 
 聪明的你，或许已经看出来了，`/* pxtorem?disabled=true */` 很像浏览器url？😼
-没错。关于规范，只需参考：https://www.npmjs.com/package/query-string
+没错。关于规范，只需参考：[query-string](https://github.com/sindresorhus/query-string)
 
 #### 例子
 
