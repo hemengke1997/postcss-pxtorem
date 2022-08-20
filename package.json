@@ -2,9 +2,9 @@
   "name": "@minko-fe/postcss-pxtorem",
   "version": "0.0.2",
   "description": "✨ A CSS post-processor that converts px to rem.",
-  "main": "dist/index.cjs",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.js",
-  "types": "index.d.ts",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist",
     "README-en.md"
