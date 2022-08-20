@@ -29,34 +29,34 @@ describe('pxtorem', () => {
   })
 
   test('should handle < 1 values and values without a leading 0', () => {
-    const rules = '.rule { margin: 0.5rem .5px -0.2px -.2em }'
+    const css = '.rule { margin: 0.5rem .5px -0.2px -.2em }'
     const expected = '.rule { margin: 0.5rem 0.03125rem -0.0125rem -.2em }'
     const options = {
       propList: ['margin'],
     }
-    const processed = postcss(pxtorem(options)).process(rules).css
+    const processed = postcss(pxtorem(options)).process(css).css
 
     expect(processed).toBe(expected)
   })
 
   test('should ignore px in custom property names', () => {
-    const rules = ':root { --rem-14px: 14px; } .rule { font-size: var(--rem-14px); }'
+    const css = ':root { --rem-14px: 14px; } .rule { font-size: var(--rem-14px); }'
     const expected = ':root { --rem-14px: 0.875rem; } .rule { font-size: var(--rem-14px); }'
     const options = {
       propList: ['--*', 'font-size'],
     }
-    const processed = postcss(pxtorem(options)).process(rules).css
+    const processed = postcss(pxtorem(options)).process(css).css
 
     expect(processed).toBe(expected)
   })
 
   test('should handle < 1 values and values without a leading 0', () => {
-    const rules = '.rule { margin: 0.5rem .5px -0.2px -.2em }'
+    const css = '.rule { margin: 0.5rem .5px -0.2px -.2em }'
     const expected = '.rule { margin: 0.5rem 0.03125rem -0.0125rem -.2em }'
     const options = {
       propList: ['margin'],
     }
-    const processed = postcss(pxtorem(options)).process(rules).css
+    const processed = postcss(pxtorem(options)).process(css).css
 
     expect(processed).toBe(expected)
   })
@@ -74,15 +74,27 @@ describe('pxtorem', () => {
 
     expect(processed).toBe(expected)
   })
+
+  test('should support atQuery', () => {
+    const css =
+      '@supports (top: max(500px)) { .btn { bottom: (calc(var(--safe-bottom)), calc(var(--some-var, 10px) - 10px));left: (calc(var(--safe-left)), calc(var(--some-var, 10px) - 10px));}}'
+
+    const expected =
+      '@supports (top: max(31.25rem)) { .btn { bottom: (calc(var(--safe-bottom)), calc(var(--some-var, 0.625rem) - 0.625rem));left: (calc(var(--safe-left)), calc(var(--some-var, 0.625rem) - 0.625rem));}}'
+
+    const processed = postcss(pxtorem({ atQuery: true, propList: ['*'] })).process(css).css
+
+    expect(processed).toBe(expected)
+  })
 })
 describe('value parsing', () => {
   test('should not replace values in double quotes or single quotes', () => {
     const options = {
       propList: ['*'],
     }
-    const rules = '.rule { content: \'16px\'; font-family: "16px"; font-size: 16px; }'
+    const css = '.rule { content: \'16px\'; font-family: "16px"; font-size: 16px; }'
     const expected = '.rule { content: \'16px\'; font-family: "16px"; font-size: 1rem; }'
-    const processed = postcss(pxtorem(options)).process(rules).css
+    const processed = postcss(pxtorem(options)).process(css).css
 
     expect(processed).toBe(expected)
   })
@@ -91,9 +103,9 @@ describe('value parsing', () => {
     const options = {
       propList: ['*'],
     }
-    const rules = '.rule { background: url(16px.jpg); font-size: 16px; }'
+    const css = '.rule { background: url(16px.jpg); font-size: 16px; }'
     const expected = '.rule { background: url(16px.jpg); font-size: 1rem; }'
-    const processed = postcss(pxtorem(options)).process(rules).css
+    const processed = postcss(pxtorem(options)).process(css).css
 
     expect(processed).toBe(expected)
   })
@@ -102,10 +114,34 @@ describe('value parsing', () => {
     const options = {
       propList: ['*'],
     }
-    const rules =
+    const css =
       '.rule { margin: 12px calc(100% - 14PX); height: calc(100% - 20px); font-size: 12Px; line-height: 16px; }'
     const expected =
       '.rule { margin: 0.75rem calc(100% - 14PX); height: calc(100% - 1.25rem); font-size: 12Px; line-height: 1rem; }'
+    const processed = postcss(pxtorem(options)).process(css).css
+
+    expect(processed).toBe(expected)
+  })
+
+  test('should number 0 take units', () => {
+    const options = {
+      propList: ['*'],
+    }
+
+    const css = '.rule { font-size: 0px }'
+    const expected = '.rule { font-size: 0px }'
+
+    const processed = postcss(pxtorem(options)).process(css).css
+
+    expect(processed).toBe(expected)
+  })
+
+  test('should ignore px in custom property, but handle default values', () => {
+    const rules = ':root { --rem-14px: 14px; } .rule { font-size: var(--rem-14px, 16px); }'
+    const expected = ':root { --rem-14px: 0.875rem; } .rule { font-size: var(--rem-14px, 1rem); }'
+    const options = {
+      propList: ['--*', 'font-size'],
+    }
     const processed = postcss(pxtorem(options)).process(rules).css
 
     expect(processed).toBe(expected)
@@ -169,10 +205,10 @@ describe('replace', () => {
   })
 })
 
-describe('mediaQuery', () => {
+describe('atQuery', () => {
   test('should replace px in media queries', () => {
     const options = {
-      mediaQuery: true,
+      atQuery: true,
     }
     const processed = postcss(pxtorem(options)).process('@media (min-width: 500px) { .rule { font-size: 16px } }').css
     const expected = '@media (min-width: 31.25rem) { .rule { font-size: 1rem } }'
@@ -268,7 +304,7 @@ describe('exclude', () => {
 
   test('should not ignore file path with exclude function', () => {
     const options = {
-      exclude(file) {
+      exclude(file: string) {
         return file.includes('exclude')
       },
     }
@@ -375,8 +411,8 @@ describe('top comment', () => {
     expect(processed).toBe(expected)
   })
 
-  test('mediaQuery', () => {
-    const css = '/* pxtorem?mediaQuery=true */\n@media (min-width: 500px) { .rule { font-size: 16px } }'
+  test('atQuery', () => {
+    const css = '/* pxtorem?atQuery=true */\n@media (min-width: 500px) { .rule { font-size: 16px } }'
     const processed = postcss(pxtorem()).process(css).css
     const expected = '@media (min-width: 31.25rem) { .rule { font-size: 1rem } }'
 

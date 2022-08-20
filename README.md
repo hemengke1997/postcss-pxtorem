@@ -4,7 +4,6 @@ English docs: [[README-en.md](./README-en.md)]
 
 [PostCSS](https://github.com/ai/postcss)插件，可以从像素单位生成rem单位
 
-fork from [postcss-pxtorem](https://github.com/cuth/postcss-pxtorem)
 
 ## 新功能
 

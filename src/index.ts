@@ -1,8 +1,19 @@
-import type { ChildNode, Comment, Container, Declaration, Input, Plugin as PostcssPlugin, Rule } from 'postcss'
-import { filterPropList } from './filter-prop-list'
-import { getOptionsFromComment, isRepeatRun } from './utils'
-import { isFunction, isRegExp, isString } from './type'
+import type { Input, Plugin as PostcssPlugin, Rule } from 'postcss'
+import {
+  blacklistedSelector,
+  createPropListMatcher,
+  createPxReplace,
+  declarationExists,
+  getOptionsFromComment,
+  initOptions,
+  isFunction,
+  isOptionComment,
+  isRegExp,
+  isRepeatRun,
+  isString,
+} from './utils'
 import { pxRegex } from './pixel-unit-regex'
+import { disableNextComment, supportedQuery } from './constant'
 
 export type PxtoremOptions = Partial<{
   rootValue: number | ((input: Input) => number)
@@ -10,7 +21,7 @@ export type PxtoremOptions = Partial<{
   selectorBlackList: (string | RegExp)[]
   propList: string[]
   replace: boolean
-  mediaQuery: boolean
+  atQuery: boolean
   minPixelValue: number
   exclude: string | RegExp | ((filePath: string) => boolean) | null
   disable: boolean
@@ -22,88 +33,12 @@ export const defaultOptions: Required<PxtoremOptions> = {
   selectorBlackList: [],
   propList: ['font', 'font-size', 'line-height', 'letter-spacing'],
   replace: true,
-  mediaQuery: false,
+  atQuery: false,
   minPixelValue: 0,
   exclude: null,
   disable: false,
 }
 
-function createPropListMatcher(propList: string[]) {
-  const hasWild = propList.includes('*')
-  const matchAll = hasWild && propList.length === 1
-  const lists = {
-    exact: filterPropList.exact(propList),
-    contain: filterPropList.contain(propList),
-    startWith: filterPropList.startWith(propList),
-    endWith: filterPropList.endWith(propList),
-    notExact: filterPropList.notExact(propList),
-    notContain: filterPropList.notContain(propList),
-    notStartWith: filterPropList.notStartWith(propList),
-    notEndWith: filterPropList.notEndWith(propList),
-  }
-  return function (prop: string) {
-    if (matchAll) return true
-    return (
-      (hasWild ||
-        lists.exact.includes(prop) ||
-        lists.contain.some((m) => prop.includes(m)) ||
-        lists.startWith.some((m) => prop.indexOf(m) === 0) ||
-        lists.endWith.some((m) => prop.indexOf(m) === prop.length - m.length)) &&
-      !(
-        lists.notExact.includes(prop) ||
-        lists.notContain.some((m) => prop.includes(m)) ||
-        lists.notStartWith.some((m) => prop.indexOf(m) === 0) ||
-        lists.notEndWith.some((m) => prop.indexOf(m) === prop.length - m.length)
-      )
-    )
-  }
-}
-
-function toFixed(number: number, precision: number) {
-  const multiplier = 10 ** (precision + 1)
-  const wholeNumber = Math.floor(number * multiplier)
-  return (Math.round(wholeNumber / 10) * 10) / multiplier
-}
-
-function createPxReplace(
-  rootValue: number,
-  unitPrecision: NonNullable<PxtoremOptions['unitPrecision']>,
-  minPixelValue: NonNullable<PxtoremOptions['minPixelValue']>,
-) {
-  return (m: string, $1: string) => {
-    if (!$1) return m
-    const pixels = parseFloat($1)
-    if (pixels < minPixelValue) return m
-    const fixedVal = toFixed(pixels / rootValue, unitPrecision)
-    return fixedVal === 0 ? '0' : `${fixedVal}rem`
-  }
-}
-
-function blacklistedSelector(blacklist: NonNullable<PxtoremOptions['selectorBlackList']>, selector: string) {
-  if (typeof selector !== 'string') return
-  return blacklist.some((t) => {
-    if (typeof t === 'string') {
-      return selector.includes(t)
-    }
-    return selector.match(t)
-  })
-}
-
-function declarationExists(decls: Container<ChildNode>, prop: string, value: string) {
-  return decls.some((decl) => {
-    return (decl as Declaration).prop === prop && (decl as Declaration).value === value
-  })
-}
-
-const disableNextComment = 'pxtorem-disable-next-line'
-
-function initOptions(options?: PxtoremOptions) {
-  return Object.assign({}, defaultOptions, options)
-}
-
-function isOptionComment(node: ChildNode): node is Comment {
-  return node.type === 'comment'
-}
 function pxtorem(options?: PxtoremOptions) {
   let opts = initOptions(options)
   let isExcludeFile = false
@@ -176,7 +111,7 @@ function pxtorem(options?: PxtoremOptions) {
       if (isRepeatRun(atRule)) return
       if (isExcludeFile) return
 
-      if (opts.mediaQuery && atRule.name === 'media') {
+      if (opts.atQuery && supportedQuery.includes(atRule.name)) {
         if (!atRule.params.includes('px')) return
         atRule.params = atRule.params.replace(pxRegex, pxReplace)
       }

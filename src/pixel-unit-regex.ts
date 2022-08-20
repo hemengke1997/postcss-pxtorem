@@ -6,4 +6,4 @@
 // Any digit followed by px
 // !singlequotes|!doublequotes|!url()|pixelunit
 
-export const pxRegex = /"[^"]+"|'[^']+'|url\([^)]+\)|var\([^)]+\)|(\d*\.?\d+)px/g
+export const pxRegex = /"[^"]+"|'[^']+'|url\([^)]+\)|--[\w-]+|(\d*\.?\d+)px/g

@@ -1,9 +1,18 @@
-import type { AtRule, Comment, Declaration, Rule, Warning as postcssWarning } from 'postcss'
+import type { AtRule, ChildNode, Comment, Container, Declaration, Rule, Warning as postcssWarning } from 'postcss'
 import queryString from 'query-string'
 import reRegExp from '@stdlib/regexp-regexp'
-import { isString } from './type'
+import { maybeRegExpList } from './constant'
+import { filterPropList } from './filter-prop-list'
 import type { PxtoremOptions } from '.'
 import { defaultOptions } from '.'
+
+export function initOptions(options?: PxtoremOptions) {
+  return Object.assign({}, defaultOptions, options)
+}
+
+export function isOptionComment(node: ChildNode): node is Comment {
+  return node.type === 'comment'
+}
 
 const processd = Symbol('processed')
 
@@ -14,8 +23,6 @@ export function isRepeatRun(r: Rule | Declaration | AtRule) {
   ;(r as unknown as Record<symbol, boolean>)[processd] = true
   return false
 }
-
-const maybeRegExpList = ['selectorBlackList', 'exclude']
 
 function parseRegExp(maybuRegExp: unknown) {
   const RE_REGEXP = reRegExp()
@@ -64,4 +71,115 @@ export function getOptionsFromComment(comment: Comment, Warning: typeof postcssW
     // eslint-disable-next-line no-new
     new Warning('Unexpected comment', { start: comment.source?.start, end: comment.source?.end })
   }
+}
+
+export function createPropListMatcher(propList: string[]) {
+  const hasWild = propList.includes('*')
+  const matchAll = hasWild && propList.length === 1
+  const lists = {
+    exact: filterPropList.exact(propList),
+    contain: filterPropList.contain(propList),
+    startWith: filterPropList.startWith(propList),
+    endWith: filterPropList.endWith(propList),
+    notExact: filterPropList.notExact(propList),
+    notContain: filterPropList.notContain(propList),
+    notStartWith: filterPropList.notStartWith(propList),
+    notEndWith: filterPropList.notEndWith(propList),
+  }
+  return function (prop: string) {
+    if (matchAll) return true
+    return (
+      (hasWild ||
+        lists.exact.includes(prop) ||
+        lists.contain.some((m) => prop.includes(m)) ||
+        lists.startWith.some((m) => prop.indexOf(m) === 0) ||
+        lists.endWith.some((m) => prop.indexOf(m) === prop.length - m.length)) &&
+      !(
+        lists.notExact.includes(prop) ||
+        lists.notContain.some((m) => prop.includes(m)) ||
+        lists.notStartWith.some((m) => prop.indexOf(m) === 0) ||
+        lists.notEndWith.some((m) => prop.indexOf(m) === prop.length - m.length)
+      )
+    )
+  }
+}
+
+export function toFixed(number: number, precision: number) {
+  const multiplier = 10 ** (precision + 1)
+  const wholeNumber = Math.floor(number * multiplier)
+  return (Math.round(wholeNumber / 10) * 10) / multiplier
+}
+
+export function createPxReplace(
+  rootValue: number,
+  unitPrecision: NonNullable<PxtoremOptions['unitPrecision']>,
+  minPixelValue: NonNullable<PxtoremOptions['minPixelValue']>,
+) {
+  return (m: string, $1: string) => {
+    if (!$1) return m
+    const pixels = parseFloat($1)
+    if (pixels <= minPixelValue) return m
+    const fixedVal = toFixed(pixels / rootValue, unitPrecision)
+    return fixedVal === 0 ? '0' : `${fixedVal}rem`
+  }
+}
+
+export function blacklistedSelector(blacklist: NonNullable<PxtoremOptions['selectorBlackList']>, selector: string) {
+  if (typeof selector !== 'string') return
+  return blacklist.some((t) => {
+    if (typeof t === 'string') {
+      return selector.includes(t)
+    }
+    return selector.match(t)
+  })
+}
+
+export function declarationExists(decls: Container<ChildNode>, prop: string, value: string) {
+  return decls.some((decl) => {
+    return (decl as Declaration).prop === prop && (decl as Declaration).value === value
+  })
+}
+
+enum EnumDataType {
+  number = 'Number',
+  string = 'String',
+  boolean = 'Boolean',
+  null = 'Null',
+  undefined = 'Undefined',
+  object = 'Object',
+  array = 'Array',
+  date = 'Date',
+  regexp = 'RegExp',
+  function = 'Function',
+}
+
+function is(val: unknown, type: string) {
+  return toString.call(val) === `[object ${type}]`
+}
+export function isNumber(data: unknown): data is number {
+  return is(data, EnumDataType.number)
+}
+export function isString(data: unknown): data is string {
+  return is(data, EnumDataType.string)
+}
+export function isBoolean(data: unknown): data is boolean {
+  return is(data, EnumDataType.boolean)
+}
+export function isNull(data: unknown): data is null {
+  return is(data, EnumDataType.null)
+}
+export function isUndefined(data: unknown): data is undefined {
+  return is(data, EnumDataType.undefined)
+}
+export function isObject(data: unknown): data is Object {
+  return is(data, EnumDataType.object)
+}
+export function isArray(data: unknown): data is Array<any> {
+  return is(data, EnumDataType.array)
+}
+export function isRegExp(data: unknown): data is RegExp {
+  return is(data, EnumDataType.regexp)
+}
+export function isFunction(data: unknown): data is Function {
+  return is(data, EnumDataType.function)
 }
