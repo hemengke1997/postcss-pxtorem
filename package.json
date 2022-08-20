@@ -42,7 +42,6 @@
   "author": "hemengke1997 <https://github.com/hemengke1997>",
   "license": "MIT",
   "dependencies": {
-    "@stdlib/regexp-regexp": "^0.0.8",
     "query-string": "^7.1.1"
   },
   "devDependencies": {

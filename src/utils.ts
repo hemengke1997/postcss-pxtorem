@@ -1,10 +1,13 @@
 import type { AtRule, ChildNode, Comment, Container, Declaration, Rule, Warning as postcssWarning } from 'postcss'
 import queryString from 'query-string'
-import reRegExp from '@stdlib/regexp-regexp'
 import { maybeRegExpList } from './constant'
 import { filterPropList } from './filter-prop-list'
 import type { PxtoremOptions } from '.'
 import { defaultOptions } from '.'
+
+function reRegExp() {
+  return /^\/((?:\\\/|[^\/])+)\/([imgy]*)$/
+}
 
 export function initOptions(options?: PxtoremOptions) {
   return Object.assign({}, defaultOptions, options)
