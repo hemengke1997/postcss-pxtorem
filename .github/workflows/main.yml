@@ -16,7 +16,7 @@ jobs:
           node-version: 16.x
 
       - name: Install dependencies
-        run: npx pnpm install
+        run: npx pnpm install --no-frozen-lockfile
 
       - name: Lint
         run: npm run lint
