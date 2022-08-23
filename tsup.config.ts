@@ -8,8 +8,10 @@ export const tsup = defineConfig(() => ({
   minify: false,
   sourcemap: true,
   esbuildOptions: (options) => {
-    options.footer = {
-      js: 'module.exports = module.exports.default;',
+    if (options.format === 'cjs') {
+      options.footer = {
+        js: 'module.exports = module.exports.default;',
+      }
     }
   },
 }))

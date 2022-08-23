@@ -23,11 +23,17 @@ pnpm install postcss @minko-fe/postcss-pxtorem -D
 
 ### postcss.config.js
 
+#### example
+
 ```js
 module.exports = {
   plugins: [
     require('@minko-fe/postcss-pxtorem')({
+      rootValue: 16,
+      selectorBlackList: ['some-class'],
       propList: ['*'],
+      atRules: ['media'],
+      // ...
     }),
   ],
 }
@@ -35,46 +41,42 @@ module.exports = {
 
 ### options
 
-Default:
-```js
-const defaultOption = {
-    rootValue: 16,
-    unitPrecision: 5,
-    propList: ['font', 'font-size', 'line-height', 'letter-spacing'],
-    selectorBlackList: [],
-    replace: true,
-    mediaQuery: false,
-    minPixelValue: 0,
-    exclude: /node_modules/i,
-    disable: false
-}
-```
+| Name | Type | Default | Description
+|---------|----------|---------|---------
+| rootValue | `number` \| `((input: Input) => number)` | 16 | 代表根元素的字体大小或根据 [`input`](https://api.postcss.org/Input.html) 参数返回根元素的字体大小
+| unitPrecision | `number` | 5 | 小数点后精度
+| propList | `string[]` | ['font', 'font-size', 'line-height', 'letter-spacing'] | 可以从px改变为rem的属性，参考：[propList](####propList)
+| selectorBlackList | `(string \| RegExp)[]` | [] | 忽略的选择器，保留为px。参考：[selectorBlackList](####selectorBlackList)
+| replace | `boolean` | true | 直接在css规则上替换值而不是添加备用
+| atRules | `boolean` \| `string[]` | false | 允许`at-rules`中转换rem。参考 [At-rule](https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule)
+| minPixelValue | `number` | 0 | 最小的px转化值（小于这个值的不转化）
+| exclude | `string` \| `RegExp` \| `((filePath: string) => boolean) \| null` | /node_modules/i | 忽略的文件路径。参考：[exclude](####exclude)
+| disable | `boolean` | false | 关闭插件
 
-- `rootValue` (Number | Function) 代表根元素的字体大小或根据 [`input`](https://api.postcss.org/Input.html) 参数返回根元素的字体大小
-- `unitPrecision` (Number) 小数点后精度
-- `propList` (Array) 可以从px改变为rem的属性
-    - 值需要完全匹配
-    - 使用通配符 `*` 来启用所有属性. Example: `['*']`
-    - 在一个词的开头或结尾使用 `*`. (`['*position*']` will match `background-position-y`)
-    - 使用 `!` 不匹配一个属性. Example: `['*', '!letter-spacing']`
-    - 组合 `!` 与 `*`. Example: `['*', '!font*']`
-- `selectorBlackList` (Array) 忽略的选择器，保留为px.
-    - 如果值是字符串，它会检查选择器是否包含字符串.
-        - `['body']` will match `.body-class`
-    - 如果值是正则，它会检查选择器是否与正则相匹配.
-        - `[/^body$/]` will match `body` but not `.body`
-- `replace` (Boolean) Replaces rules containing rems instead of adding fallbacks.
-- `mediaQuery` (Boolean) 允许在媒体查询中转换rem.
-- `minPixelValue` (Number) 最小的px转化值（小于这个值的不转化）.
-- `exclude` (String, Regexp, Function) 忽略的文件路径.
-    - 如果值是字符串，它检查文件路径是否包含字符串
-        - `'exclude'` will match `\project\postcss-pxtorem\exclude\path`
-    - 如果值是正则，它将检查文件路径是否与正则相匹配
-        - `/exclude/i` will match `\project\postcss-pxtorem\exclude\path`
-    - 如果值是函数，你可以使用排除函数返回true，文件将被忽略
-        - 回调将传递文件路径作为一个参数，它应该返回一个boolean
-        - `function (file) { return file.indexOf('exclude') !== -1; }`
-- `disable` (Boolean) 关闭插件
+#### propList
+
+- 值需要完全匹配
+- 使用通配符 `*` 来启用所有属性. Example: `['*']`
+- 在一个词的开头或结尾使用 `*`. (`['*position*']` will match `background-position-y`)
+- 使用 `!` 不匹配一个属性. Example: `['*', '!letter-spacing']`
+- 组合 `!` 与 `*`. Example: `['*', '!font*']`
+
+#### selectorBlackList
+
+- 如果值是字符串，它会检查选择器是否包含字符串.
+  - `['body']` will match `.body-class`
+- 如果值是正则，它会检查选择器是否与正则相匹配.
+  - `[/^body$/]` will match `body` but not `.body`
+
+#### exclude
+
+- 如果值是字符串，它检查文件路径是否包含字符串
+  - `'exclude'` will match `\project\postcss-pxtorem\exclude\path`
+- 如果值是正则，它将检查文件路径是否与正则相匹配
+  - `/exclude/i` will match `\project\postcss-pxtorem\exclude\path`
+- 如果值是函数，你可以使用排除函数返回true，文件将被忽略
+  - 回调将传递文件路径作为一个参数，它应该返回一个boolean
+  - `function (file) { return file.indexOf('exclude') !== -1; }`
 
 ## ✨ 关于新特性
 

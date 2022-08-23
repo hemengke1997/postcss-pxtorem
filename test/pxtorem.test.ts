@@ -75,14 +75,14 @@ describe('pxtorem', () => {
     expect(processed).toBe(expected)
   })
 
-  test('should support atQuery', () => {
+  test('should support atRules', () => {
     const css =
       '@supports (top: max(500px)) { .btn { bottom: (calc(var(--safe-bottom)), calc(var(--some-var, 10px) - 10px));left: (calc(var(--safe-left)), calc(var(--some-var, 10px) - 10px));}}'
 
     const expected =
       '@supports (top: max(31.25rem)) { .btn { bottom: (calc(var(--safe-bottom)), calc(var(--some-var, 0.625rem) - 0.625rem));left: (calc(var(--safe-left)), calc(var(--some-var, 0.625rem) - 0.625rem));}}'
 
-    const processed = postcss(pxtorem({ atQuery: true, propList: ['*'] })).process(css).css
+    const processed = postcss(pxtorem({ atRules: ['supports'], propList: ['*'] })).process(css).css
 
     expect(processed).toBe(expected)
   })
@@ -205,10 +205,10 @@ describe('replace', () => {
   })
 })
 
-describe('atQuery', () => {
+describe('atRules', () => {
   test('should replace px in media queries', () => {
     const options = {
-      atQuery: true,
+      atRules: true,
     }
     const processed = postcss(pxtorem(options)).process('@media (min-width: 500px) { .rule { font-size: 16px } }').css
     const expected = '@media (min-width: 31.25rem) { .rule { font-size: 1rem } }'
@@ -411,8 +411,8 @@ describe('top comment', () => {
     expect(processed).toBe(expected)
   })
 
-  test('atQuery', () => {
-    const css = '/* pxtorem?atQuery=true */\n@media (min-width: 500px) { .rule { font-size: 16px } }'
+  test('atRules', () => {
+    const css = '/* pxtorem?atRules=true */\n@media (min-width: 500px) { .rule { font-size: 16px } }'
     const processed = postcss(pxtorem()).process(css).css
     const expected = '@media (min-width: 31.25rem) { .rule { font-size: 1rem } }'
 

@@ -6,6 +6,8 @@ import {
   declarationExists,
   getOptionsFromComment,
   initOptions,
+  isArray,
+  isBoolean,
   isFunction,
   isOptionComment,
   isRegExp,
@@ -13,7 +15,7 @@ import {
   isString,
 } from './utils'
 import { pxRegex } from './pixel-unit-regex'
-import { disableNextComment, supportedQuery } from './constant'
+import { disableNextComment } from './constant'
 
 export type PxtoremOptions = Partial<{
   rootValue: number | ((input: Input) => number)
@@ -21,7 +23,7 @@ export type PxtoremOptions = Partial<{
   selectorBlackList: (string | RegExp)[]
   propList: string[]
   replace: boolean
-  atQuery: boolean
+  atRules: boolean | string[]
   minPixelValue: number
   exclude: string | RegExp | ((filePath: string) => boolean) | null
   disable: boolean
@@ -33,7 +35,7 @@ export const defaultOptions: Required<PxtoremOptions> = {
   selectorBlackList: [],
   propList: ['font', 'font-size', 'line-height', 'letter-spacing'],
   replace: true,
-  atQuery: false,
+  atRules: false,
   minPixelValue: 0,
   exclude: null,
   disable: false,
@@ -111,9 +113,18 @@ function pxtorem(options?: PxtoremOptions) {
       if (isRepeatRun(atRule)) return
       if (isExcludeFile) return
 
-      if (opts.atQuery && supportedQuery.includes(atRule.name)) {
+      function replacePxInRules() {
         if (!atRule.params.includes('px')) return
         atRule.params = atRule.params.replace(pxRegex, pxReplace)
+      }
+
+      if (isBoolean(opts.atRules) && opts.atRules) {
+        replacePxInRules()
+      }
+      if (isArray(opts.atRules) && opts.atRules.length) {
+        if (opts.atRules.includes(atRule.name)) {
+          replacePxInRules()
+        }
       }
     },
     OnceExit(root) {
