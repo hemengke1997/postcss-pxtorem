@@ -45,12 +45,12 @@ module.exports = {
 |---------|----------|---------|---------
 | rootValue | `number` \| `((input: Input) => number)` | 16 | 代表根元素的字体大小或根据 [`input`](https://api.postcss.org/Input.html) 参数返回根元素的字体大小
 | unitPrecision | `number` | 5 | 小数点后精度
-| propList | `string[]` | ['font', 'font-size', 'line-height', 'letter-spacing'] | 可以从px改变为rem的属性，参考：[propList](####propList)
-| selectorBlackList | `(string \| RegExp)[]` | [] | 忽略的选择器，保留为px。参考：[selectorBlackList](####selectorBlackList)
+| propList | `string[]` | ['font', 'font-size', 'line-height', 'letter-spacing'] | 可以从px改变为rem的属性，参考：[propList](#propList)
+| selectorBlackList | `(string \| RegExp)[]` | [] | 忽略的选择器，保留为px。参考：[selectorBlackList](#selectorBlackList)
 | replace | `boolean` | true | 直接在css规则上替换值而不是添加备用
 | atRules | `boolean` \| `string[]` | false | 允许`at-rules`中转换rem。参考 [At-rule](https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule)
 | minPixelValue | `number` | 0 | 最小的px转化值（小于这个值的不转化）
-| exclude | `string` \| `RegExp` \| `((filePath: string) => boolean) \| null` | /node_modules/i | 忽略的文件路径。参考：[exclude](####exclude)
+| exclude | `string` \| `RegExp` \| `((filePath: string) => boolean) \| null` | /node_modules/i | 忽略的文件路径。参考：[exclude](#exclude)
 | disable | `boolean` | false | 关闭插件
 
 #### propList
