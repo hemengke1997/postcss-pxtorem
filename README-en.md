@@ -98,7 +98,7 @@ module.exports = {
 
 🌰 The above is just a simple example, you can set any of the options supported by `postcss-pxtorem` in the css file
 
-You may have seen that he is very much like the browser url?😼.
+You may have seen that the css comment is very much like the browser url?😼.
 That's right. For the specification, just refer to: [query-string](https://github.com/sindresorhus/query-string)
 
 #### example
