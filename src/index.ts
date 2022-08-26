@@ -32,7 +32,7 @@ export const defaultOptions: Required<PxtoremOptions> = {
   rootValue: 16,
   unitPrecision: 5,
   selectorBlackList: [],
-  propList: ['font', 'font-size', 'line-height', 'letter-spacing'],
+  propList: ['*'],
   replace: true,
   atRules: false,
   minPixelValue: 0,
@@ -95,6 +95,7 @@ function pxtorem(options?: PxtoremOptions) {
       const value = decl.value.replace(pxRegex, pxReplace)
 
       if (declarationExists(decl.parent!, decl.prop, value)) return
+
       if (opts.replace) {
         decl.value = value
       } else {

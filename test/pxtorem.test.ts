@@ -10,7 +10,7 @@ const basicExpected = '.rule { font-size: 0.9375rem }'
 describe('pxtorem', () => {
   test('should work on the readme example', () => {
     const input = 'h1 { margin: 0 0 20px; font-size: 32px; line-height: 1.2; letter-spacing: 1px; }'
-    const output = 'h1 { margin: 0 0 20px; font-size: 2rem; line-height: 1.2; letter-spacing: 0.0625rem; }'
+    const output = 'h1 { margin: 0 0 1.25rem; font-size: 2rem; line-height: 1.2; letter-spacing: 0.0625rem; }'
     const processed = postcss(pxtorem()).process(input).css
     expect(processed).toBe(output)
   })
@@ -87,6 +87,7 @@ describe('pxtorem', () => {
     expect(processed).toBe(expected)
   })
 })
+
 describe('value parsing', () => {
   test('should not replace values in double quotes or single quotes', () => {
     const options = {
@@ -147,6 +148,7 @@ describe('value parsing', () => {
     expect(processed).toBe(expected)
   })
 })
+
 describe('rootValue', () => {
   test('should replace using a root value of 10', () => {
     const expected = '.rule { font-size: 1.5rem }'
@@ -347,6 +349,16 @@ describe('include', () => {
       from: 'node_modules/path',
     }).css
     expect(processed).toBe(basicExpected)
+  })
+
+  test('should convert specified file path', () => {
+    const options = {
+      include: 'node_modules/pathA',
+    }
+    const processed = postcss(pxtorem(options)).process(basicCSS, {
+      from: 'node_modules/path',
+    }).css
+    expect(processed).toBe(basicCSS)
   })
 })
 

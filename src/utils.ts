@@ -1,6 +1,6 @@
 import type { AtRule, ChildNode, Comment, Container, Declaration, Rule, Warning as postcssWarning } from 'postcss'
 import queryString from 'query-string'
-import { maybeRegExpList } from './constant'
+import { maybeRegExp } from './constant'
 import { filterPropList } from './filter-prop-list'
 import type { PxtoremOptions } from '.'
 import { defaultOptions } from '.'
@@ -27,12 +27,12 @@ export function isRepeatRun(r: Rule | Declaration | AtRule) {
   return false
 }
 
-function parseRegExp(maybuRegExp: unknown) {
+function parseRegExp(maybeRegExpArg: unknown) {
   const RE_REGEXP = reRegExp()
-  if (isString(maybuRegExp) && RE_REGEXP.test(maybuRegExp)) {
-    return new RegExp(RE_REGEXP.exec(maybuRegExp)?.[1] || '', RE_REGEXP.exec(maybuRegExp)?.[2])
+  if (isString(maybeRegExpArg) && RE_REGEXP.test(maybeRegExpArg)) {
+    return new RegExp(RE_REGEXP.exec(maybeRegExpArg)?.[1] || '', RE_REGEXP.exec(maybeRegExpArg)?.[2])
   }
-  return maybuRegExp
+  return maybeRegExpArg
 }
 
 export function getOptionsFromComment(comment: Comment, Warning: typeof postcssWarning) {
@@ -54,7 +54,7 @@ export function getOptionsFromComment(comment: Comment, Warning: typeof postcssW
     for (const k of Object.keys(parsed)) {
       if (defaultKeys.includes(k)) {
         let cur = parsed[k]
-        if (maybeRegExpList.includes(k)) {
+        if (maybeRegExp.includes(k)) {
           if (Array.isArray(cur)) {
             cur = cur.map((t) => {
               return parseRegExp(t)
