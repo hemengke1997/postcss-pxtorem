@@ -127,4 +127,4 @@ That's right. For the specification, just refer to: [query-string](https://githu
 
 ## 👀 Related
 
-A CSS post-processor that converts px to viewport: [postcss-pxtorem](https://github.com/hemengke1997/postcss-pxtoviewport)
+A CSS post-processor that converts px to viewport: [postcss-pxtoviewport](https://github.com/hemengke1997/postcss-pxtoviewport)
