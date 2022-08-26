@@ -351,6 +351,13 @@ describe('include', () => {
 })
 
 describe('top comment', () => {
+  test('empty', () => {
+    const css = ''
+    const expected = ''
+    const processed = postcss(pxtorem()).process(css).css
+    expect(processed).toBe(expected)
+  })
+
   test('disable', () => {
     const css = '/* pxtorem?disable=true */\n.rule { font-size: 15px }'
 

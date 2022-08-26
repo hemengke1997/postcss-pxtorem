@@ -13,8 +13,8 @@ export function initOptions(options?: PxtoremOptions) {
   return Object.assign({}, defaultOptions, options)
 }
 
-export function isOptionComment(node: ChildNode): node is Comment {
-  return node.type === 'comment'
+export function isOptionComment(node: ChildNode | undefined): node is Comment {
+  return node?.type === 'comment'
 }
 
 const processd = Symbol('processed')
