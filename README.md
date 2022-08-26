@@ -128,4 +128,4 @@ module.exports = {
 
 ## 👀 相关
 
-A CSS post-processor that converts px to viewport: [postcss-pxtorem](https://github.com/hemengke1997/postcss-pxtoviewport)
+A CSS post-processor that converts px to viewport: [postcss-pxtoviewport](https://github.com/hemengke1997/postcss-pxtoviewport)
