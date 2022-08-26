@@ -65,9 +65,10 @@ function pxtorem(options?: PxtoremOptions) {
       const exclude = opts.exclude
       if (
         exclude &&
-        ((isFunction(exclude) && exclude(filePath!)) ||
-          (isString(exclude) && filePath?.includes(exclude)) ||
-          (isRegExp(exclude) && filePath?.match(exclude) !== null))
+        filePath &&
+        ((isFunction(exclude) && exclude(filePath)) ||
+          (isString(exclude) && filePath.includes(exclude)) ||
+          (isRegExp(exclude) && filePath.match(exclude) !== null))
       ) {
         isExcludeFile = true
       } else {
