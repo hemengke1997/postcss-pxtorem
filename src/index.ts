@@ -8,11 +8,9 @@ import {
   initOptions,
   isArray,
   isBoolean,
-  isFunction,
   isOptionComment,
-  isRegExp,
   isRepeatRun,
-  isString,
+  judgeIsExclude,
 } from './utils'
 import { pxRegex } from './pixel-unit-regex'
 import { disableNextComment } from './constant'
@@ -25,6 +23,7 @@ export type PxtoremOptions = Partial<{
   replace: boolean
   atRules: boolean | string[]
   minPixelValue: number
+  include: string | RegExp | ((filePath: string) => boolean) | null
   exclude: string | RegExp | ((filePath: string) => boolean) | null
   disable: boolean
 }>
@@ -37,6 +36,7 @@ export const defaultOptions: Required<PxtoremOptions> = {
   replace: true,
   atRules: false,
   minPixelValue: 0,
+  include: null,
   exclude: /node_modules/i,
   disable: false,
 }
@@ -63,19 +63,11 @@ function pxtorem(options?: PxtoremOptions) {
       const filePath = root.source?.input.file
 
       const exclude = opts.exclude
-      if (
-        exclude &&
-        filePath &&
-        ((isFunction(exclude) && exclude(filePath)) ||
-          (isString(exclude) && filePath.includes(exclude)) ||
-          (isRegExp(exclude) && filePath.match(exclude) !== null))
-      ) {
-        isExcludeFile = true
-      } else {
-        isExcludeFile = false
-      }
+      const include = opts.include
 
+      isExcludeFile = judgeIsExclude(exclude, include, filePath)
       const rootValue = typeof opts.rootValue === 'function' ? opts.rootValue(root.source!.input) : opts.rootValue
+
       pxReplace = createPxReplace(rootValue, opts.unitPrecision, opts.minPixelValue)
     },
 

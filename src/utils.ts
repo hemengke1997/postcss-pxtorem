@@ -143,6 +143,30 @@ export function declarationExists(decls: Container<ChildNode>, prop: string, val
   })
 }
 
+function isXClude(Xclude: PxtoremOptions['include'], filePath: string | undefined) {
+  return (
+    Xclude &&
+    filePath &&
+    ((isFunction(Xclude) && Xclude(filePath)) ||
+      (isString(Xclude) && filePath.includes(Xclude)) ||
+      (isRegExp(Xclude) && filePath.match(Xclude)))
+  )
+}
+
+export function judgeIsExclude<T extends PxtoremOptions['include']>(
+  exclude: T,
+  include: T,
+  filePath: string | undefined,
+) {
+  if (isXClude(include, filePath)) {
+    return false
+  }
+  if (isXClude(exclude, filePath)) {
+    return true
+  }
+  return false
+}
+
 enum EnumDataType {
   number = 'Number',
   string = 'String',

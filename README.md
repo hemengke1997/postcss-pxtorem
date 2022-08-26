@@ -50,7 +50,8 @@ module.exports = {
 | replace | `boolean` | true | 直接在css规则上替换值而不是添加备用
 | atRules | `boolean` \| `string[]` | false | 允许`at-rules`中转换rem。参考 [At-rule](https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule)
 | minPixelValue | `number` | 0 | 最小的px转化值（小于这个值的不转化）
-| exclude | `string` \| `RegExp` \| `((filePath: string) => boolean) \| null` | /node_modules/i | 忽略的文件路径。参考：[exclude](#exclude)
+| include | `string` \| `RegExp` \| `((filePath: string) => boolean)` \| `null` | null | 包括的文件（与exclude相反）。优先级比exclude高。规则同 `exclude`
+| exclude | `string` \| `RegExp` \| `((filePath: string) => boolean)` \| `null` | /node_modules/i | 忽略的文件路径。参考：[exclude](#exclude)
 | disable | `boolean` | false | 关闭插件
 
 #### propList
@@ -76,7 +77,7 @@ module.exports = {
   - `/exclude/i` will match `\project\postcss-pxtorem\exclude\path`
 - 如果值是函数，你可以使用排除函数返回true，文件将被忽略
   - 回调将传递文件路径作为一个参数，它应该返回一个boolean
-  - `function (file) { return file.indexOf('exclude') !== -1; }`
+  - `function (file) { return file.includes('exclude') }`
 
 ## ✨ 关于新特性
 

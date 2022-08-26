@@ -25,7 +25,8 @@
     "test": "vitest",
     "lint": "eslint .",
     "upgrade:deps": "pnpm update --i --L",
-    "release": "bumpp package.json --commit --push --tag && pnpm run build && pnpm publish --access public"
+    "bump": "bumpp package.json --commit --push --tag",
+    "release": "pnpm run build && pnpm publish --access public"
   },
   "keywords": [
     "px2rem",

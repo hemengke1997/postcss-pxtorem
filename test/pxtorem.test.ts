@@ -5,6 +5,7 @@ import pxtorem from '../src'
 import { filterPropList } from '../src/filter-prop-list'
 
 const basicCSS = '.rule { font-size: 15px }'
+const basicExpected = '.rule { font-size: 0.9375rem }'
 
 describe('pxtorem', () => {
   test('should work on the readme example', () => {
@@ -16,9 +17,8 @@ describe('pxtorem', () => {
 
   test('should replace the px unit with rem', () => {
     const processed = postcss(pxtorem()).process(basicCSS).css
-    const expected = '.rule { font-size: 0.9375rem }'
 
-    expect(processed).toBe(expected)
+    expect(processed).toBe(basicExpected)
   })
 
   test('should ignore non px properties', () => {
@@ -312,6 +312,41 @@ describe('exclude', () => {
       from: 'exclude/path',
     }).css
     expect(processed).toBe(basicCSS)
+  })
+})
+
+describe('include', () => {
+  test('should convert file path with include RegEx', () => {
+    const options = {
+      include: /node_modules/i,
+    }
+    const processed = postcss(pxtorem(options)).process(basicCSS, {
+      from: 'node_modules/path',
+    }).css
+    expect(processed).toBe(basicExpected)
+  })
+
+  test('should convert file path with include string', () => {
+    const options = {
+      include: 'node_modules',
+    }
+
+    const processed = postcss(pxtorem(options)).process(basicCSS, {
+      from: 'node_modules/path',
+    }).css
+    expect(processed).toBe(basicExpected)
+  })
+
+  test('should convert file path with include function', () => {
+    const options = {
+      include: (file: string) => {
+        return file.includes('node_modules')
+      },
+    }
+    const processed = postcss(pxtorem(options)).process(basicCSS, {
+      from: 'node_modules/path',
+    }).css
+    expect(processed).toBe(basicExpected)
   })
 })
 
