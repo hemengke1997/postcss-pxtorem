@@ -158,9 +158,13 @@ export function judgeIsExclude<T extends PxtoremOptions['include']>(
   include: T,
   filePath: string | undefined,
 ) {
-  if (isXClude(include, filePath)) {
-    return false
+  if (include) {
+    if (isXClude(include, filePath)) {
+      return false
+    }
+    return true
   }
+
   if (isXClude(exclude, filePath)) {
     return true
   }

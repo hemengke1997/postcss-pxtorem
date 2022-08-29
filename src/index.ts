@@ -37,7 +37,7 @@ export const defaultOptions: Required<PxtoremOptions> = {
   atRules: false,
   minPixelValue: 0,
   include: null,
-  exclude: /node_modules/i,
+  exclude: null,
   disable: false,
 }
 
