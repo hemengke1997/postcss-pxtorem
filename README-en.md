@@ -43,13 +43,13 @@ module.exports = {
 |---------|----------|---------|---------
 | rootValue | `number` \| `((input: Input) => number)` | 16 | Represents the root element font size or returns the root element font size based on the [`input`](https://api.postcss.org/Input.html) parameter
 | unitPrecision | `number` | 5 | The decimal numbers to allow the REM units to grow to.
-| propList | `string[]` | ['*'] | The properties that can change from px to rem. Refer to: [propList](#propList)
+| propList | `string[]` | `['*']` | The properties that can change from px to rem. Refer to: [propList](#propList) 
 | selectorBlackList | `(string \| RegExp)[]` | [] | The selectors to ignore and leave as px. Refer to: [selectorBlackList](#selectorBlackList)
 | replace | `boolean` | true | Replaces rules containing rems instead of adding fallbacks.
 | atRules | `boolean` \| `string[]` | false | Allow px to be converted in at-rules. Refer to [At-rule](https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule)
 | minPixelValue | `number` | 0 | Set the minimum pixel value to replace.
-| include | `string` \| `RegExp` \| `((filePath: string) => boolean)` \| `null` | null | The file path to convert px to rem. Higher priority than `exclude`. Same rules as `exclude`
 | exclude | `string` \| `RegExp` \| `((filePath: string) => boolean) \| null` | /node_modules/i | The file path to ignore and leave as px. Refer to: [exclude](#exclude)
+| include | `string` \| `RegExp` \| `((filePath: string) => boolean)` \| `null` | null | The file path to convert px to rem. Used to exclude certain file path from exclude. Same rules as `exclude`
 | disable | `boolean` | false |  disable plugin
 
 #### propList
