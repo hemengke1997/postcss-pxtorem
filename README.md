@@ -50,8 +50,8 @@ module.exports = {
 | replace | `boolean` | true | 直接在css规则上替换值而不是添加备用
 | atRules | `boolean` \| `string[]` | false | 允许`at-rules`中转换rem。参考 [At-rule](https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule)
 | minPixelValue | `number` | 0 | 最小的px转化值（小于这个值的不转化）
-| include | `string` \| `RegExp` \| `((filePath: string) => boolean)` \| `null` | null | 包括的文件（与exclude相反）。优先级比exclude高。规则同 `exclude`
 | exclude | `string` \| `RegExp` \| `((filePath: string) => boolean)` \| `null` | /node_modules/i | 忽略的文件路径。参考：[exclude](#exclude)
+| include | `string` \| `RegExp` \| `((filePath: string) => boolean)` \| `null` | null | 额外包括的文件，用于从exclude中排除某些文件路径。规则同 `exclude`
 | disable | `boolean` | false | 关闭插件
 
 #### propList
