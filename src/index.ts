@@ -136,5 +136,4 @@ function pxtorem(options?: PxtoremOptions) {
 
 pxtorem.postcss = true
 
-// eslint-disable-next-line no-restricted-syntax
 export default pxtorem

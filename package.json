@@ -46,15 +46,15 @@
     "query-string": "^7.1.1"
   },
   "devDependencies": {
-    "@minko-fe/commitlint-config": "^1.1.7",
-    "@minko-fe/eslint-config-ts": "^1.1.7",
-    "@minko-fe/prettier-config": "^1.1.7",
-    "@minko-fe/tsconfig": "^1.1.7",
-    "eslint": "^8.22.0",
-    "postcss": "^8.4.16",
+    "@minko-fe/commitlint-config": "^1.1.8",
+    "@minko-fe/eslint-config-ts": "^1.1.8",
+    "@minko-fe/prettier-config": "^1.1.8",
+    "@minko-fe/tsconfig": "^1.1.8",
     "bumpp": "^8.2.1",
-    "tsup": "^6.2.2",
-    "typescript": "^4.7.4",
-    "vitest": "^0.22.1"
+    "eslint": "^8.23.1",
+    "postcss": "^8.4.16",
+    "tsup": "^6.2.3",
+    "typescript": "^4.8.3",
+    "vitest": "^0.23.2"
   }
 }
