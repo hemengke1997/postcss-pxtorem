@@ -47,10 +47,15 @@ function pxtorem(options?: PxtoremOptions) {
 
   let pxReplace: ReturnType<typeof createPxReplace>
 
+  let rootValue: number
+
   const plugin: PostcssPlugin = {
     postcssPlugin: 'postcss-pxtorem',
-    Once(root, { Warning }) {
+
+    Root(r, { Warning }) {
       if (opts.disable) return
+
+      const root = r.root()
 
       const firstNode = root.nodes[0]
 
@@ -66,11 +71,10 @@ function pxtorem(options?: PxtoremOptions) {
       const include = opts.include
 
       isExcludeFile = judgeIsExclude(exclude, include, filePath)
-      const rootValue = typeof opts.rootValue === 'function' ? opts.rootValue(root.source!.input) : opts.rootValue
+      rootValue = typeof opts.rootValue === 'function' ? opts.rootValue(root.source!.input) : opts.rootValue
 
       pxReplace = createPxReplace(rootValue, opts.unitPrecision, opts.minPixelValue)
     },
-
     Declaration(decl) {
       if (opts.disable) return
       if (isRepeatRun(decl)) return
@@ -121,13 +125,18 @@ function pxtorem(options?: PxtoremOptions) {
         }
       }
     },
-    OnceExit(root) {
+
+    RootExit(r) {
+      const root = r.root()
+
       const firstNode = root.nodes[0]
       if (isOptionComment(firstNode) && firstNode.text.includes('pxtorem')) {
         firstNode.remove()
       }
       opts = initOptions(options)
       isExcludeFile = false
+      rootValue = typeof opts.rootValue === 'function' ? opts.rootValue(root.source!.input) : opts.rootValue
+      pxReplace = createPxReplace(rootValue, opts.unitPrecision, opts.minPixelValue)
     },
   }
 
