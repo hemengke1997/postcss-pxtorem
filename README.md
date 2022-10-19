@@ -1,6 +1,6 @@
 # postcss-pxtorem
 
-English docs: [[README-en.md](./README-en.md)]
+**中文** | [English](./README-en.md)
 
 [PostCSS](https://github.com/ai/postcss)插件，可以从像素单位生成rem单位
 
