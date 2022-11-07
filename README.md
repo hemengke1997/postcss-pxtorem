@@ -1,27 +1,27 @@
 # postcss-pxtorem
 
-**中文** | [English](./README-en.md)
+**English** | [中文](./README-zh.md)
 
-[PostCSS](https://github.com/ai/postcss)插件，可以从像素单位生成rem单位
+A plugin for [PostCSS](https://github.com/ai/postcss) that generates rem units from pixel units.
 
 
-## 新功能
+## New Features
 
-- 在样式文件中设置任意 `postcss-pxtorem` 支持的选项
-- 在样式文件中忽略某一行
+- specify any `postcss-pxtorem` option in css.
+- ignore line in css.
 
-## 安装
+## Install
 
 ```bash
 pnpm install postcss @minko-fe/postcss-pxtorem -D
 ```
 
-## 用法
+## Usage
 
-> 像素是最容易使用的单位。它们的唯一问题是，它们不能让浏览器改变默认的16号字体大小。postcss-pxtorem将每一个px值转换为你所选择的属性中的rem，以便让浏览器设置字体大小。
-
+> Pixels are the easiest unit to use (*opinion*). The only issue with them is that they don't let browsers change the default font size of 16. This script converts every px value to a rem from the properties you choose to allow the browser to set the font size.
 
 ### postcss.config.js
+
 
 #### example
 
@@ -43,47 +43,47 @@ module.exports = {
 
 | Name | Type | Default | Description
 |---------|----------|---------|---------
-| rootValue | `number` \| `((input: Input) => number)` | 16 | 代表根元素的字体大小或根据 [`input`](https://api.postcss.org/Input.html) 参数返回根元素的字体大小
-| unitPrecision | `number` | 5 | 小数点后精度
-| propList | `string[]` | `['*']` | 可以从px改变为rem的属性，参考：[propList](#propList)
-| selectorBlackList | `(string \| RegExp)[]` | [] | 忽略的选择器，保留为px。参考：[selectorBlackList](#selectorBlackList)
-| replace | `boolean` | true | 直接在css规则上替换值而不是添加备用
-| atRules | `boolean` \| `string[]` | false | 允许`at-rules`中转换rem。参考 [At-rule](https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule)
-| minPixelValue | `number` | 0 | 最小的px转化值（小于这个值的不转化）
-| exclude | `string` \| `RegExp` \| `((filePath: string) => boolean)` \| `null` | null | 忽略的文件路径。参考：[exclude](#exclude)
-| include | `string` \| `RegExp` \| `((filePath: string) => boolean)` \| `null` | null | 包括的文件路径，与 `exclude` 相反，优先级高于 `exclude`。规则同 `exclude`
-| disable | `boolean` | false | 关闭插件
+| rootValue | `number` \| `((input: Input) => number)` | 16 | Represents the root element font size or returns the root element font size based on the [`input`](https://api.postcss.org/Input.html) parameter
+| unitPrecision | `number` | 5 | The decimal numbers to allow the REM units to grow to.
+| propList | `string[]` | `['*']` | The properties that can change from px to rem. Refer to: [propList](#propList)
+| selectorBlackList | `(string \| RegExp)[]` | [] | The selectors to ignore and leave as px. Refer to: [selectorBlackList](#selectorBlackList)
+| replace | `boolean` | true | Replaces rules containing rems instead of adding fallbacks.
+| atRules | `boolean` \| `string[]` | false | Allow px to be converted in at-rules. Refer to [At-rule](https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule)
+| minPixelValue | `number` | 0 | Set the minimum pixel value to replace.
+| exclude | `string` \| `RegExp` \| `((filePath: string) => boolean) \| null` | /node_modules/i | The file path to ignore and leave as px. Refer to: [exclude](#exclude)
+| include | `string` \| `RegExp` \| `((filePath: string) => boolean)` \| `null` | null | The file path to convert px to rem, in contrast to `exclude`, have higher priority than `exclude`. Same rules as `exclude`
+| disable | `boolean` | false |  disable plugin
 
 #### propList
 
-- 值需要完全匹配
-- 使用通配符 `*` 来启用所有属性. Example: `['*']`
-- 在一个词的开头或结尾使用 `*`. (`['*position*']` will match `background-position-y`)
-- 使用 `!` 不匹配一个属性. Example: `['*', '!letter-spacing']`
-- 组合 `!` 与 `*`. Example: `['*', '!font*']`
+- Values need to be exact matches.
+- Use wildcard `*` to enable all properties. Example: `['*']`
+- Use `*` at the start or end of a word. (`['*position*']` will match `background-position-y`)
+- Use `!` to not match a property. Example: `['*', '!letter-spacing']`
+- Combine the "not" prefix with the other prefixes. Example: `['*', '!font*']`
 
 #### selectorBlackList
 
-- 如果值是字符串，它会检查选择器是否包含字符串.
+- If value is string, it checks to see if selector contains the string.
   - `['body']` will match `.body-class`
-- 如果值是正则，它会检查选择器是否与正则相匹配.
+- If value is regexp, it checks to see if the selector matches the regexp.
   - `[/^body$/]` will match `body` but not `.body`
 
 #### exclude
-
-- 如果值是字符串，它检查文件路径是否包含字符串
+- If value is string, it checks to see if file path contains the string.
   - `'exclude'` will match `\project\postcss-pxtorem\exclude\path`
-- 如果值是正则，它将检查文件路径是否与正则相匹配
+- If value is regexp, it checks to see if file path matches the regexp.
   - `/exclude/i` will match `\project\postcss-pxtorem\exclude\path`
-- 如果值是函数，你可以使用排除函数返回true，文件将被忽略
-  - 回调将传递文件路径作为一个参数，它应该返回一个boolean
+- If value is function, you can use exclude function to return a true and the file will be ignored.
+  - the callback will pass the file path as  a parameter, it should returns a Boolean result.
   - `function (file) { return file.includes('exclude') }`
 
-## ✨ 关于新特性
 
-### ⚙️ 在css中，动态设置插件选项
+## ✨ About new features
 
-#### 当前文件禁用插件
+### ⚙️ Dynamically set plugin options in css
+
+#### disable plugin
 ```css
 /* pxtorem?disabled=true */
 .rule {
@@ -91,7 +91,7 @@ module.exports = {
 }
 ```
 
-#### 设置rootValue
+#### set rootValue
 ```css
 /* pxtorem?rootValue=32 */
 .rule {
@@ -99,18 +99,18 @@ module.exports = {
 }
 ```
 
-🌰 以上只是简单的栗子，你可以在css文件中设置任意 `postcss-pxtorem` 支持的选项
+🌰 The above is just a simple example, you can set any of the options supported by `postcss-pxtorem` in the css file
 
-聪明的你，或许已经看出来了，`/* pxtorem?disabled=true */` 很像浏览器url？😼
-没错。关于规范，只需参考：[query-string](https://github.com/sindresorhus/query-string)
+You may have seen that the css comment is very much like the browser url?😼.
+That's right. For the specification, just refer to: [query-string](https://github.com/sindresorhus/query-string)
 
-#### 例子
+#### example
 
 ```css
 /* postcss-pxtorem?disable=false&rootValue=32&propList[]=*&replace=false&selectorBlackList[]=/some-class/i */
 ```
 
-### 在css中，忽略某一行
+### disable the next line in css file
 ```css
 .rule {
   /* pxtorem-disable-next-line */
@@ -118,16 +118,16 @@ module.exports = {
 }
 ```
 
-## ❤️ 感谢
+## ❤️ Thanks
 
 [postcss-pxtorem](https://github.com/cuth/postcss-pxtorem)
 
 [@tcstory/postcss-px-to-viewport](https://github.com/tcstory/postcss-px-to-viewport)
 
-## 👀 相关
+## 👀 Related
 
 A CSS post-processor that converts px to viewport: [postcss-pxtoviewport](https://github.com/hemengke1997/postcss-pxtoviewport)
 
-## 💕 支持
+## 💕 Support
 
-**如果这个仓库帮了你的忙，请不吝给个star，谢谢！😎**
+**If this has helped you, please don't hesitate to give a STAR, thanks! 😎**
