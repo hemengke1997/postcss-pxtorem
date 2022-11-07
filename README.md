@@ -118,8 +118,6 @@ module.exports = {
 }
 ```
 
-> 如果这个仓库帮了你的忙，请不吝给个star，谢谢！😎
-
 ## ❤️ 感谢
 
 [postcss-pxtorem](https://github.com/cuth/postcss-pxtorem)
@@ -129,3 +127,7 @@ module.exports = {
 ## 👀 相关
 
 A CSS post-processor that converts px to viewport: [postcss-pxtoviewport](https://github.com/hemengke1997/postcss-pxtoviewport)
+
+## 💕 支持
+
+**如果这个仓库帮了你的忙，请不吝给个star，谢谢！😎**
