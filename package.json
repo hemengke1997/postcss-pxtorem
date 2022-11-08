@@ -11,8 +11,9 @@
   ],
   "exports": {
     ".": {
+      "require": "./dist/index.cjs",
       "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "types": "./dist/index.d.ts"
     }
   },
   "repository": {
@@ -25,7 +26,6 @@
     "test": "vitest",
     "lint": "eslint .",
     "upgrade:deps": "pnpm update --i --L",
-    "//": "先bump，再release",
     "bump": "bumpp package.json --commit --push --tag",
     "release": "pnpm run build && pnpm publish --access public"
   },
@@ -47,10 +47,10 @@
     "query-string": "^7.1.1"
   },
   "devDependencies": {
-    "@minko-fe/commitlint-config": "^1.1.8",
-    "@minko-fe/eslint-config-ts": "^1.1.8",
-    "@minko-fe/prettier-config": "^1.1.8",
-    "@minko-fe/tsconfig": "^1.1.8",
+    "@minko-fe/commitlint-config": "^1.2.3",
+    "@minko-fe/eslint-config-ts": "^1.2.3",
+    "@minko-fe/prettier-config": "^1.2.3",
+    "@minko-fe/tsconfig": "^1.2.3",
     "bumpp": "^8.2.1",
     "eslint": "^8.23.1",
     "postcss": "^8.4.16",
