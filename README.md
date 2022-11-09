@@ -44,6 +44,7 @@ module.exports = {
 | Name | Type | Default | Description
 |---------|----------|---------|---------
 | rootValue | `number` \| `((input: Input) => number)` | 16 | Represents the root element font size or returns the root element font size based on the [`input`](https://api.postcss.org/Input.html) parameter
+| unitToConvert | `string` | `px` | unit to convert, by default, it is px
 | unitPrecision | `number` | 5 | The decimal numbers to allow the REM units to grow to.
 | propList | `string[]` | `['*']` | The properties that can change from px to rem. Refer to: [propList](#propList)
 | selectorBlackList | `(string \| RegExp)[]` | [] | The selectors to ignore and leave as px. Refer to: [selectorBlackList](#selectorBlackList)

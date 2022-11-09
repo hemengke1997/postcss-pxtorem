@@ -2,7 +2,7 @@ import postcss from 'postcss'
 import { describe, expect, test } from 'vitest'
 import type { Input } from 'postcss'
 import pxtorem from '../src'
-import { filterPropList } from '../src/filter-prop-list'
+import { filterPropList } from '../src/utils/filter-prop-list'
 
 const basicCSS = '.rule { font-size: 15px }'
 const basicExpected = '.rule { font-size: 0.9375rem }'
@@ -513,6 +513,26 @@ describe('inline comment', () => {
     const expected = '.rule {\nfont-size: 0.9375rem;\nwidth: 100px;\nheight: 50px;\n}'
 
     const processed = postcss(pxtorem({ propList: ['*'] })).process(css).css
+
+    expect(processed).toBe(expected)
+  })
+})
+
+describe('unitToConvert', () => {
+  test('should ignore non px values by default', () => {
+    const expected = '.rule { font-size: 2em }'
+    const processed = postcss(pxtorem()).process(expected).css
+
+    expect(processed).toBe(expected)
+  })
+
+  test('should convert only values described in options', () => {
+    const rules = '.rule { font-size: 30em; line-height: 2px }'
+    const expected = '.rule { font-size: 1.875rem; line-height: 2px }'
+    const options = {
+      unitToConvert: 'em',
+    }
+    const processed = postcss(pxtorem(options)).process(rules).css
 
     expect(processed).toBe(expected)
   })

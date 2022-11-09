@@ -44,6 +44,7 @@ module.exports = {
 | Name | Type | Default | Description
 |---------|----------|---------|---------
 | rootValue | `number` \| `((input: Input) => number)` | 16 | 代表根元素的字体大小或根据 [`input`](https://api.postcss.org/Input.html) 参数返回根元素的字体大小
+| unitToConvert | `string` | `px` | 需要转化的单位，默认 `px`
 | unitPrecision | `number` | 5 | 小数点后精度
 | propList | `string[]` | `['*']` | 可以从px改变为rem的属性，参考：[propList](#propList)
 | selectorBlackList | `(string \| RegExp)[]` | [] | 忽略的选择器，保留为px。参考：[selectorBlackList](#selectorBlackList)

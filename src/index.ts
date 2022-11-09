@@ -11,12 +11,13 @@ import {
   isOptionComment,
   isRepeatRun,
   judgeIsExclude,
-} from './utils'
-import { pxRegex } from './pixel-unit-regex'
-import { disableNextComment } from './constant'
+} from './utils/utils'
+import { getUnitRegexp } from './utils/pixel-unit-regex'
+import { disableNextComment } from './utils/constant'
 
 export type PxtoremOptions = Partial<{
   rootValue: number | ((input: Input) => number)
+  unitToConvert: string
   unitPrecision: number
   selectorBlackList: (string | RegExp)[]
   propList: string[]
@@ -30,6 +31,7 @@ export type PxtoremOptions = Partial<{
 
 export const defaultOptions: Required<PxtoremOptions> = {
   rootValue: 16,
+  unitToConvert: 'px',
   unitPrecision: 5,
   selectorBlackList: [],
   propList: ['*'],
@@ -82,7 +84,7 @@ function pxtorem(options?: PxtoremOptions) {
       const satisfyPropList = createPropListMatcher(opts.propList)
 
       if (
-        !decl.value.includes('px') ||
+        !decl.value.includes(opts.unitToConvert) ||
         !satisfyPropList(decl.prop) ||
         blacklistedSelector(opts.selectorBlackList, (decl.parent as Rule).selector)
       ) {
@@ -96,6 +98,7 @@ function pxtorem(options?: PxtoremOptions) {
         return
       }
 
+      const pxRegex = getUnitRegexp(opts.unitToConvert)
       const value = decl.value.replace(pxRegex, pxReplace)
 
       if (declarationExists(decl.parent!, decl.prop, value)) return
@@ -112,7 +115,8 @@ function pxtorem(options?: PxtoremOptions) {
       if (isExcludeFile) return
 
       function replacePxInRules() {
-        if (!atRule.params.includes('px')) return
+        if (!atRule.params.includes(opts.unitToConvert)) return
+        const pxRegex = getUnitRegexp(opts.unitToConvert)
         atRule.params = atRule.params.replace(pxRegex, pxReplace)
       }
 
