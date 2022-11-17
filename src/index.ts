@@ -60,6 +60,7 @@ function pxtorem(options?: PxtoremOptions) {
       const root = r.root()
 
       const firstNode = root.nodes[0]
+      const filePath = root.source?.input.file
 
       if (isOptionComment(firstNode)) {
         opts = {
@@ -67,7 +68,6 @@ function pxtorem(options?: PxtoremOptions) {
           ...getOptionsFromComment(firstNode, Warning),
         }
       }
-      const filePath = root.source?.input.file
 
       const exclude = opts.exclude
       const include = opts.include
@@ -133,10 +133,6 @@ function pxtorem(options?: PxtoremOptions) {
     RootExit(r) {
       const root = r.root()
 
-      const firstNode = root.nodes[0]
-      if (isOptionComment(firstNode) && firstNode.text.includes('pxtorem')) {
-        firstNode.remove()
-      }
       opts = initOptions(options)
       isExcludeFile = false
       rootValue = typeof opts.rootValue === 'function' ? opts.rootValue(root.source!.input) : opts.rootValue
