@@ -108,7 +108,7 @@ That's right. For the specification, just refer to: [query-string](https://githu
 #### example
 
 ```css
-/* postcss-pxtorem?disable=false&rootValue=32&propList[]=*&replace=false&selectorBlackList[]=/some-class/i */
+/* pxtorem?disable=false&rootValue=32&propList[]=*&replace=false&selectorBlackList[]=/some-class/i */
 ```
 
 ### disable the next line in css file
