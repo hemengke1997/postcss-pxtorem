@@ -37,7 +37,7 @@ function parseRegExp(maybeRegExpArg: unknown) {
 
 export function getOptionsFromComment(comment: Comment, Warning: typeof postcssWarning) {
   try {
-    let query = /(?<=pxtorem\?).+/g.exec(comment.text)?.[0]
+    let query = /(?<=^pxtorem\?).+/g.exec(comment.text)?.[0]
     const ret: Record<string, any> = {}
 
     if (!query) return ret

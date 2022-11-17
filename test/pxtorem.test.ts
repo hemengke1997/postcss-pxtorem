@@ -375,6 +375,14 @@ describe('include', () => {
 })
 
 describe('top comment', () => {
+  test('regexp', () => {
+    const css = '/* postcss-pxtorem?disable=false */\n.rule { font-size: 16px }'
+    const expected = '.rule { font-size: 1rem }'
+    const processed = postcss(pxtorem()).process(css).css
+
+    expect(processed).toBe(expected)
+  })
+
   test('empty', () => {
     const css = ''
     const expected = ''

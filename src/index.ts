@@ -138,6 +138,14 @@ function pxtorem(options?: PxtoremOptions) {
       rootValue = typeof opts.rootValue === 'function' ? opts.rootValue(root.source!.input) : opts.rootValue
       pxReplace = createPxReplace(rootValue, opts.unitPrecision, opts.minPixelValue)
     },
+    OnceExit(r) {
+      const root = r.root()
+
+      const firstNode = root.nodes[0]
+      if (isOptionComment(firstNode) && firstNode.text.includes('pxtorem')) {
+        firstNode.remove()
+      }
+    },
   }
 
   return plugin

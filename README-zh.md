@@ -108,7 +108,7 @@ module.exports = {
 #### 例子
 
 ```css
-/* postcss-pxtorem?disable=false&rootValue=32&propList[]=*&replace=false&selectorBlackList[]=/some-class/i */
+/* pxtorem?disable=false&rootValue=32&propList[]=*&replace=false&selectorBlackList[]=/some-class/i */
 ```
 
 ### 在css中，忽略某一行
