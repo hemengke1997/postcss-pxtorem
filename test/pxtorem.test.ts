@@ -1,6 +1,7 @@
 import postcss from 'postcss'
 import { describe, expect, test } from 'vitest'
 import type { Input } from 'postcss'
+import nested from 'postcss-nested'
 import pxtorem from '../src'
 import { filterPropList } from '../src/utils/filter-prop-list'
 
@@ -374,9 +375,9 @@ describe('include', () => {
   })
 })
 
-describe('top comment', () => {
+describe('comment', () => {
   test('regexp', () => {
-    const css = '/* postcss-pxtorem?disable=false */\n.rule { font-size: 16px }'
+    const css = '/* pxtorem?disable=false */\n.rule { font-size: 16px }'
     const expected = '.rule { font-size: 1rem }'
     const processed = postcss(pxtorem()).process(css).css
 
@@ -499,6 +500,94 @@ describe('top comment', () => {
     const processed = postcss(pxtorem({ propList: ['*'] })).process(css).css
 
     const expected = '.rule { border: 1px solid #000; font-size: 1rem; margin: 1px 0.625rem; }'
+    expect(processed).toBe(expected)
+  })
+
+  test('multipleComments', () => {
+    const css =
+      '/* pxtorem?disable=false */\n.enable { font-size: 15px; }\n/* pxtorem?disable=true */\n.disable { font-size: 15px; }'
+    const expected = '.enable { font-size: 0.9375rem; }\n.disable { font-size: 15px; }'
+    const processed = postcss(pxtorem({ propList: ['*'] })).process(css).css
+
+    expect(processed).toBe(expected)
+  })
+
+  test('integrate postcss-nested', () => {
+    const css = `/* pxtorem?disable=false */
+    .class {
+      margin: -10px 20px;
+      padding: 5rem 0.5px;
+      border: 3px solid black;
+      font-size: 14px;
+      line-height: 20px;
+    }
+    .mmm {
+      /* pxtorem-disable-next-line */
+      font-size: 32px;
+      line-height: 1em;
+      .nested {
+        font-size: 16px;
+      }
+    }
+    
+    /* pxtorem?disable=true */
+    @media (min-width: 750px) {
+      .class3 {
+        font-size: 16px;
+        line-height: 22px;
+        .nested {
+          font-size: 16px;
+        }
+      }
+    }
+    
+    /* pxtorem?disable=false */
+    .class2 {
+      margin: -10px 20px;
+      padding: 5rem 0.5px;
+      border: 3px solid black;
+      font-size: 14px;
+      line-height: 20px;
+      .nested {
+        font-size: 16px;
+      }
+    }`
+
+    const expected = `.class {
+      margin: -0.625rem 1.25rem;
+      padding: 5rem 0.03125rem;
+      border: 0.1875rem solid black;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
+    .mmm {
+      font-size: 32px;
+      line-height: 1em;
+    }
+    .mmm .nested {
+        font-size: 1rem;
+      }
+    @media (min-width: 750px) {
+      .class3 {
+        font-size: 16px;
+        line-height: 22px;
+      }
+        .class3 .nested {
+          font-size: 16px;
+        }
+    }
+    .class2 {
+      margin: -0.625rem 1.25rem;
+      padding: 5rem 0.03125rem;
+      border: 0.1875rem solid black;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
+    .class2 .nested {
+        font-size: 1rem;
+      }`
+    const processed = postcss(pxtorem(), nested).process(css).css
+
     expect(processed).toBe(expected)
   })
 })

@@ -9,6 +9,7 @@ specifiers:
   conventional-changelog-cli: ^2.2.2
   eslint: ^8.23.1
   postcss: ^8.4.16
+  postcss-nested: ^6.0.0
   query-string: ^7.1.1
   tsup: ^6.2.3
   typescript: ^4.8.3
@@ -26,6 +27,7 @@ devDependencies:
   conventional-changelog-cli: 2.2.2
   eslint: 8.23.1
   postcss: 8.4.16
+  postcss-nested: 6.0.0_postcss@8.4.16
   tsup: 6.2.3_oq3ba2gaicocxn4pugg3oxoeb4
   typescript: 4.8.3
   vitest: 0.23.2
@@ -923,6 +925,12 @@ packages:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
+    dev: true
+
+  /cssesc/3.0.0:
+    resolution: {integrity: sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==}
+    engines: {node: '>=4'}
+    hasBin: true
     dev: true
 
   /dargs/7.0.0:
@@ -2857,6 +2865,24 @@ packages:
       lilconfig: 2.0.6
       postcss: 8.4.16
       yaml: 1.10.2
+    dev: true
+
+  /postcss-nested/6.0.0_postcss@8.4.16:
+    resolution: {integrity: sha512-0DkamqrPcmkBDsLn+vQDIrtkSbNkv5AD/M322ySo9kqFkCIYklym2xEmWkwo+Y3/qZo34tzEPNUw4y7yMCdv5w==}
+    engines: {node: '>=12.0'}
+    peerDependencies:
+      postcss: ^8.2.14
+    dependencies:
+      postcss: 8.4.16
+      postcss-selector-parser: 6.0.11
+    dev: true
+
+  /postcss-selector-parser/6.0.11:
+    resolution: {integrity: sha512-zbARubNdogI9j7WY4nQJBiNqQf3sLS3wCP4WfOidu+p28LofJqDH1tcXypGrcmMHhDk2t9wGhCsYe/+szLTy1g==}
+    engines: {node: '>=4'}
+    dependencies:
+      cssesc: 3.0.0
+      util-deprecate: 1.0.2
     dev: true
 
   /postcss/8.4.16:

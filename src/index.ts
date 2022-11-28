@@ -1,4 +1,5 @@
 import type { Input, Plugin as PostcssPlugin, Rule } from 'postcss'
+import { Warning } from 'postcss'
 import {
   blacklistedSelector,
   createPropListMatcher,
@@ -9,6 +10,7 @@ import {
   isArray,
   isBoolean,
   isOptionComment,
+  isPxtoremReg,
   isRepeatRun,
   judgeIsExclude,
 } from './utils/utils'
@@ -129,7 +131,17 @@ function pxtorem(options?: PxtoremOptions) {
         }
       }
     },
-
+    Comment(comment) {
+      opts = {
+        ...opts,
+        ...getOptionsFromComment(comment, Warning),
+      }
+    },
+    CommentExit(comment) {
+      if (comment.text.match(isPxtoremReg)?.length) {
+        comment.remove()
+      }
+    },
     RootExit(r) {
       const root = r.root()
 
@@ -137,14 +149,6 @@ function pxtorem(options?: PxtoremOptions) {
       isExcludeFile = false
       rootValue = typeof opts.rootValue === 'function' ? opts.rootValue(root.source!.input) : opts.rootValue
       pxReplace = createPxReplace(rootValue, opts.unitPrecision, opts.minPixelValue)
-    },
-    OnceExit(r) {
-      const root = r.root()
-
-      const firstNode = root.nodes[0]
-      if (isOptionComment(firstNode) && firstNode.text.includes('pxtorem')) {
-        firstNode.remove()
-      }
     },
   }
 
