@@ -177,3 +177,5 @@ function pxtorem(options?: PxtoremOptions) {
 pxtorem.postcss = true
 
 export default pxtorem
+
+export { pxtorem }

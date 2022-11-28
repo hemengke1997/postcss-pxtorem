@@ -1,3 +1,12 @@
+## [1.0.2](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.0.1...v1.0.2) (2022-11-28)
+
+
+### Features
+
+* ✨ add `convertUnitOnEnd` feature ([3e1dd34](https://github.com/hemengke1997/postcss-pxtorem/commit/3e1dd34bea47bab370a1a255b31097370a1531c8))
+
+
+
 ## [1.0.1](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.0.0...v1.0.1) (2022-11-28)
 
 

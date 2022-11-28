@@ -24,9 +24,12 @@ pnpm install postcss @minko-fe/postcss-pxtorem -D
 #### example
 
 ```js
-module.exports = {
+// postcss.config.js
+import pxtorom from '@minko-fe/postcss-pxtorem'
+
+export default {
   plugins: [
-    require('@minko-fe/postcss-pxtorem')({
+    pxtorom({
       rootValue: 16,
       selectorBlackList: ['some-class'],
       propList: ['*'],
@@ -125,9 +128,12 @@ module.exports = {
 如果你希望使用 `PX` 忽略并且希望最后得到的单位是 `px`，你可以这样
 
 ```js
-module.exports = {
+// postcss.config.js
+import pxtorem from '@minko-fe/postcss-pxtorem'
+
+export default {
   plugins: [
-    require('@minko-fe/postcss-pxtorem')({
+    pxtorem({
       convertUnitOnEnd: {
         sourceUnit: /[p|P][x|X]$/,
         targetUnit: 'px',
@@ -135,6 +141,48 @@ module.exports = {
     }),
   ],
 }
+```
+
+## 搭配自适应布局js使用
+
+### example
+
+```ts
+;(function () {
+  if (typeof window === 'undefined') return
+
+  const maxWidth = 1024
+  const uiWidth = 375
+
+  function resize() {
+    let width = window.innerWidth
+
+    if (width > window.screen.width) {
+    } else {
+      if (width >= maxWidth) {
+        width = maxWidth
+      }
+      document.documentElement.style.fontSize = `${(width * 16) / uiWidth}px`
+    }
+  }
+
+  resize()
+
+  let timer: NodeJS.Timer
+  const interval = 1000
+
+  window.addEventListener('resize', () => {
+    clearTimeout(timer)
+    timer = setTimeout(resize, interval)
+  })
+  window.addEventListener('pageshow', (e) => {
+    if (e.persisted) {
+      clearTimeout(timer)
+      timer = setTimeout(resize, interval)
+      resize()
+    }
+  })
+})()
 ```
 
 ## ❤️ 感谢
