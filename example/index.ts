@@ -6,6 +6,10 @@ import pxtorem from '../src'
 const css = fs.readFileSync('main.css', 'utf8')
 const options = {
   replace: true,
+  convertUnitOnEnd: {
+    sourceUnit: /[p|P][x|X]$/,
+    targetUnit: 'px',
+  },
 }
 const processedCss = postcss(pxtorem(options), nested).process(css).css
 

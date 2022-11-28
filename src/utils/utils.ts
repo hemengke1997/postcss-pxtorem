@@ -1,6 +1,6 @@
 import type { AtRule, ChildNode, Comment, Container, Declaration, Rule, Warning as postcssWarning } from 'postcss'
 import queryString from 'query-string'
-import type { PxtoremOptions } from '..'
+import type { ConvertUnit, PxtoremOptions } from '..'
 import { defaultOptions } from '..'
 import { maybeRegExp } from './constant'
 import { filterPropList } from './filter-prop-list'
@@ -171,6 +171,15 @@ export function judgeIsExclude<T extends PxtoremOptions['include']>(
     return true
   }
   return false
+}
+
+export function convertUnit(value: string, convert: ConvertUnit) {
+  if (typeof convert.sourceUnit === 'string') {
+    return value.replace(new RegExp(`${convert.sourceUnit}$`), convert.targetUnit)
+  } else if (convert.sourceUnit instanceof RegExp) {
+    return value.replace(new RegExp(convert.sourceUnit), convert.targetUnit)
+  }
+  return value
 }
 
 enum EnumDataType {

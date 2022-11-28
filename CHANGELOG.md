@@ -1,3 +1,13 @@
+# [1.0.0](https://github.com/hemengke1997/postcss-pxtorem/compare/v0.0.12...v1.0.0) (2022-11-17)
+
+
+### Bug Fixes
+
+* integrate postcss-nested ([07423e0](https://github.com/hemengke1997/postcss-pxtorem/commit/07423e09333b002cc91cf41c7f48adcccb80043e))
+* strict regexp rule ([7d34697](https://github.com/hemengke1997/postcss-pxtorem/commit/7d34697aa3996ef94537218ad7629fbb7ced019c))
+
+
+
 ## [0.0.12](https://github.com/hemengke1997/postcss-pxtorem/compare/v0.0.11...v0.0.12) (2022-11-09)
 
 

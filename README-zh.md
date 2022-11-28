@@ -2,8 +2,7 @@
 
 **中文** | [English](./README.md)
 
-[PostCSS](https://github.com/ai/postcss)插件，可以从像素单位生成rem单位
-
+[PostCSS](https://github.com/ai/postcss)插件，可以从像素单位生成 rem 单位
 
 ## 新功能
 
@@ -18,8 +17,7 @@ pnpm install postcss @minko-fe/postcss-pxtorem -D
 
 ## 用法
 
-> 像素是最容易使用的单位。它们的唯一问题是，它们不能让浏览器改变默认的16号字体大小。postcss-pxtorem将每一个px值转换为你所选择的属性中的rem，以便让浏览器设置字体大小。
-
+> 像素是最容易使用的单位。它们的唯一问题是，它们不能让浏览器改变默认的 16 号字体大小。postcss-pxtorem 将每一个 px 值转换为你所选择的属性中的 rem，以便让浏览器设置字体大小。
 
 ### postcss.config.js
 
@@ -41,19 +39,20 @@ module.exports = {
 
 ### options
 
-| Name | Type | Default | Description
-|---------|----------|---------|---------
-| rootValue | `number` \| `((input: Input) => number)` | 16 | 代表根元素的字体大小或根据 [`input`](https://api.postcss.org/Input.html) 参数返回根元素的字体大小
-| unitToConvert | `string` | `px` | 需要转化的单位，默认 `px`
-| unitPrecision | `number` | 5 | 小数点后精度
-| propList | `string[]` | `['*']` | 可以从px改变为rem的属性，参考：[propList](#propList)
-| selectorBlackList | `(string \| RegExp)[]` | [] | 忽略的选择器，保留为px。参考：[selectorBlackList](#selectorBlackList)
-| replace | `boolean` | true | 直接在css规则上替换值而不是添加备用
-| atRules | `boolean` \| `string[]` | false | 允许`at-rules`中转换rem。参考 [At-rule](https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule)
-| minPixelValue | `number` | 0 | 最小的px转化值（小于这个值的不转化）
-| exclude | `string` \| `RegExp` \| `((filePath: string) => boolean)` \| `null` | null | 忽略的文件路径。参考：[exclude](#exclude)
-| include | `string` \| `RegExp` \| `((filePath: string) => boolean)` \| `null` | null | 包括的文件路径，与 `exclude` 相反，优先级高于 `exclude`。规则同 `exclude`
-| disable | `boolean` | false | 关闭插件
+| Name              | Type                                                                | Default | Description                                                                                        |
+| ----------------- | ------------------------------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------- |
+| rootValue         | `number` \| `((input: Input) => number)`                            | 16      | 代表根元素的字体大小或根据 [`input`](https://api.postcss.org/Input.html) 参数返回根元素的字体大小  |
+| unitToConvert     | `string`                                                            | `px`    | 需要转化的单位，默认 `px`                                                                          |
+| unitPrecision     | `number`                                                            | 5       | 小数点后精度                                                                                       |
+| propList          | `string[]`                                                          | `['*']` | 可以从 px 改变为 rem 的属性，参考：[propList](#propList)                                           |
+| selectorBlackList | `(string \| RegExp)[]`                                              | []      | 忽略的选择器，保留为 px。参考：[selectorBlackList](#selectorBlackList)                             |
+| replace           | `boolean`                                                           | true    | 直接在 css 规则上替换值而不是添加备用                                                              |
+| atRules           | `boolean` \| `string[]`                                             | false   | 允许`at-rules`中转换 rem。参考 [At-rule](https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule) |
+| minPixelValue     | `number`                                                            | 0       | 最小的 px 转化值（小于这个值的不转化）                                                             |
+| exclude           | `string` \| `RegExp` \| `((filePath: string) => boolean)` \| `null` | null    | 忽略的文件路径。参考：[exclude](#exclude)                                                          |
+| include           | `string` \| `RegExp` \| `((filePath: string) => boolean)` \| `null` | null    | 包括的文件路径，与 `exclude` 相反，优先级高于 `exclude`。规则同 `exclude`                          |
+| disable           | `boolean`                                                           | false   | 关闭插件                                                                                           |
+| convertUnitOnEnd  | `ConvertUnit` \| `ConvertUnit[]` \| false \| null                   | null    | 插件处理的最后阶段转换单位                                                                         |
 
 #### propList
 
@@ -76,15 +75,16 @@ module.exports = {
   - `'exclude'` will match `\project\postcss-pxtorem\exclude\path`
 - 如果值是正则，它将检查文件路径是否与正则相匹配
   - `/exclude/i` will match `\project\postcss-pxtorem\exclude\path`
-- 如果值是函数，你可以使用排除函数返回true，文件将被忽略
-  - 回调将传递文件路径作为一个参数，它应该返回一个boolean
+- 如果值是函数，你可以使用排除函数返回 true，文件将被忽略
+  - 回调将传递文件路径作为一个参数，它应该返回一个 boolean
   - `function (file) { return file.includes('exclude') }`
 
 ## ✨ 关于新特性
 
-### ⚙️ 在css中，动态设置插件选项
+### ⚙️ 在 css 中，动态设置插件选项
 
 #### 当前文件禁用插件
+
 ```css
 /* pxtorem?disabled=true */
 .rule {
@@ -92,7 +92,8 @@ module.exports = {
 }
 ```
 
-#### 设置rootValue
+#### 设置 rootValue
+
 ```css
 /* pxtorem?rootValue=32 */
 .rule {
@@ -100,9 +101,9 @@ module.exports = {
 }
 ```
 
-🌰 以上只是简单的栗子，你可以在css文件中设置任意 `postcss-pxtorem` 支持的选项
+🌰 以上只是简单的栗子，你可以在 css 文件中设置任意 `postcss-pxtorem` 支持的选项
 
-聪明的你，或许已经看出来了，`/* pxtorem?disabled=true */` 很像浏览器url？😼
+聪明的你，或许已经看出来了，`/* pxtorem?disabled=true */` 很像浏览器 url？😼
 没错。关于规范，只需参考：[query-string](https://github.com/sindresorhus/query-string)
 
 #### 例子
@@ -111,11 +112,28 @@ module.exports = {
 /* pxtorem?disable=false&rootValue=32&propList[]=*&replace=false&selectorBlackList[]=/some-class/i */
 ```
 
-### 在css中，忽略某一行
+### 在 css 中，忽略某一行
+
 ```css
 .rule {
   /* pxtorem-disable-next-line */
   font-size: 15px; // 15px
+}
+```
+
+如果你写 `15PX`（只要不是 `px`），插件也会忽略，因为 `unitToConvert` 默认是 `px`
+如果你希望使用 `PX` 忽略并且希望最后得到的单位是 `px`，你可以这样
+
+```js
+module.exports = {
+  plugins: [
+    require('@minko-fe/postcss-pxtorem')({
+      convertUnitOnEnd: {
+        sourceUnit: /[p|P][x|X]$/,
+        targetUnit: 'px',
+      },
+    }),
+  ],
 }
 ```
 
@@ -131,4 +149,4 @@ A CSS post-processor that converts px to viewport: [postcss-pxtoviewport](https:
 
 ## 💕 支持
 
-**如果这个仓库帮了你的忙，请不吝给个star，谢谢！😎**
+**如果这个仓库帮了你的忙，请不吝给个 star，谢谢！😎**

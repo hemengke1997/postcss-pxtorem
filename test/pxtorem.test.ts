@@ -634,3 +634,35 @@ describe('unitToConvert', () => {
     expect(processed).toBe(expected)
   })
 })
+
+describe('convertUnitOnEnd', () => {
+  test('should convert PX to px with RegExp', () => {
+    const css = '.rule { font-size: 2PX }'
+    const expected = '.rule { font-size: 2px }'
+    const processed = postcss(
+      pxtorem({
+        convertUnitOnEnd: {
+          sourceUnit: /[p|P][x|X]$/,
+          targetUnit: 'px',
+        },
+      }),
+    ).process(css).css
+
+    expect(processed).toBe(expected)
+  })
+
+  test('should convert PX to px with String', () => {
+    const css = '.rule { font-size: 2PX }'
+    const expected = '.rule { font-size: 2px }'
+    const processed = postcss(
+      pxtorem({
+        convertUnitOnEnd: {
+          sourceUnit: 'PX',
+          targetUnit: 'px',
+        },
+      }),
+    ).process(css).css
+
+    expect(processed).toBe(expected)
+  })
+})

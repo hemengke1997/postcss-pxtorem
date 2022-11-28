@@ -1,7 +1,7 @@
 import type { Input, Plugin as PostcssPlugin, Rule } from 'postcss'
-import { Warning } from 'postcss'
 import {
   blacklistedSelector,
+  convertUnit,
   createPropListMatcher,
   createPxReplace,
   declarationExists,
@@ -17,6 +17,11 @@ import {
 import { getUnitRegexp } from './utils/pixel-unit-regex'
 import { disableNextComment } from './utils/constant'
 
+export interface ConvertUnit {
+  sourceUnit: string | RegExp
+  targetUnit: string
+}
+
 export type PxtoremOptions = Partial<{
   rootValue: number | ((input: Input) => number)
   unitToConvert: string
@@ -29,6 +34,7 @@ export type PxtoremOptions = Partial<{
   include: string | RegExp | ((filePath: string) => boolean) | null
   exclude: string | RegExp | ((filePath: string) => boolean) | null
   disable: boolean
+  convertUnitOnEnd: ConvertUnit | ConvertUnit[] | false | null
 }>
 
 export const defaultOptions: Required<PxtoremOptions> = {
@@ -43,6 +49,7 @@ export const defaultOptions: Required<PxtoremOptions> = {
   include: null,
   exclude: null,
   disable: false,
+  convertUnitOnEnd: null,
 }
 
 function pxtorem(options?: PxtoremOptions) {
@@ -111,6 +118,18 @@ function pxtorem(options?: PxtoremOptions) {
         decl.cloneAfter({ value })
       }
     },
+    DeclarationExit(decl) {
+      const { convertUnitOnEnd } = opts
+      if (convertUnitOnEnd) {
+        if (Array.isArray(convertUnitOnEnd)) {
+          convertUnitOnEnd.forEach((conv) => {
+            decl.value = convertUnit(decl.value, conv)
+          })
+        } else {
+          decl.value = convertUnit(decl.value, convertUnitOnEnd)
+        }
+      }
+    },
     AtRule(atRule) {
       if (opts.disable) return
       if (isRepeatRun(atRule)) return
@@ -131,7 +150,7 @@ function pxtorem(options?: PxtoremOptions) {
         }
       }
     },
-    Comment(comment) {
+    Comment(comment, { Warning }) {
       opts = {
         ...opts,
         ...getOptionsFromComment(comment, Warning),

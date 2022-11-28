@@ -1,9 +1,9 @@
 .class {
   margin: -0.625rem 1.25rem;
   padding: 5rem 0.03125rem;
-  border: 0.1875rem solid black;
+  border: 3px solid black;
   font-size: 0.875rem;
-  line-height: 1.25rem;
+  line-height: 20px;
 }
 .mmm {
   font-size: 32px;
@@ -24,7 +24,7 @@
 .class2 {
   margin: -0.625rem 1.25rem;
   padding: 5rem 0.03125rem;
-  border: 0.1875rem solid black;
+  border: 3px solid black;
   font-size: 0.875rem;
   line-height: 1.25rem;
 }
