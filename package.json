@@ -25,10 +25,9 @@
     "build": "tsup",
     "test": "vitest",
     "lint": "eslint .",
-    "log": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
+    "log": "conventional-changelog -p angular -i CHANGELOG.md -s --commit-path .",
     "upgrade:deps": "pnpm update --i --L",
-    "bump": "bumpp package.json --commit --push --tag",
-    "release": "pnpm run build && pnpm publish --access public"
+    "bump": "bumpp package.json --commit --push --tag"
   },
   "keywords": [
     "px2rem",

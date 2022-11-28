@@ -1,3 +1,12 @@
+## [1.0.1](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.0.0...v1.0.1) (2022-11-28)
+
+
+### Features
+
+* ✨ support multiple pxtorem comments in single css file ([b91f039](https://github.com/hemengke1997/postcss-pxtorem/commit/b91f039d767eab74d7081860a4c421314b8b280d))
+
+
+
 # [1.0.0](https://github.com/hemengke1997/postcss-pxtorem/compare/v0.0.12...v1.0.0) (2022-11-17)
 
 
