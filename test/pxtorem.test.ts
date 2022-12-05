@@ -99,6 +99,18 @@ describe('pxtorem', () => {
     }).css
     expect(processed).toBe(basicExpected)
   })
+
+  test('should disable all', () => {
+    const options = {
+      disable: true,
+    }
+
+    const expected = basicCSS
+
+    const processd = postcss(pxtorem(options)).process(expected).css
+
+    expect(expected).toBe(processd)
+  })
 })
 
 describe('value parsing', () => {

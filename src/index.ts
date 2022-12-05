@@ -1,6 +1,7 @@
 import type { Input, Plugin as PostcssPlugin, Rule } from 'postcss'
 import {
   blacklistedSelector,
+  checkoutDisable,
   convertUnit,
   createPropListMatcher,
   createPxReplace,
@@ -11,7 +12,6 @@ import {
   isBoolean,
   isOptionComment,
   isPxtoremReg,
-  isRepeatRun,
   judgeIsExclude,
 } from './utils/utils'
 import { getUnitRegexp } from './utils/pixel-unit-regex'
@@ -52,6 +52,8 @@ export const defaultOptions: Required<PxtoremOptions> = {
   convertUnitOnEnd: null,
 }
 
+const postcssPlugin = 'postcss-pxtorem'
+
 function pxtorem(options?: PxtoremOptions) {
   let opts = initOptions(options)
   let isExcludeFile = false
@@ -61,10 +63,12 @@ function pxtorem(options?: PxtoremOptions) {
   let rootValue: number
 
   const plugin: PostcssPlugin = {
-    postcssPlugin: 'postcss-pxtorem',
+    postcssPlugin,
 
     Root(r, { Warning }) {
-      if (opts.disable) return
+      if (checkoutDisable({ disable: opts.disable, isExcludeFile })) {
+        return
+      }
 
       const root = r.root()
 
@@ -87,9 +91,10 @@ function pxtorem(options?: PxtoremOptions) {
       pxReplace = createPxReplace(rootValue, opts.unitPrecision, opts.minPixelValue)
     },
     Declaration(decl) {
-      if (opts.disable) return
-      if (isRepeatRun(decl)) return
-      if (isExcludeFile) return
+      if (checkoutDisable({ disable: opts.disable, isExcludeFile, r: decl })) {
+        return
+      }
+
       const satisfyPropList = createPropListMatcher(opts.propList)
 
       if (
@@ -119,6 +124,10 @@ function pxtorem(options?: PxtoremOptions) {
       }
     },
     DeclarationExit(decl) {
+      if (checkoutDisable({ disable: opts.disable, isExcludeFile })) {
+        return
+      }
+
       const { convertUnitOnEnd } = opts
       if (convertUnitOnEnd) {
         if (Array.isArray(convertUnitOnEnd)) {
@@ -131,9 +140,9 @@ function pxtorem(options?: PxtoremOptions) {
       }
     },
     AtRule(atRule) {
-      if (opts.disable) return
-      if (isRepeatRun(atRule)) return
-      if (isExcludeFile) return
+      if (checkoutDisable({ disable: opts.disable, isExcludeFile, r: atRule })) {
+        return
+      }
 
       function replacePxInRules() {
         if (!atRule.params.includes(opts.unitToConvert)) return
@@ -151,17 +160,23 @@ function pxtorem(options?: PxtoremOptions) {
       }
     },
     Comment(comment, { Warning }) {
+      // ignore disable
       opts = {
         ...opts,
         ...getOptionsFromComment(comment, Warning),
       }
     },
     CommentExit(comment) {
+      // ignore disable
       if (comment.text.match(isPxtoremReg)?.length) {
         comment.remove()
       }
     },
     RootExit(r) {
+      if (checkoutDisable({ disable: opts.disable, isExcludeFile })) {
+        return
+      }
+
       const root = r.root()
 
       opts = initOptions(options)
@@ -171,7 +186,13 @@ function pxtorem(options?: PxtoremOptions) {
     },
   }
 
-  return plugin
+  if (opts.disable) {
+    return {
+      postcssPlugin,
+    }
+  } else {
+    return plugin
+  }
 }
 
 pxtorem.postcss = true
