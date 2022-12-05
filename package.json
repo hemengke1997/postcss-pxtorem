@@ -1,6 +1,6 @@
 {
   "name": "@minko-fe/postcss-pxtorem",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "✨ A CSS post-processor that converts px to rem.",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -27,7 +27,7 @@
     "lint": "eslint .",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
     "upgrade:deps": "pnpm update --i --L",
-    "bump": "pnpm changelog && bumpp package.json --commit --push --tag"
+    "bump": "pnpm changelog && bumpp package.json --commit --push --tag --all"
   },
   "keywords": [
     "px2rem",
