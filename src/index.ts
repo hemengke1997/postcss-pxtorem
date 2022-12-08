@@ -124,10 +124,6 @@ function pxtorem(options?: PxtoremOptions) {
       }
     },
     DeclarationExit(decl) {
-      if (checkoutDisable({ disable: opts.disable, isExcludeFile })) {
-        return
-      }
-
       const { convertUnitOnEnd } = opts
       if (convertUnitOnEnd) {
         if (Array.isArray(convertUnitOnEnd)) {
@@ -160,23 +156,17 @@ function pxtorem(options?: PxtoremOptions) {
       }
     },
     Comment(comment, { Warning }) {
-      // ignore disable
       opts = {
         ...opts,
         ...getOptionsFromComment(comment, Warning),
       }
     },
     CommentExit(comment) {
-      // ignore disable
       if (comment.text.match(isPxtoremReg)?.length) {
         comment.remove()
       }
     },
     RootExit(r) {
-      if (checkoutDisable({ disable: opts.disable, isExcludeFile })) {
-        return
-      }
-
       const root = r.root()
 
       opts = initOptions(options)
@@ -186,7 +176,7 @@ function pxtorem(options?: PxtoremOptions) {
     },
   }
 
-  if (opts.disable) {
+  if (options?.disable) {
     return {
       postcssPlugin,
     }
