@@ -1,3 +1,12 @@
+## [1.0.3](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.0.2...v1.0.3) (2022-12-05)
+
+
+### Bug Fixes
+
+* `disable` option not working ([9452de6](https://github.com/hemengke1997/postcss-pxtorem/commit/9452de6c87c5c853758f5026a79ded8afe9695e1))
+
+
+
 ## [1.0.2](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.0.1...v1.0.2) (2022-11-28)
 
 
