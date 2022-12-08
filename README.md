@@ -4,18 +4,19 @@
 
 A plugin for [PostCSS](https://github.com/ai/postcss) that generates rem units from pixel units.
 
-## New Features
+## ✨ New Features
 
 - specify any `postcss-pxtorem` option in css.
 - ignore line in css.
+- **compatible with vite**
 
-## Install
+## 🔧 Install
 
 ```bash
 pnpm install postcss @minko-fe/postcss-pxtorem -D
 ```
 
-## Usage
+## ✍️ Usage
 
 > Pixels are the easiest unit to use (_opinion_). The only issue with them is that they don't let browsers change the default font size of 16. This script converts every px value to a rem from the properties you choose to allow the browser to set the font size.
 

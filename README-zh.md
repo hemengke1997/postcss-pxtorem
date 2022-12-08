@@ -4,18 +4,19 @@
 
 [PostCSS](https://github.com/ai/postcss)插件，可以从像素单位生成 rem 单位
 
-## 新功能
+## ✨ 新功能
 
 - 在样式文件中设置任意 `postcss-pxtorem` 支持的选项
 - 在样式文件中忽略某一行
+- **兼容vite**
 
-## 安装
+## 🔧 安装
 
 ```bash
 pnpm install postcss @minko-fe/postcss-pxtorem -D
 ```
 
-## 用法
+## ✍️ 使用
 
 > 像素是最容易使用的单位。它们的唯一问题是，它们不能让浏览器改变默认的 16 号字体大小。postcss-pxtorem 将每一个 px 值转换为你所选择的属性中的 rem，以便让浏览器设置字体大小。
 
