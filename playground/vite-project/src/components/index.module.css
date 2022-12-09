@@ -1,0 +1,16 @@
+/* pxtorem?disable=true */
+.header {
+  width: 100%;
+  font-size: 16px;
+
+  .headerContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    margin: 0 auto;
+    height: 100%;
+    padding: 0 24px;
+    font-size: 32px;
+  }
+}
