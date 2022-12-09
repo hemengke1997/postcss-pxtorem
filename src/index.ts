@@ -65,29 +65,23 @@ function pxtorem(options?: PxtoremOptions) {
   const plugin: PostcssPlugin = {
     postcssPlugin,
 
-    Root(r, { Warning }) {
+    Once(r, { Warning }) {
       if (checkoutDisable({ disable: opts.disable, isExcludeFile })) {
         return
       }
-
-      const root = r.root()
-
-      const firstNode = root.nodes[0]
-      const filePath = root.source?.input.file
-
+      const node = r.root()
+      const firstNode = node.nodes[0]
+      const filePath = node.source?.input.file
       if (isOptionComment(firstNode)) {
         opts = {
           ...opts,
           ...getOptionsFromComment(firstNode, Warning),
         }
       }
-
       const exclude = opts.exclude
       const include = opts.include
-
       isExcludeFile = judgeIsExclude(exclude, include, filePath)
-      rootValue = typeof opts.rootValue === 'function' ? opts.rootValue(root.source!.input) : opts.rootValue
-
+      rootValue = typeof opts.rootValue === 'function' ? opts.rootValue(node.source!.input) : opts.rootValue
       pxReplace = createPxReplace(rootValue, opts.unitPrecision, opts.minPixelValue)
     },
     Declaration(decl) {
@@ -155,24 +149,30 @@ function pxtorem(options?: PxtoremOptions) {
         }
       }
     },
-    Comment(comment, { Warning }) {
+    Comment(node, { Warning }) {
+      const filePath = node.source?.input.file
+
       opts = {
         ...opts,
-        ...getOptionsFromComment(comment, Warning),
+        ...getOptionsFromComment(node, Warning),
       }
+
+      const exclude = opts.exclude
+      const include = opts.include
+
+      isExcludeFile = judgeIsExclude(exclude, include, filePath)
+      rootValue = typeof opts.rootValue === 'function' ? opts.rootValue(node.source!.input) : opts.rootValue
+
+      pxReplace = createPxReplace(rootValue, opts.unitPrecision, opts.minPixelValue)
     },
     CommentExit(comment) {
       if (comment.text.match(isPxtoremReg)?.length) {
         comment.remove()
       }
     },
-    RootExit(r) {
-      const root = r.root()
-
-      opts = initOptions(options)
+    OnceExit() {
       isExcludeFile = false
-      rootValue = typeof opts.rootValue === 'function' ? opts.rootValue(root.source!.input) : opts.rootValue
-      pxReplace = createPxReplace(rootValue, opts.unitPrecision, opts.minPixelValue)
+      opts = initOptions(options)
     },
   }
 

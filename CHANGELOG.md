@@ -1,3 +1,12 @@
+## [1.0.4](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.0.3...v1.0.4) (2022-12-08)
+
+
+### Bug Fixes
+
+* 🚑️ run all `exit` hook ([fc8794c](https://github.com/hemengke1997/postcss-pxtorem/commit/fc8794c81079bc72915c8c1823b1443d11f53de3))
+
+
+
 ## [1.0.3](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.0.2...v1.0.3) (2022-12-05)
 
 
