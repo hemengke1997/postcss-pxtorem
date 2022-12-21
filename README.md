@@ -6,9 +6,9 @@ A plugin for [PostCSS](https://github.com/ai/postcss) that generates rem units f
 
 ## ✨ New Features
 
-- specify any `postcss-pxtorem` option in css.
-- ignore line in css.
-- **compatible with vite**
+- override any `postcss-pxtorem` options in css.
+- ignore next line in css.
+- **compatible with vite**.
 
 ## 🔧 Install
 

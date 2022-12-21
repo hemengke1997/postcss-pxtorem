@@ -10,10 +10,11 @@ import {
   initOptions,
   isArray,
   isBoolean,
+  isFunction,
   isOptionComment,
   isPxtoremReg,
   judgeIsExclude,
-} from './utils/utils'
+} from './utils'
 import { getUnitRegexp } from './utils/pixel-unit-regex'
 import { disableNextComment } from './utils/constant'
 
@@ -66,22 +67,26 @@ function pxtorem(options?: PxtoremOptions) {
     postcssPlugin,
 
     Once(r, { Warning }) {
-      if (checkoutDisable({ disable: opts.disable, isExcludeFile })) {
-        return
-      }
       const node = r.root()
       const firstNode = node.nodes[0]
       const filePath = node.source?.input.file
+
       if (isOptionComment(firstNode)) {
         opts = {
           ...opts,
           ...getOptionsFromComment(firstNode, Warning),
         }
       }
+
       const exclude = opts.exclude
       const include = opts.include
       isExcludeFile = judgeIsExclude(exclude, include, filePath)
-      rootValue = typeof opts.rootValue === 'function' ? opts.rootValue(node.source!.input) : opts.rootValue
+
+      if (checkoutDisable({ disable: opts.disable, isExcludeFile })) {
+        return
+      }
+
+      rootValue = isFunction(opts.rootValue) ? opts.rootValue(node.source!.input) : opts.rootValue
       pxReplace = createPxReplace(rootValue, opts.unitPrecision, opts.minPixelValue)
     },
     Declaration(decl) {
@@ -143,6 +148,7 @@ function pxtorem(options?: PxtoremOptions) {
       if (isBoolean(opts.atRules) && opts.atRules) {
         replacePxInRules()
       }
+
       if (isArray(opts.atRules) && opts.atRules.length) {
         if (opts.atRules.includes(atRule.name)) {
           replacePxInRules()
@@ -161,7 +167,12 @@ function pxtorem(options?: PxtoremOptions) {
       const include = opts.include
 
       isExcludeFile = judgeIsExclude(exclude, include, filePath)
-      rootValue = typeof opts.rootValue === 'function' ? opts.rootValue(node.source!.input) : opts.rootValue
+
+      if (checkoutDisable({ disable: opts.disable, isExcludeFile })) {
+        return
+      }
+
+      rootValue = isFunction(opts.rootValue) ? opts.rootValue(node.source!.input) : opts.rootValue
 
       pxReplace = createPxReplace(rootValue, opts.unitPrecision, opts.minPixelValue)
     },
@@ -180,9 +191,8 @@ function pxtorem(options?: PxtoremOptions) {
     return {
       postcssPlugin,
     }
-  } else {
-    return plugin
   }
+  return plugin
 }
 
 pxtorem.postcss = true

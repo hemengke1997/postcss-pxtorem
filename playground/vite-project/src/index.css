@@ -1,4 +1,6 @@
-/* pxtorem?disable=true */
+@import './other.css';
+@import './tailwind.css';
+
 html,
 body {
   font-size: 8px;

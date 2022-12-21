@@ -6,6 +6,7 @@ function App() {
     <div>
       <Header />
       <div className={styles.font}>rem-font</div>
+      <div className='other text-[16px]'>px-other</div>
     </div>
   )
 }
