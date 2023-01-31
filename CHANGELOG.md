@@ -1,3 +1,12 @@
+# [1.1.0](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.0.4...v1.1.0) (2022-12-09)
+
+
+### Features
+
+* playground ([bd32844](https://github.com/hemengke1997/postcss-pxtorem/commit/bd328442ddca0ba79dcfbcf1349218d455b4555e))
+
+
+
 ## [1.0.4](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.0.3...v1.0.4) (2022-12-08)
 
 
