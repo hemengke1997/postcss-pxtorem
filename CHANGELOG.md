@@ -1,3 +1,21 @@
+## [1.1.2](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.1.1...v1.1.2) (2023-03-24)
+
+
+### Bug Fixes
+
+* postcss plugin require module.export config ([5e87667](https://github.com/hemengke1997/postcss-pxtorem/commit/5e87667f6cd52a1555b6d95fc6f54548778b0759))
+
+
+
+## [1.1.1](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.1.0...v1.1.1) (2023-01-31)
+
+
+### Bug Fixes
+
+* cjs namedExports ([f76c8ff](https://github.com/hemengke1997/postcss-pxtorem/commit/f76c8ff81cb10917f65d78c9397488771157c3e3))
+
+
+
 # [1.1.0](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.0.4...v1.1.0) (2022-12-09)
 
 
