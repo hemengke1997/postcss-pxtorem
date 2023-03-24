@@ -7,4 +7,12 @@ export const tsup = defineConfig((option) => ({
   format: ['cjs', 'esm'],
   minify: false,
   sourcemap: !!option.watch,
+  esbuildOptions: (options) => {
+    // postcss plugin export default plugin config
+    if (options.format === 'cjs') {
+      options.footer = {
+        js: 'module.exports = module.exports.default;',
+      }
+    }
+  },
 }))

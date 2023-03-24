@@ -1,33 +1,13 @@
 {
   "name": "@minko-fe/postcss-pxtorem",
+  "type": "module",
   "version": "1.1.1",
   "description": "✨ A CSS post-processor that converts px to rem.",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist",
-    "README-en.md"
-  ],
-  "exports": {
-    ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    }
-  },
+  "author": "hemengke1997 <https://github.com/hemengke1997>",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hemengke1997/postcss-pxtorem.git"
-  },
-  "scripts": {
-    "dev": "tsup --watch",
-    "build": "tsup",
-    "test": "vitest",
-    "lint": "eslint .",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
-    "upgrade:deps": "pnpm update --i --L",
-    "bump": "pnpm changelog && bumpp package.json --commit --push --tag --all"
   },
   "keywords": [
     "px2rem",
@@ -40,24 +20,46 @@
     "postcss-plugin",
     "postcss-pxtorem"
   ],
-  "type": "module",
-  "author": "hemengke1997 <https://github.com/hemengke1997>",
-  "license": "MIT",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README-en.md"
+  ],
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "test": "vitest",
+    "lint": "eslint .",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
+    "up": "pnpm update --i --L",
+    "bump": "bumpp package.json -c -p -t --all -x \"pnpm run changelog\""
+  },
+  "peerDependencies": {
+    "postcss": ">=8.0.0"
+  },
   "dependencies": {
-    "query-string": "^7.1.1"
+    "query-string": "7.1.3"
   },
   "devDependencies": {
-    "@minko-fe/commitlint-config": "^1.2.3",
-    "@minko-fe/eslint-config-ts": "^1.2.3",
-    "@minko-fe/prettier-config": "^1.2.3",
-    "@minko-fe/tsconfig": "^1.2.3",
-    "bumpp": "^8.2.1",
+    "@minko-fe/eslint-config-ts": "^1.2.32",
+    "@minko-fe/prettier-config": "^1.2.32",
+    "@minko-fe/tsconfig": "^1.2.32",
+    "bumpp": "^9.0.0",
     "conventional-changelog-cli": "^2.2.2",
-    "eslint": "^8.23.1",
-    "postcss": "^8.4.16",
-    "postcss-nested": "^6.0.0",
-    "tsup": "^6.2.3",
-    "typescript": "^4.8.3",
-    "vitest": "^0.23.2"
+    "eslint": "^8.36.0",
+    "postcss": "^8.4.21",
+    "postcss-nested": "^6.0.1",
+    "tsup": "^6.7.0",
+    "typescript": "^4.9.5",
+    "vitest": "^0.29.7"
   }
 }

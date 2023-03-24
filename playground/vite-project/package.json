@@ -1,28 +1,28 @@
 {
   "name": "vite-project",
-  "private": true,
-  "version": "0.0.0",
   "type": "module",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "preview": "npm run build && vite preview"
   },
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-vant": "^3.2.4"
   },
   "devDependencies": {
-    "@minko-fe/postcss-pxtorem": "link: ./../../../",
-    "@types/react": "^18.0.24",
-    "@types/react-dom": "^18.0.8",
-    "@vitejs/plugin-react": "^3.0.0",
-    "postcss": "^8.4.20",
+    "@minko-fe/postcss-pxtorem": "workspace:*",
+    "@types/react": "^18.0.29",
+    "@types/react-dom": "^18.0.11",
+    "@vitejs/plugin-react": "^3.1.0",
+    "postcss": "^8.4.21",
     "postcss-import": "^15.1.0",
-    "postcss-nested": "^6.0.0",
-    "postcss-pxtorem": "^6.0.0",
-    "tailwindcss": "^3.2.4",
-    "typescript": "^4.6.4",
-    "vite": "^4.0.2"
+    "postcss-nested": "^6.0.1",
+    "tailwindcss": "^3.2.7",
+    "typescript": "^4.9.5",
+    "vite": "^4.2.1"
   }
 }

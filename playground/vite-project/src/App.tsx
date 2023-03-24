@@ -1,7 +1,16 @@
+import { Toast } from 'react-vant'
+import { useEffect } from 'react'
 import { Header } from './components/Header'
 import styles from './index.module.css'
 
 function App() {
+  useEffect(() => {
+    Toast.info({
+      message: 'haha',
+      duration: 0,
+    })
+  }, [])
+
   return (
     <div>
       <Header />
