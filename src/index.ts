@@ -17,6 +17,7 @@ import {
 } from './utils'
 import { getUnitRegexp } from './utils/pixel-unit-regex'
 import { disableNextComment } from './utils/constant'
+import type { ParseOptions } from './utils/parse-query'
 
 export interface ConvertUnit {
   sourceUnit: string | RegExp
@@ -36,6 +37,7 @@ export type PxtoremOptions = Partial<{
   exclude: string | RegExp | ((filePath: string) => boolean) | null
   disable: boolean
   convertUnitOnEnd: ConvertUnit | ConvertUnit[] | false | null
+  parseOptions: ParseOptions
 }>
 
 export const defaultOptions: Required<PxtoremOptions> = {
@@ -51,6 +53,7 @@ export const defaultOptions: Required<PxtoremOptions> = {
   exclude: null,
   disable: false,
   convertUnitOnEnd: null,
+  parseOptions: {},
 }
 
 const postcssPlugin = 'postcss-pxtorem'
@@ -74,7 +77,7 @@ function pxtorem(options?: PxtoremOptions) {
       if (isOptionComment(firstNode)) {
         opts = {
           ...opts,
-          ...getOptionsFromComment(firstNode, Warning),
+          ...getOptionsFromComment(firstNode, Warning, opts.parseOptions),
         }
       }
 
@@ -160,7 +163,7 @@ function pxtorem(options?: PxtoremOptions) {
 
       opts = {
         ...opts,
-        ...getOptionsFromComment(node, Warning),
+        ...getOptionsFromComment(node, Warning, opts.parseOptions),
       }
 
       const exclude = opts.exclude

@@ -1,9 +1,10 @@
 import type { AtRule, ChildNode, Comment, Container, Declaration, Rule, Warning as postcssWarning } from 'postcss'
-import queryString from 'query-string'
 import type { ConvertUnit, PxtoremOptions } from '..'
 import { defaultOptions } from '..'
 import { maybeRegExp } from './constant'
 import { filterPropList } from './filter-prop-list'
+import type { ParseOptions } from './parse-query'
+import { parse } from './parse-query'
 
 function reRegExp() {
   return /^\/((?:\\\/|[^\/])+)\/([imgy]*)$/
@@ -38,7 +39,11 @@ function parseRegExp(maybeRegExpArg: unknown) {
 
 export const isPxtoremReg = /(?<=^pxtorem\?).+/g
 
-export function getOptionsFromComment(comment: Comment, Warning: typeof postcssWarning): PxtoremOptions | undefined {
+export function getOptionsFromComment(
+  comment: Comment,
+  Warning: typeof postcssWarning,
+  parseOptions: ParseOptions,
+): PxtoremOptions | undefined {
   try {
     let query = isPxtoremReg.exec(comment.text)?.[0]
     const ret: Record<string, any> = {}
@@ -47,11 +52,12 @@ export function getOptionsFromComment(comment: Comment, Warning: typeof postcssW
     query = query.replaceAll(/\s+/g, '')
 
     const defaultKeys = Object.keys(defaultOptions)
-    const parsed = queryString.parse(query, {
+    const parsed = parse(query, {
       parseBooleans: true,
       parseNumbers: true,
       arrayFormat: 'bracket-separator',
       arrayFormatSeparator: '|',
+      ...parseOptions,
     })
     const RE_REGEXP = reRegExp()
     for (const k of Object.keys(parsed)) {
@@ -209,7 +215,7 @@ enum EnumDataType {
 }
 
 function is(val: unknown, type: string) {
-  return toString.call(val) === `[object ${type}]`
+  return Object.prototype.toString.call(val) === `[object ${type}]`
 }
 export function isNumber(data: unknown): data is number {
   return is(data, EnumDataType.number)
