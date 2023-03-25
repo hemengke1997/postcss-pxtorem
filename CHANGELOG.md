@@ -1,3 +1,12 @@
+# [1.2.0](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.1.2...v1.2.0) (2023-03-25)
+
+
+### Features
+
+* extract `query-string`.parse function ([74baa65](https://github.com/hemengke1997/postcss-pxtorem/commit/74baa650e88f2d21bf3f88b6bae4f438318c7389))
+
+
+
 ## [1.1.2](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.1.1...v1.1.2) (2023-03-24)
 
 
