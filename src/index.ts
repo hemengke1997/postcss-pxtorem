@@ -16,7 +16,7 @@ import {
   judgeIsExclude,
 } from './utils'
 import { getUnitRegexp } from './utils/pixel-unit-regex'
-import { disableNextComment } from './utils/constant'
+import { DISABLE_NEXT_COMMENT } from './utils/constant'
 import type { ParseOptions } from './utils/parse-query'
 
 export interface ConvertUnit {
@@ -109,7 +109,7 @@ function pxtorem(options?: PxtoremOptions) {
 
       const prev = decl.prev()
 
-      if (prev?.type === 'comment' && prev.text === disableNextComment) {
+      if (prev?.type === 'comment' && prev.text === DISABLE_NEXT_COMMENT) {
         prev.remove()
         return
       }

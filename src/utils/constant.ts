@@ -1,3 +1,3 @@
-export const maybeRegExp = ['selectorBlackList', 'exclude', 'include']
+export const MAYBE_REGEXP = ['selectorBlackList', 'exclude', 'include']
 
-export const disableNextComment = 'pxtorem-disable-next-line'
+export const DISABLE_NEXT_COMMENT = 'pxtorem-disable-next-line'

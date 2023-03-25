@@ -1,7 +1,7 @@
 import type { AtRule, ChildNode, Comment, Container, Declaration, Rule, Warning as postcssWarning } from 'postcss'
 import type { ConvertUnit, PxtoremOptions } from '..'
 import { defaultOptions } from '..'
-import { maybeRegExp } from './constant'
+import { MAYBE_REGEXP } from './constant'
 import { filterPropList } from './filter-prop-list'
 import type { ParseOptions } from './parse-query'
 import { parse } from './parse-query'
@@ -63,7 +63,7 @@ export function getOptionsFromComment(
     for (const k of Object.keys(parsed)) {
       if (defaultKeys.includes(k)) {
         let cur = parsed[k]
-        if (maybeRegExp.includes(k)) {
+        if (MAYBE_REGEXP.includes(k)) {
           if (Array.isArray(cur)) {
             cur = cur.map((t) => {
               return parseRegExp(t)
