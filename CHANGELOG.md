@@ -1,3 +1,12 @@
+## [1.2.1](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.2.0...v1.2.1) (2023-03-28)
+
+
+### Bug Fixes
+
+* transform esm deps ([c2d98c1](https://github.com/hemengke1997/postcss-pxtorem/commit/c2d98c1db03a86961983b076ef7a326209208e15))
+
+
+
 # [1.2.0](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.1.2...v1.2.0) (2023-03-25)
 
 
