@@ -90,7 +90,7 @@ export default {
 #### 当前文件禁用插件
 
 ```css
-/* pxtorem?disabled=true */
+/* pxtorem?disable=true */
 .rule {
   font-size: 15px; // 15px
 }
@@ -107,7 +107,7 @@ export default {
 
 🌰 以上只是简单的栗子，你可以在 css 文件中设置任意 `postcss-pxtorem` 支持的选项
 
-聪明的你，或许已经看出来了，`/* pxtorem?disabled=true */` 很像浏览器 url？😼
+聪明的你，或许已经看出来了，`/* pxtorem?disable=true */` 很像浏览器 url？😼
 没错。关于规范，只需参考：[query-string](https://github.com/sindresorhus/query-string)
 
 #### 例子

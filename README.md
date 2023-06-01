@@ -90,7 +90,7 @@ export default {
 #### disable plugin
 
 ```css
-/* pxtorem?disabled=true */
+/* pxtorem?disable=true */
 .rule {
   font-size: 15px; // 15px
 }

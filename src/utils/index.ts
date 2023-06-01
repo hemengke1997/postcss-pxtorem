@@ -45,10 +45,12 @@ export function getOptionsFromComment(
   parseOptions: ParseOptions,
 ): PxtoremOptions | undefined {
   try {
-    let query = isPxtoremReg.exec(comment.text)?.[0]
-    const ret: Record<string, any> = {}
+    const index = comment.text.search(isPxtoremReg)
 
-    if (!query) return ret
+    const ret: Record<string, any> = {}
+    let query = comment.text.slice(index)
+
+    if (!query || index === -1) return ret
     query = query.replaceAll(/\s+/g, '')
 
     const defaultKeys = Object.keys(defaultOptions)
