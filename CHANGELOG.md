@@ -1,3 +1,12 @@
+## [1.2.2](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.2.1...v1.2.2) (2023-06-01)
+
+
+### Bug Fixes
+
+* `disable` typo error ([2f63e9e](https://github.com/hemengke1997/postcss-pxtorem/commit/2f63e9ec3ea391027979e3a6eff8d949c8edbe5d))
+
+
+
 ## [1.2.1](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.2.0...v1.2.1) (2023-03-28)
 
 
