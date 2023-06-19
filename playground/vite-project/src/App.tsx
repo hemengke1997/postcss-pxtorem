@@ -1,7 +1,6 @@
 import { Header } from './components/Header'
 import styles from './index.module.css'
 import SwiperDemo from './SwiperDemo'
-import CalendarDemo from './CalendarDemo'
 
 function App() {
   return (
@@ -11,7 +10,6 @@ function App() {
       <div className='other'>px-other</div>
 
       <SwiperDemo />
-      <CalendarDemo />
     </div>
   )
 }

@@ -1,10 +1,12 @@
 import type { Input, Plugin as PostcssPlugin, Rule } from 'postcss'
+import type { H } from './utils'
 import {
   blacklistedSelector,
-  checkoutDisable,
+  checkIfDisable,
   convertUnit,
   createPropListMatcher,
   createPxReplace,
+  currentOptions,
   declarationExists,
   getOptionsFromComment,
   initOptions,
@@ -14,6 +16,7 @@ import {
   isOptionComment,
   isPxtoremReg,
   judgeIsExclude,
+  setupCurrentOptions,
 } from './utils'
 import { getUnitRegexp } from './utils/pixel-unit-regex'
 import { DISABLE_NEXT_COMMENT } from './utils/constant'
@@ -59,66 +62,35 @@ export const defaultOptions: Required<PxtoremOptions> = {
 const postcssPlugin = 'postcss-pxtorem'
 
 function pxtorem(options?: PxtoremOptions) {
-  let opts = initOptions(options)
-  let isExcludeFile = false
-
-  let pxReplace: ReturnType<typeof createPxReplace> | undefined
-
-  let rootValue: number | undefined
+  const ORIGINAL_OPTIONS = initOptions(options)
 
   const plugin: PostcssPlugin = {
     postcssPlugin,
-    Once(r, { Warning }) {
+    Once(r, h) {
       const node = r.root()
       const firstNode = node.nodes[0]
-      const filePath = node.source?.input.file
 
-      if (isOptionComment(firstNode)) {
-        opts = {
-          ...opts,
-          ...getOptionsFromComment(firstNode, Warning, opts.parseOptions),
-        }
+      h[currentOptions] = {
+        isExcludeFile: false,
+        pxReplace: undefined,
+        rootValue: undefined,
+        originOpts: ORIGINAL_OPTIONS,
       }
 
-      const exclude = opts.exclude
-      const include = opts.include
-      isExcludeFile = judgeIsExclude(exclude, include, filePath)
-
-      if (checkoutDisable({ disable: opts.disable, isExcludeFile })) {
-        return
-      }
-
-      rootValue = isFunction(opts.rootValue) ? opts.rootValue(node.source!.input) : opts.rootValue
-      pxReplace = createPxReplace(rootValue, opts.unitPrecision, opts.minPixelValue)
+      setupCurrentOptions(h as any, firstNode)
     },
-    Comment(node, { Warning }) {
-      const filePath = node.source?.input.file
-
-      opts = {
-        ...opts,
-        ...getOptionsFromComment(node, Warning, opts.parseOptions),
-      }
-
-      const exclude = opts.exclude
-      const include = opts.include
-
-      isExcludeFile = judgeIsExclude(exclude, include, filePath)
-
-      if (checkoutDisable({ disable: opts.disable, isExcludeFile })) {
-        return
-      }
-
-      rootValue = isFunction(opts.rootValue) ? opts.rootValue(node.source!.input) : opts.rootValue
-
-      pxReplace = createPxReplace(rootValue, opts.unitPrecision, opts.minPixelValue)
+    Comment(node, h) {
+      setupCurrentOptions(h as any, node)
     },
     CommentExit(comment) {
       if (comment.text.match(isPxtoremReg)?.length) {
         comment.remove()
       }
     },
-    Declaration(decl) {
-      if (checkoutDisable({ disable: opts.disable, isExcludeFile, r: decl })) {
+    Declaration(decl, h) {
+      const opts = h[currentOptions].originOpts
+
+      if (checkIfDisable({ disable: opts.disable, isExcludeFile: h[currentOptions].isExcludeFile, r: decl })) {
         return
       }
 
@@ -140,7 +112,7 @@ function pxtorem(options?: PxtoremOptions) {
       }
 
       const pxRegex = getUnitRegexp(opts.unitToConvert)
-      const value = pxReplace ? decl.value.replace(pxRegex, pxReplace) : decl.value
+      const value = h[currentOptions].pxReplace ? decl.value.replace(pxRegex, h[currentOptions].pxReplace) : decl.value
 
       if (declarationExists(decl.parent!, decl.prop, value)) return
 
@@ -150,7 +122,8 @@ function pxtorem(options?: PxtoremOptions) {
         decl.cloneAfter({ value })
       }
     },
-    DeclarationExit(decl) {
+    DeclarationExit(decl, h) {
+      const opts = h[currentOptions].originOpts
       const { convertUnitOnEnd } = opts
       if (convertUnitOnEnd) {
         if (Array.isArray(convertUnitOnEnd)) {
@@ -162,15 +135,19 @@ function pxtorem(options?: PxtoremOptions) {
         }
       }
     },
-    AtRule(atRule) {
-      if (checkoutDisable({ disable: opts.disable, isExcludeFile, r: atRule })) {
+    AtRule(atRule, h) {
+      const opts = h[currentOptions].originOpts
+
+      if (checkIfDisable({ disable: opts.disable, isExcludeFile: h[currentOptions].isExcludeFile, r: atRule })) {
         return
       }
 
       function replacePxInRules() {
         if (!atRule.params.includes(opts.unitToConvert)) return
         const pxRegex = getUnitRegexp(opts.unitToConvert)
-        atRule.params = pxReplace ? atRule.params.replace(pxRegex, pxReplace) : atRule.params
+        atRule.params = h[currentOptions].pxReplace
+          ? atRule.params.replace(pxRegex, h[currentOptions].pxReplace)
+          : atRule.params
       }
 
       if (isBoolean(opts.atRules) && opts.atRules) {
@@ -182,13 +159,6 @@ function pxtorem(options?: PxtoremOptions) {
           replacePxInRules()
         }
       }
-    },
-
-    OnceExit() {
-      isExcludeFile = false
-      pxReplace = undefined
-      rootValue = undefined
-      opts = initOptions(options)
     },
   }
 

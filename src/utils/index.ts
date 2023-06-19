@@ -1,4 +1,4 @@
-import type { AtRule, ChildNode, Comment, Container, Declaration, Rule, Warning as postcssWarning } from 'postcss'
+import type { AtRule, ChildNode, Comment, Container, Declaration, Rule } from 'postcss'
 import type { ConvertUnit, PxtoremOptions } from '..'
 import { defaultOptions } from '..'
 import { MAYBE_REGEXP } from './constant'
@@ -39,11 +39,7 @@ function parseRegExp(maybeRegExpArg: unknown) {
 
 export const isPxtoremReg = /(?<=^pxtorem\?).+/g
 
-export function getOptionsFromComment(
-  comment: Comment,
-  Warning: typeof postcssWarning,
-  parseOptions: ParseOptions,
-): PxtoremOptions | undefined {
+export function getOptionsFromComment(comment: Comment, parseOptions: ParseOptions): PxtoremOptions | undefined {
   try {
     const index = comment.text.search(isPxtoremReg)
 
@@ -82,8 +78,7 @@ export function getOptionsFromComment(
     }
     return ret
   } catch {
-    // eslint-disable-next-line no-new
-    new Warning('Unexpected comment', { start: comment.source?.start, end: comment.source?.end })
+    console.warn('Unexpected comment', { start: comment.source?.start, end: comment.source?.end })
   }
 }
 
@@ -139,9 +134,9 @@ export function createPxReplace(
 }
 
 export function blacklistedSelector(blacklist: NonNullable<PxtoremOptions['selectorBlackList']>, selector: string) {
-  if (typeof selector !== 'string') return
+  if (!isString(selector)) return
   return blacklist.some((t) => {
-    if (typeof t === 'string') {
+    if (isString(t)) {
       return selector.includes(t)
     }
     return selector.match(t)
@@ -185,25 +180,55 @@ export function judgeIsExclude<T extends PxtoremOptions['include']>(
 export function convertUnit(value: string, convert: ConvertUnit) {
   if (typeof convert.sourceUnit === 'string') {
     return value.replace(new RegExp(`${convert.sourceUnit}$`), convert.targetUnit)
-  } else if (convert.sourceUnit instanceof RegExp) {
+  } else if (isRegExp(convert.sourceUnit)) {
     return value.replace(new RegExp(convert.sourceUnit), convert.targetUnit)
   }
   return value
 }
 
-export function checkoutDisable(p: {
-  disable: boolean
-  isExcludeFile: boolean
-  r?: Parameters<typeof isRepeatRun>[0]
-}) {
+export function checkIfDisable(p: { disable: boolean; isExcludeFile: boolean; r?: Parameters<typeof isRepeatRun>[0] }) {
   const { disable, isExcludeFile, r } = p
-  if (disable || isExcludeFile || isRepeatRun(r)) {
-    return true
-  }
-  return false
+  return disable || isExcludeFile || isRepeatRun(r)
 }
 
-enum EnumDataType {
+export const currentOptions = Symbol('currentOptions')
+
+export type H = {
+  [currentOptions]: {
+    isExcludeFile: boolean
+    pxReplace: ReturnType<typeof createPxReplace> | undefined
+    rootValue: number | undefined
+    originOpts: ReturnType<typeof initOptions>
+  }
+}
+
+export function setupCurrentOptions(h: H, node: Comment | ChildNode) {
+  const opts = h[currentOptions].originOpts
+
+  const filePath = node?.source?.input.file
+
+  if ((node as Comment)?.text) {
+    h[currentOptions].originOpts = {
+      ...opts,
+      ...getOptionsFromComment(node as Comment, opts.parseOptions),
+    }
+  }
+
+  const exclude = opts.exclude
+  const include = opts.include
+
+  h[currentOptions].isExcludeFile = judgeIsExclude(exclude, include, filePath)
+
+  if (checkIfDisable({ disable: opts.disable, isExcludeFile: h[currentOptions].isExcludeFile })) {
+    return
+  }
+
+  h[currentOptions].rootValue = isFunction(opts.rootValue) ? opts.rootValue(node.source!.input) : opts.rootValue
+
+  h[currentOptions].pxReplace = createPxReplace(h[currentOptions].rootValue, opts.unitPrecision, opts.minPixelValue)
+}
+
+enum DataType {
   number = 'Number',
   string = 'String',
   boolean = 'Boolean',
@@ -211,7 +236,6 @@ enum EnumDataType {
   undefined = 'Undefined',
   object = 'Object',
   array = 'Array',
-  date = 'Date',
   regexp = 'RegExp',
   function = 'Function',
 }
@@ -221,37 +245,37 @@ function is(val: unknown, type: string) {
 }
 
 export function isNumber(data: unknown): data is number {
-  return is(data, EnumDataType.number)
+  return is(data, DataType.number)
 }
 
 export function isString(data: unknown): data is string {
-  return is(data, EnumDataType.string)
+  return is(data, DataType.string)
 }
 
 export function isBoolean(data: unknown): data is boolean {
-  return is(data, EnumDataType.boolean)
+  return is(data, DataType.boolean)
 }
 
 export function isNull(data: unknown): data is null {
-  return is(data, EnumDataType.null)
+  return is(data, DataType.null)
 }
 
 export function isUndefined(data: unknown): data is undefined {
-  return is(data, EnumDataType.undefined)
+  return is(data, DataType.undefined)
 }
 
 export function isObject(data: unknown): data is Object {
-  return is(data, EnumDataType.object)
+  return is(data, DataType.object)
 }
 
 export function isArray(data: unknown): data is Array<any> {
-  return is(data, EnumDataType.array)
+  return is(data, DataType.array)
 }
 
 export function isRegExp(data: unknown): data is RegExp {
-  return is(data, EnumDataType.regexp)
+  return is(data, DataType.regexp)
 }
 
 export function isFunction(data: unknown): data is Function {
-  return is(data, EnumDataType.function)
+  return is(data, DataType.function)
 }
