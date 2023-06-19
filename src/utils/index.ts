@@ -23,8 +23,7 @@ const processd = Symbol('processed')
 export function isRepeatRun(r?: Rule | Declaration | AtRule) {
   if (!r) return false
   if ((r as unknown as Record<symbol, boolean>)[processd]) {
-    // return true
-    return false
+    return true
   }
   ;(r as unknown as Record<symbol, boolean>)[processd] = true
   return false
