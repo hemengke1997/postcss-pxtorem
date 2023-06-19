@@ -1,3 +1,12 @@
+# [1.3.0-beta.0](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.2.2...v1.3.0-beta.0) (2023-06-19)
+
+
+### Bug Fixes
+
+* vite parallel build ([91ca888](https://github.com/hemengke1997/postcss-pxtorem/commit/91ca88815e59b92892c3f76b0c6c1f90bcc09c20))
+
+
+
 ## [1.2.2](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.2.1...v1.2.2) (2023-06-01)
 
 

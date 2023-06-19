@@ -1,7 +1,7 @@
 {
   "name": "@minko-fe/postcss-pxtorem",
   "type": "module",
-  "version": "1.2.2",
+  "version": "1.3.0-beta.0",
   "description": "✨ A CSS post-processor that converts px to rem.",
   "author": "hemengke1997 <https://github.com/hemengke1997>",
   "license": "MIT",
