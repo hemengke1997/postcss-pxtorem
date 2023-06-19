@@ -1,21 +1,15 @@
 import type { Input, Plugin as PostcssPlugin, Rule } from 'postcss'
-import type { H } from './utils'
 import {
   blacklistedSelector,
   checkIfDisable,
   convertUnit,
   createPropListMatcher,
-  createPxReplace,
   currentOptions,
   declarationExists,
-  getOptionsFromComment,
   initOptions,
   isArray,
   isBoolean,
-  isFunction,
-  isOptionComment,
   isPxtoremReg,
-  judgeIsExclude,
   setupCurrentOptions,
 } from './utils'
 import { getUnitRegexp } from './utils/pixel-unit-regex'
