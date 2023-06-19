@@ -23,7 +23,8 @@ const processd = Symbol('processed')
 export function isRepeatRun(r?: Rule | Declaration | AtRule) {
   if (!r) return false
   if ((r as unknown as Record<symbol, boolean>)[processd]) {
-    return true
+    // return true
+    return false
   }
   ;(r as unknown as Record<symbol, boolean>)[processd] = true
   return false
@@ -219,30 +220,39 @@ enum EnumDataType {
 function is(val: unknown, type: string) {
   return Object.prototype.toString.call(val) === `[object ${type}]`
 }
+
 export function isNumber(data: unknown): data is number {
   return is(data, EnumDataType.number)
 }
+
 export function isString(data: unknown): data is string {
   return is(data, EnumDataType.string)
 }
+
 export function isBoolean(data: unknown): data is boolean {
   return is(data, EnumDataType.boolean)
 }
+
 export function isNull(data: unknown): data is null {
   return is(data, EnumDataType.null)
 }
+
 export function isUndefined(data: unknown): data is undefined {
   return is(data, EnumDataType.undefined)
 }
+
 export function isObject(data: unknown): data is Object {
   return is(data, EnumDataType.object)
 }
+
 export function isArray(data: unknown): data is Array<any> {
   return is(data, EnumDataType.array)
 }
+
 export function isRegExp(data: unknown): data is RegExp {
   return is(data, EnumDataType.regexp)
 }
+
 export function isFunction(data: unknown): data is Function {
   return is(data, EnumDataType.function)
 }

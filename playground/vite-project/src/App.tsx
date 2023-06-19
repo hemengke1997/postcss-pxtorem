@@ -1,21 +1,17 @@
-import { Toast } from 'react-vant'
-import { useEffect } from 'react'
 import { Header } from './components/Header'
 import styles from './index.module.css'
+import SwiperDemo from './SwiperDemo'
+import CalendarDemo from './CalendarDemo'
 
 function App() {
-  useEffect(() => {
-    Toast.info({
-      message: 'haha',
-      duration: 0,
-    })
-  }, [])
-
   return (
     <div>
       <Header />
       <div className={styles.font}>rem-font</div>
-      <div className='other text-[16px]'>px-other</div>
+      <div className='other'>px-other</div>
+
+      <SwiperDemo />
+      <CalendarDemo />
     </div>
   )
 }
