@@ -22,7 +22,7 @@ export interface ConvertUnit {
 }
 
 export type PxtoremOptions = Partial<{
-  rootValue: number | ((input: Input) => number)
+  rootValue: number | ((input: Input | undefined) => number)
   unitToConvert: string
   unitPrecision: number
   selectorBlackList: (string | RegExp)[]
@@ -71,10 +71,10 @@ function pxtorem(options?: PxtoremOptions) {
         originOpts: ORIGINAL_OPTIONS,
       }
 
-      setupCurrentOptions(h as any, firstNode)
+      setupCurrentOptions(h as any, { node, comment: firstNode })
     },
     Comment(node, h) {
-      setupCurrentOptions(h as any, node)
+      setupCurrentOptions(h as any, { node, comment: node })
     },
     CommentExit(comment) {
       if (comment.text.match(isPxtoremReg)?.length) {

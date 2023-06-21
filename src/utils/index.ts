@@ -1,4 +1,4 @@
-import type { AtRule, ChildNode, Comment, Container, Declaration, Rule } from 'postcss'
+import type { AtRule, ChildNode, Comment, Container, Declaration, Root, Rule } from 'postcss'
 import type { ConvertUnit, PxtoremOptions } from '..'
 import { defaultOptions } from '..'
 import { MAYBE_REGEXP } from './constant'
@@ -202,15 +202,24 @@ export type H = {
   }
 }
 
-export function setupCurrentOptions(h: H, node: Comment | ChildNode) {
+export function setupCurrentOptions(
+  h: H,
+  {
+    node,
+    comment,
+  }: {
+    node?: ChildNode | Root
+    comment?: ChildNode | Comment
+  },
+) {
   const opts = h[currentOptions].originOpts
 
   const filePath = node?.source?.input.file
 
-  if ((node as Comment)?.text) {
+  if (isOptionComment(comment)) {
     h[currentOptions].originOpts = {
       ...opts,
-      ...getOptionsFromComment(node as Comment, opts.parseOptions),
+      ...getOptionsFromComment(comment, opts.parseOptions),
     }
   }
 
@@ -223,7 +232,7 @@ export function setupCurrentOptions(h: H, node: Comment | ChildNode) {
     return
   }
 
-  h[currentOptions].rootValue = isFunction(opts.rootValue) ? opts.rootValue(node.source!.input) : opts.rootValue
+  h[currentOptions].rootValue = isFunction(opts.rootValue) ? opts.rootValue(node?.source!.input) : opts.rootValue
 
   h[currentOptions].pxReplace = createPxReplace(h[currentOptions].rootValue, opts.unitPrecision, opts.minPixelValue)
 }
