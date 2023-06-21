@@ -1,3 +1,12 @@
+# [1.3.0-beta.1](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.3.0-beta.0...v1.3.0-beta.1) (2023-06-21)
+
+
+### Bug Fixes
+
+* comment might be undefined ([e4c046f](https://github.com/hemengke1997/postcss-pxtorem/commit/e4c046f874a29d382794ccc233f3f19e46e0e4f8))
+
+
+
 # [1.3.0-beta.0](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.2.2...v1.3.0-beta.0) (2023-06-19)
 
 
