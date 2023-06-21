@@ -189,8 +189,8 @@ describe('rootValue', () => {
     const css2 = '.rule { font-size: 20px }'
     const expected = '.rule { font-size: 1rem }'
     const options = {
-      rootValue(input: Input): number {
-        if (input.from.includes('basic.css')) {
+      rootValue(input: Input | undefined): number {
+        if (input?.from.includes('basic.css')) {
           return 15
         }
         return 20
