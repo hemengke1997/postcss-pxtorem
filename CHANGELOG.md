@@ -1,3 +1,7 @@
+# [1.3.0](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.3.0-beta.1...v1.3.0) (2023-06-25)
+
+
+
 # [1.3.0-beta.1](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.3.0-beta.0...v1.3.0-beta.1) (2023-06-21)
 
 
