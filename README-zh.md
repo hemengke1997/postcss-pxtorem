@@ -43,20 +43,21 @@ export default {
 
 ### options
 
-| Name              | Type                                                                | Default | Description                                                                                        |
-| ----------------- | ------------------------------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------- |
-| rootValue         | `number` \| `((input: Input) => number)`                            | 16      | 代表根元素的字体大小或根据 [`input`](https://api.postcss.org/Input.html) 参数返回根元素的字体大小  |
-| unitToConvert     | `string`                                                            | `px`    | 需要转化的单位，默认 `px`                                                                          |
-| unitPrecision     | `number`                                                            | 5       | 小数点后精度                                                                                       |
-| propList          | `string[]`                                                          | `['*']` | 可以从 px 改变为 rem 的属性，参考：[propList](#propList)                                           |
-| selectorBlackList | `(string \| RegExp)[]`                                              | []      | 忽略的选择器，保留为 px。参考：[selectorBlackList](#selectorBlackList)                             |
-| replace           | `boolean`                                                           | true    | 直接在 css 规则上替换值而不是添加备用                                                              |
-| atRules           | `boolean` \| `string[]`                                             | false   | 允许`at-rules`中转换 rem。参考 [At-rule](https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule) |
-| minPixelValue     | `number`                                                            | 0       | 最小的 px 转化值（小于这个值的不转化）                                                             |
-| exclude           | `string` \| `RegExp` \| `((filePath: string) => boolean)` \| `null` | null    | 忽略的文件路径。参考：[exclude](#exclude)                                                          |
-| include           | `string` \| `RegExp` \| `((filePath: string) => boolean)` \| `null` | null    | 包括的文件路径，与 `exclude` 相反，优先级高于 `exclude`。规则同 `exclude`                          |
-| disable           | `boolean`                                                           | false   | 关闭插件                                                                                           |
-| convertUnitOnEnd  | `ConvertUnit` \| `ConvertUnit[]` \| false \| null                   | null    | 插件处理的最后阶段转换单位                                                                         |
+| Name                  | Type                                                         | Default | Description                                                  |
+| --------------------- | ------------------------------------------------------------ | ------- | ------------------------------------------------------------ |
+| rootValue             | `number` \| `((input: Input) => number)`                     | 16      | 代表根元素的字体大小或根据 [`input`](https://api.postcss.org/Input.html) 参数返回根元素的字体大小 |
+| unitToConvert         | `string`                                                     | `px`    | 需要转化的单位，默认 `px`                                    |
+| unitPrecision         | `number`                                                     | 5       | 小数点后精度                                                 |
+| propList              | `string[]`                                                   | `['*']` | 可以从 px 改变为 rem 的属性，参考：[propList](#propList)     |
+| selectorBlackList     | `(string \| RegExp)[]`                                       | []      | 忽略的选择器，保留为 px。参考：[selectorBlackList](#selectorBlackList) |
+| replace               | `boolean`                                                    | true    | 直接在 css 规则上替换值而不是添加备用                        |
+| atRules               | `boolean` \| `string[]`                                      | false   | 允许`at-rules`中转换 rem。参考 [At-rule](https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule) |
+| minPixelValue         | `number`                                                     | 0       | 最小的 px 转化值（小于这个值的不转化）                       |
+| exclude               | `string` \| `RegExp` \| `((filePath: string) => boolean)` \| `null` | null    | 忽略的文件路径。参考：[exclude](#exclude)                    |
+| include               | `string` \| `RegExp` \| `((filePath: string) => boolean)` \| `null` | null    | 包括的文件路径，与 `exclude` 相反，优先级高于 `exclude`。规则同 `exclude` |
+| disable               | `boolean`                                                    | false   | 关闭插件                                                     |
+| convertUnitOnEnd      | `ConvertUnit` \| `ConvertUnit[]` \| false \| null            | null    | 插件处理的最后阶段转换单位                                   |
+| convertPxInMediaQuery | `boolean`                                                    | true    | 是否转换所有媒体查询中的单位                                 |
 
 #### propList
 
