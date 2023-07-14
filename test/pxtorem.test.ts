@@ -506,6 +506,18 @@ describe('comment', () => {
     expect(processed).toBe(expected)
   })
 
+  test('convertPxInMediaQuery', () => {
+    const css = '.rule { font-size: 16px } @media (min-width: 500px) { .rule { font-size: 16px } }'
+    const processed = postcss(
+      pxtorem({
+        convertInMediaQuery: false,
+      }),
+    ).process(css).css
+    const expected = '.rule { font-size: 1rem } @media (min-width: 500px) { .rule { font-size: 16px } }'
+
+    expect(processed).toBe(expected)
+  })
+
   test('minPixelValue', () => {
     const css = '/* pxtorem?minPixelValue=2 */\n.rule { border: 1px solid #000; font-size: 16px; margin: 1px 10px; }'
 

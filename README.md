@@ -43,20 +43,21 @@ export default {
 
 ### options
 
-| Name              | Type                                                                | Default         | Description                                                                                                                                      |
-| ----------------- | ------------------------------------------------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| rootValue         | `number` \| `((input: Input) => number)`                            | 16              | Represents the root element font size or returns the root element font size based on the [`input`](https://api.postcss.org/Input.html) parameter |
-| unitToConvert     | `string`                                                            | `px`            | unit to convert, by default, it is px                                                                                                            |
-| unitPrecision     | `number`                                                            | 5               | The decimal numbers to allow the REM units to grow to.                                                                                           |
-| propList          | `string[]`                                                          | `['*']`         | The properties that can change from px to rem. Refer to: [propList](#propList)                                                                   |
-| selectorBlackList | `(string \| RegExp)[]`                                              | []              | The selectors to ignore and leave as px. Refer to: [selectorBlackList](#selectorBlackList)                                                       |
-| replace           | `boolean`                                                           | true            | Replaces rules containing rems instead of adding fallbacks.                                                                                      |
-| atRules           | `boolean` \| `string[]`                                             | false           | Allow px to be converted in at-rules. Refer to [At-rule](https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule)                               |
-| minPixelValue     | `number`                                                            | 0               | Set the minimum pixel value to replace.                                                                                                          |
-| exclude           | `string` \| `RegExp` \| `((filePath: string) => boolean) \| null`   | /node_modules/i | The file path to ignore and leave as px. Refer to: [exclude](#exclude)                                                                           |
-| include           | `string` \| `RegExp` \| `((filePath: string) => boolean)` \| `null` | null            | The file path to convert px to rem, in contrast to `exclude`, have higher priority than `exclude`. Same rules as `exclude`                       |
-| disable           | `boolean`                                                           | false           | disable plugin                                                                                                                                   |
-| convertUnitOnEnd  | `ConvertUnit` \| `ConvertUnit[]` \| false \| null                   | null            | convert unit when plugin process end                                                                                                             |
+| Name                | Type                                                         | Default         | Description                                                  |
+| ------------------- | ------------------------------------------------------------ | --------------- | ------------------------------------------------------------ |
+| rootValue           | `number` \| `((input: Input) => number)`                     | 16              | Represents the root element font size or returns the root element font size based on the [`input`](https://api.postcss.org/Input.html) parameter |
+| unitToConvert       | `string`                                                     | `px`            | unit to convert, by default, it is px                        |
+| unitPrecision       | `number`                                                     | 5               | The decimal numbers to allow the REM units to grow to.       |
+| propList            | `string[]`                                                   | `['*']`         | The properties that can change from px to rem. Refer to: [propList](#propList) |
+| selectorBlackList   | `(string \| RegExp)[]`                                       | []              | The selectors to ignore and leave as px. Refer to: [selectorBlackList](#selectorBlackList) |
+| replace             | `boolean`                                                    | true            | Replaces rules containing rems instead of adding fallbacks.  |
+| atRules             | `boolean` \| `string[]`                                      | false           | Allow px to be converted in at-rules. Refer to [At-rule](https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule) |
+| minPixelValue       | `number`                                                     | 0               | Set the minimum pixel value to replace.                      |
+| exclude             | `string` \| `RegExp` \| `((filePath: string) => boolean) \| null` | /node_modules/i | The file path to ignore and leave as px. Refer to: [exclude](#exclude) |
+| include             | `string` \| `RegExp` \| `((filePath: string) => boolean)` \| `null` | null            | The file path to convert px to rem, in contrast to `exclude`, have higher priority than `exclude`. Same rules as `exclude` |
+| disable             | `boolean`                                                    | false           | disable plugin                                               |
+| convertUnitOnEnd    | `ConvertUnit` \| `ConvertUnit[]` \| false \| null            | null            | convert unit when plugin process end                         |
+| convertInMediaQuery | `boolean`                                                    | true            | convert unit in media queries                                |
 
 #### propList
 

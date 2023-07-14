@@ -33,7 +33,9 @@ export type PxtoremOptions = Partial<{
   include: string | RegExp | ((filePath: string) => boolean) | null
   exclude: string | RegExp | ((filePath: string) => boolean) | null
   disable: boolean
+  skipTag: string | null
   convertUnitOnEnd: ConvertUnit | ConvertUnit[] | false | null
+  convertInMediaQuery: boolean
   parseOptions: ParseOptions
 }>
 
@@ -49,7 +51,9 @@ export const defaultOptions: Required<PxtoremOptions> = {
   include: null,
   exclude: null,
   disable: false,
+  skipTag: null,
   convertUnitOnEnd: null,
+  convertInMediaQuery: true,
   parseOptions: {},
 }
 
@@ -84,7 +88,10 @@ function pxtorem(options?: PxtoremOptions) {
     Declaration(decl, h) {
       const opts = h[currentOptions].originOpts
 
-      if (checkIfDisable({ disable: opts.disable, isExcludeFile: h[currentOptions].isExcludeFile, r: decl })) {
+      if (
+        checkIfDisable({ disable: opts.disable, isExcludeFile: h[currentOptions].isExcludeFile, r: decl }) ||
+        opts.skipTag
+      ) {
         return
       }
 
@@ -118,6 +125,7 @@ function pxtorem(options?: PxtoremOptions) {
     },
     DeclarationExit(decl, h) {
       const opts = h[currentOptions].originOpts
+
       const { convertUnitOnEnd } = opts
       if (convertUnitOnEnd) {
         if (Array.isArray(convertUnitOnEnd)) {
@@ -132,6 +140,9 @@ function pxtorem(options?: PxtoremOptions) {
     AtRule(atRule, h) {
       const opts = h[currentOptions].originOpts
 
+      if (!opts.convertInMediaQuery && atRule.name === 'media') {
+        opts.skipTag = 'atRule:media'
+      }
       if (checkIfDisable({ disable: opts.disable, isExcludeFile: h[currentOptions].isExcludeFile, r: atRule })) {
         return
       }
@@ -152,6 +163,13 @@ function pxtorem(options?: PxtoremOptions) {
         if (opts.atRules.includes(atRule.name)) {
           replacePxInRules()
         }
+      }
+    },
+    AtRuleExit(atRule, h) {
+      const opts = h[currentOptions].originOpts
+
+      if (!opts.convertInMediaQuery && atRule.name === 'media' && opts.skipTag === 'atRule:media') {
+        opts.skipTag = null
       }
     },
   }
