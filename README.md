@@ -144,46 +144,21 @@ export default {
 }
 ```
 
-## use with flexible js
+## use with modern-flexible
 
 ### example
 
+#### main.ts
 ```ts
-;(function () {
-  if (typeof window === 'undefined') return
+import { flexible } from 'modern-flexible'
 
-  const maxWidth = 1024
-  const uiWidth = 375
-
-  function resize() {
-    let width = window.innerWidth
-
-    if (width > window.screen.width) {
-    } else {
-      if (width >= maxWidth) {
-        width = maxWidth
-      }
-      document.documentElement.style.fontSize = `${(width * 16) / uiWidth}px`
-    }
-  }
-
-  resize()
-
-  let timer: NodeJS.Timer
-  const interval = 1000
-
-  window.addEventListener('resize', () => {
-    clearTimeout(timer)
-    timer = setTimeout(resize, interval)
-  })
-  window.addEventListener('pageshow', (e) => {
-    if (e.persisted) {
-      clearTimeout(timer)
-      timer = setTimeout(resize, interval)
-      resize()
-    }
-  })
-})()
+flexible({
+  rootValue: 16,
+  distinctDevice: [
+    { isDevice: (w: number) => w < 750, UIWidth: 375, widthRange: [375, 750] },
+    { isDevice: (w: number) => w >= 750, UIWidth: 1920, widthRange: [1080, 1920] },
+  ],
+})
 ```
 
 ## ❤️ Thanks
