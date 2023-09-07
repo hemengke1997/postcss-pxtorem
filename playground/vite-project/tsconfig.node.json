@@ -6,8 +6,5 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true
   },
-  "include": [
-    "vite.config.ts",
-    "publicTypescript/manifest.json"
-  ]
+  "include": ["vite.config.ts", "publicTypescript/manifest.json"]
 }
