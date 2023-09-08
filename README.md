@@ -9,7 +9,7 @@
 
 **如果你不需要以下新功能，可以使用官方库：[postcss-pxtorem](https://github.com/cuth/postcss-pxtorem)**
 
-## ✨ [新特性](#✨-关于新特性)
+## ✨ [新特性](#-关于新特性)
 
 - 在样式文件中动态重写覆盖任意 `postcss-pxtorem` 支持的选项
 - 在样式文件中动态禁用转化rem
