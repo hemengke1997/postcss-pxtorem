@@ -51,8 +51,8 @@ importers:
   playground/vite-project:
     dependencies:
       modern-flexible:
-        specifier: ^0.0.1
-        version: 0.0.1
+        specifier: ^0.0.2
+        version: 0.0.2
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -3535,8 +3535,8 @@ packages:
       ufo: 1.1.1
     dev: true
 
-  /modern-flexible@0.0.1:
-    resolution: {integrity: sha512-QeQmpojgCG98g+HSMN9Hsp38CkNfm9SnsvmzvwTFsQ3iEokIOu4/G3gekPbR+z1QfeGtwPl8ZIIQ7rFS0eCF9w==}
+  /modern-flexible@0.0.2:
+    resolution: {integrity: sha512-nUwOPCVSYr7Tlz2hAilOwnSrpM3gx34Hn+GweTxfhD4/5b+IwL6f+XwtMIaLDcs6Byl2Oew4fFA21II8QQh1Rw==}
     requiresBuild: true
     dependencies:
       deepmerge: 4.3.1
