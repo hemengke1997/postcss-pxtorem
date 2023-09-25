@@ -1,4 +1,3 @@
-import React from 'react'
 import { Swiper, Toast } from 'react-vant'
 
 const colors = ['#ace0ff', '#bcffbd', '#e4fabd', '#ffcfac']

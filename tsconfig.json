@@ -1,3 +1,6 @@
 {
-  "extends": "@minko-fe/tsconfig/tsconfig.base"
+  "extends": "@minko-fe/tsconfig/tsconfig.lib",
+  "compilerOptions": {
+    "noImplicitAny": false
+  }
 }

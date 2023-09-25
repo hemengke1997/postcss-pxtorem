@@ -1,13 +1,19 @@
-import type { AtRule, ChildNode, Comment, Container, Declaration, Root, Rule } from 'postcss'
-import type { ConvertUnit, PxtoremOptions } from '..'
-import { defaultOptions } from '..'
+import {
+  type AtRule,
+  type ChildNode,
+  type Comment,
+  type Container,
+  type Declaration,
+  type Root,
+  type Rule,
+} from 'postcss'
+import { type ConvertUnit, type PxtoremOptions, defaultOptions } from '..'
 import { MAYBE_REGEXP } from './constant'
 import { filterPropList } from './filter-prop-list'
-import type { ParseOptions } from './parse-query'
-import { parse } from './parse-query'
+import { type ParseOptions, parse } from './parse-query'
 
 function reRegExp() {
-  return /^\/((?:\\\/|[^\/])+)\/([imgy]*)$/
+  return /^\/((?:\\\/|[^/])+)\/([gimy]*)$/
 }
 
 export function initOptions(options?: PxtoremOptions) {
@@ -66,10 +72,8 @@ export function getOptionsFromComment(comment: Comment, parseOptions: ParseOptio
             cur = cur.map((t) => {
               return parseRegExp(t)
             }) as any
-          } else {
-            if (isString(cur) && RE_REGEXP.test(cur)) {
-              cur = parseRegExp(cur) as any
-            }
+          } else if (isString(cur) && RE_REGEXP.test(cur)) {
+            cur = parseRegExp(cur) as any
           }
         }
 
@@ -126,7 +130,7 @@ export function createPxReplace(
 ) {
   return (m: string, $1: string) => {
     if (!$1) return m
-    const pixels = parseFloat($1)
+    const pixels = Number.parseFloat($1)
     if (pixels <= minPixelValue) return m
     const fixedVal = toFixed(pixels / rootValue, unitPrecision)
     return fixedVal === 0 ? '0' : `${fixedVal}rem`

@@ -3,7 +3,7 @@
 ![npm][npm-img] ![npm][npm-download]
 
 
-**中文** | [English](./README.md)
+**中文** | [English](./README-en.md)
 
 > [PostCSS](https://github.com/ai/postcss) 插件，可以从像素单位生成 rem 单位
 
@@ -141,7 +141,7 @@ export default {
   plugins: [
     pxtorem({
       convertUnitOnEnd: {
-        sourceUnit: /[p|P][x|X]$/,
+        sourceUnit: /[Pp][Xx]$/,
         targetUnit: 'px',
       },
     }),

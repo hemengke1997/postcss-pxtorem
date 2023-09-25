@@ -204,7 +204,7 @@ export function parse(query: any, options: any): any {
     return returnValue
   }
 
-  query = query.trim().replace(/^[?#&]/, '')
+  query = query.trim().replace(/^[#&?]/, '')
 
   if (!query) {
     return returnValue
@@ -215,7 +215,7 @@ export function parse(query: any, options: any): any {
       continue
     }
 
-    const parameter_ = options.decode ? parameter.replace(/\+/g, ' ') : parameter
+    const parameter_ = options.decode ? parameter.replaceAll('+', ' ') : parameter
 
     let [key, value] = splitOnFirst(parameter_, '=')
 

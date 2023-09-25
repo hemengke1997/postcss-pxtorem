@@ -1,6 +1,6 @@
 # postcss-pxtorem
 
-**English** | [中文](./README-zh.md)
+**English** | [中文](./README.md)
 
 A plugin for [PostCSS](https://github.com/ai/postcss) that generates rem units from pixel units.
 
@@ -136,7 +136,7 @@ export default {
   plugins: [
     pxtorem({
       convertUnitOnEnd: {
-        sourceUnit: /[p|P][x|X]$/,
+        sourceUnit: /[Pp|][Xx|]$/,
         targetUnit: 'px',
       },
     }),

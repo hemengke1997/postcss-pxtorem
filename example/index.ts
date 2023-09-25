@@ -7,7 +7,7 @@ const css = fs.readFileSync('main.css', 'utf8')
 const options = {
   replace: true,
   convertUnitOnEnd: {
-    sourceUnit: /[p|P][x|X]$/,
+    sourceUnit: /[Pp][Xx]$/,
     targetUnit: 'px',
   },
 }

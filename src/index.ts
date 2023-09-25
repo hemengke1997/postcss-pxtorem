@@ -1,4 +1,4 @@
-import type { Input, Plugin as PostcssPlugin, Rule } from 'postcss'
+import { type Input, type Plugin as PostcssPlugin, type Rule } from 'postcss'
 import {
   blacklistedSelector,
   checkIfDisable,
@@ -14,7 +14,7 @@ import {
 } from './utils'
 import { getUnitRegexp } from './utils/pixel-unit-regex'
 import { DISABLE_NEXT_COMMENT } from './utils/constant'
-import type { ParseOptions } from './utils/parse-query'
+import { type ParseOptions } from './utils/parse-query'
 
 export interface ConvertUnit {
   sourceUnit: string | RegExp
@@ -148,10 +148,8 @@ function pxtorem(options?: PxtoremOptions) {
         replacePxInRules()
       }
 
-      if (isArray(opts.atRules) && opts.atRules.length) {
-        if (opts.atRules.includes(atRule.name)) {
-          replacePxInRules()
-        }
+      if (isArray(opts.atRules) && opts.atRules.length > 0 && opts.atRules.includes(atRule.name)) {
+        replacePxInRules()
       }
     },
   }

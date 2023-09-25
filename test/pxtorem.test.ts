@@ -1,6 +1,5 @@
-import postcss from 'postcss'
+import postcss, { type Input } from 'postcss'
 import { describe, expect, test } from 'vitest'
-import type { Input } from 'postcss'
 import nested from 'postcss-nested'
 import pxtorem from '../src'
 import { filterPropList } from '../src/utils/filter-prop-list'
@@ -654,7 +653,7 @@ describe('convertUnitOnEnd', () => {
     const processed = postcss(
       pxtorem({
         convertUnitOnEnd: {
-          sourceUnit: /[p|P][x|X]$/,
+          sourceUnit: /[Pp|][Xx|]$/,
           targetUnit: 'px',
         },
       }),
