@@ -648,12 +648,12 @@ describe('unitToConvert', () => {
 
 describe('convertUnitOnEnd', () => {
   test('should convert PX to px with RegExp', () => {
-    const css = '.rule { font-size: 2PX }'
-    const expected = '.rule { font-size: 2px }'
+    const css = '.rule { font-size: 2PX; width: 4Px }'
+    const expected = '.rule { font-size: 2px; width: 4px }'
     const processed = postcss(
       pxtorem({
         convertUnitOnEnd: {
-          sourceUnit: /[Pp|][Xx|]$/,
+          sourceUnit: /[Pp][Xx]$/,
           targetUnit: 'px',
         },
       }),

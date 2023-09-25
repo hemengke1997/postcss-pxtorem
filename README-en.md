@@ -136,7 +136,7 @@ export default {
   plugins: [
     pxtorem({
       convertUnitOnEnd: {
-        sourceUnit: /[Pp|][Xx|]$/,
+        sourceUnit: /[Pp][Xx]$/,
         targetUnit: 'px',
       },
     }),
