@@ -1,14 +1,18 @@
 # postcss-pxtorem
 
+![npm][npm-img] ![npm][npm-download]
+
 **English** | [中文](./README.md)
 
 A plugin for [PostCSS](https://github.com/ai/postcss) that generates rem units from pixel units.
 
-## ✨ New Features
+**If you don't need the following new features, you can use the official library: [postcss-pxtorem](https://github.com/cuth/postcss-pxtorem)**
 
-- override any `postcss-pxtorem` options in css.
-- ignore next line in css.
-- **compatible with vite**.
+## ✨ [New Features](#-about-new-features)
+
+- Dynamically override any `postcss-pxtorem` supported option in style files
+- Dynamically disable transforming rem in style files.
+- **Compatible with vite, _Solved the problem of px to rem failing after vite build_**.
 
 ## 🔧 Install
 
@@ -174,3 +178,11 @@ A CSS post-processor that converts px to viewport: [postcss-pxtoviewport](https:
 ## 💕 Support
 
 **If this has helped you, please don't hesitate to give a STAR, thanks! 😎**
+
+## License
+
+MIT
+
+[npm-img]: https://img.shields.io/npm/v/%40minko-fe/postcss-pxtorem.svg
+[npm-download]: https://img.shields.io/npm/dm/%40minko-fe/postcss-pxtorem
+
