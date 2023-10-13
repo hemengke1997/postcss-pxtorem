@@ -7,7 +7,7 @@
 
 > [PostCSS](https://github.com/ai/postcss) 插件，可以从像素单位生成 rem 单位
 
-**如果你不需要以下新功能，可以使用官方库：[postcss-pxtorem](https://github.com/cuth/postcss-pxtorem)**
+**如果你不需要以下新特性，可以使用官方库：[postcss-pxtorem](https://github.com/cuth/postcss-pxtorem)**
 
 ## ✨ [新特性](#-关于新特性)
 
