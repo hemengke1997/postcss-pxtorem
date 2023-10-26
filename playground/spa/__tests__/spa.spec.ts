@@ -84,7 +84,7 @@ describe('pxtorem - width 1120', () => {
 
   test('should b_2 fontsize be 16px', async () => {
     const fontSize = await getFontsize('#b_2')
-    expect(fontSize).toBe('14px')
+    expect(fontSize).toBe('16px')
   })
 
   test('should c_1 fontsize be half rem', async ({ rem }) => {
