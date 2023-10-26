@@ -12,9 +12,9 @@ import {
   isPxtoremReg,
   setupCurrentOptions,
 } from './utils'
-import { getUnitRegexp } from './utils/pixel-unit-regex'
 import { DISABLE_NEXT_COMMENT } from './utils/constant'
 import { type ParseOptions } from './utils/parse-query'
+import { getUnitRegexp } from './utils/pixel-unit-regex'
 
 export interface ConvertUnit {
   sourceUnit: string | RegExp

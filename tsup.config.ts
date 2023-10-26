@@ -2,6 +2,7 @@ import { defineConfig } from 'tsup'
 
 export const tsup = defineConfig((option) => ({
   entry: ['src/index.ts'],
+  target: 'node16',
   dts: !option.watch,
   clean: true,
   format: ['cjs', 'esm'],

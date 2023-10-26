@@ -9,23 +9,23 @@
     "preview": "npm run build && vite preview"
   },
   "dependencies": {
+    "classnames": "^2.3.2",
     "modern-flexible": "^0.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-vant": "^3.2.4"
+    "react-use": "^17.4.0"
   },
   "devDependencies": {
     "@minko-fe/postcss-pxtorem": "workspace:*",
     "@types/react": "^18.0.29",
     "@types/react-dom": "^18.0.11",
     "@vitejs/plugin-react": "^3.1.0",
-    "less": "^4.1.3",
     "postcss": "^8.4.21",
     "postcss-import": "^15.1.0",
     "postcss-nested": "^6.0.1",
     "tailwindcss": "^3.2.7",
     "typescript": "^4.9.5",
-    "vite": "latest",
-    "vite-plugin-public-typescript": "^1.5.4"
+    "vite": "^4.4.9",
+    "vite-plugin-public-typescript": "^1.5.5"
   }
 }

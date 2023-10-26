@@ -1,0 +1,8 @@
+.noFixed {
+  font-size: 16px;
+}
+
+.fixed {
+  /* pxtorem-disable-next-line */
+  font-size: 16px;
+}

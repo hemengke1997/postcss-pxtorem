@@ -1,6 +1,6 @@
 import postcss, { type Input } from 'postcss'
-import { describe, expect, test } from 'vitest'
 import nested from 'postcss-nested'
+import { describe, expect, test } from 'vitest'
 import pxtorem from '../src'
 import { filterPropList } from '../src/utils/filter-prop-list'
 
