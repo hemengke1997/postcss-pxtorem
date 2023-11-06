@@ -1,3 +1,18 @@
+## [1.3.1](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.3.0...v1.3.1) (2023-11-06)
+
+
+### Bug Fixes
+
+* dynamic rootValue in css file not work ([6cac2fa](https://github.com/hemengke1997/postcss-pxtorem/commit/6cac2fa17ed767c161281385177814e0cf248f00))
+* tailwind tests ([11bbece](https://github.com/hemengke1997/postcss-pxtorem/commit/11bbeced2fefba75e5940c7a9e448cb3f99672ed))
+
+
+### Performance Improvements
+
+* build ([b0fa263](https://github.com/hemengke1997/postcss-pxtorem/commit/b0fa2637a7df259c9a31061752b0b7539ea200d7))
+
+
+
 # [1.3.0](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.3.0-beta.1...v1.3.0) (2023-06-25)
 
 
