@@ -48,6 +48,31 @@ describe('pxtorem - width 700', () => {
     const fontSize = await getFontsize('#c_1')
     expect(fontSize).toBe(`${Number.parseFloat(rem) / 2}px`)
   })
+
+  test('should d_1 fontsize be rem', async ({ rem }) => {
+    const fontSize = await getFontsize('#d_1')
+    expect(fontSize).toBe(rem)
+  })
+
+  test('should d_2 fontsize be half rem', async ({ rem }) => {
+    const fontSize = await getFontsize('#d_2')
+    expect(fontSize).toBe(`${Number.parseFloat(rem) / 2}px`)
+  })
+
+  test('should d_3 fontsize be double rem', async ({ rem }) => {
+    const fontSize = await getFontsize('#d_3')
+    expect(fontSize).toBe(`${Number.parseFloat(rem) * 2}px`)
+  })
+
+  test('should d_4 fontsize be double rem', async ({ rem }) => {
+    const fontSize = await getFontsize('#d_4')
+    expect(fontSize).toBe(`${Number.parseFloat(rem) * 2}px`)
+  })
+
+  test('should e_1 fontsize be rem', async ({ rem }) => {
+    const fontSize = await getFontsize('#e_1')
+    expect(fontSize).toBe(rem)
+  })
 })
 
 describe('pxtorem - width 1120', () => {
@@ -91,6 +116,31 @@ describe('pxtorem - width 1120', () => {
     const fontSize = await getFontsize('#c_1')
     expect(fontSize).toBe(`${Number.parseFloat(rem) / 2}px`)
   })
+
+  test('should d_1 fontsize be rem', async ({ rem }) => {
+    const fontSize = await getFontsize('#d_1')
+    expect(fontSize).toBe(rem)
+  })
+
+  test('should d_2 fontsize be half rem', async ({ rem }) => {
+    const fontSize = await getFontsize('#d_2')
+    expect(fontSize).toBe(`${Number.parseFloat(rem) / 2}px`)
+  })
+
+  test('should d_3 fontsize be double rem', async ({ rem }) => {
+    const fontSize = await getFontsize('#d_3')
+    expect(fontSize).toBe(`${Number.parseFloat(rem) * 2}px`)
+  })
+
+  test('should d_4 fontsize be double rem', async ({ rem }) => {
+    const fontSize = await getFontsize('#d_4')
+    expect(fontSize).toBe(`${Number.parseFloat(rem) * 2}px`)
+  })
+
+  test('should e_1 fontsize be rem', async ({ rem }) => {
+    const fontSize = await getFontsize('#e_1')
+    expect(fontSize).toBe(rem)
+  })
 })
 
 describe('pxtorem - width 1960', () => {
@@ -133,5 +183,30 @@ describe('pxtorem - width 1960', () => {
   test('should c_1 fontsize be half rem', async ({ rem }) => {
     const fontSize = await getFontsize('#c_1')
     expect(fontSize).toBe(`${Number.parseFloat(rem) / 2}px`)
+  })
+
+  test('should d_1 fontsize be rem', async ({ rem }) => {
+    const fontSize = await getFontsize('#d_1')
+    expect(fontSize).toBe(rem)
+  })
+
+  test('should d_2 fontsize be half rem', async ({ rem }) => {
+    const fontSize = await getFontsize('#d_2')
+    expect(fontSize).toBe(`${Number.parseFloat(rem) / 2}px`)
+  })
+
+  test('should d_3 fontsize be double rem', async ({ rem }) => {
+    const fontSize = await getFontsize('#d_3')
+    expect(fontSize).toBe(`${Number.parseFloat(rem) * 2}px`)
+  })
+
+  test('should d_4 fontsize be double rem', async ({ rem }) => {
+    const fontSize = await getFontsize('#d_4')
+    expect(fontSize).toBe(`${Number.parseFloat(rem) * 2}px`)
+  })
+
+  test('should e_1 fontsize be rem', async ({ rem }) => {
+    const fontSize = await getFontsize('#e_1')
+    expect(fontSize).toBe(rem)
   })
 })

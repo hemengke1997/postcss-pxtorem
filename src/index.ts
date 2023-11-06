@@ -67,7 +67,6 @@ function pxtorem(options?: PxtoremOptions) {
       h[currentOptions] = {
         isExcludeFile: false,
         pxReplace: undefined,
-        rootValue: undefined,
         originOpts: ORIGINAL_OPTIONS,
       }
 

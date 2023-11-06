@@ -601,6 +601,85 @@ describe('comment', () => {
 
     expect(processed).toBe(expected)
   })
+
+  test('integrate postcss-nested rootValue', () => {
+    const css = `/* pxtorem?disable=false&rootValue=16 */
+    .class {
+      margin: -10px 20px;
+      padding: 5rem 0.5px;
+      border: 3px solid black;
+      font-size: 14px;
+      line-height: 20px;
+    }
+    .mmm {
+      /* pxtorem-disable-next-line */
+      font-size: 32px;
+      line-height: 1em;
+      .nested {
+        font-size: 16px;
+      }
+    }
+    
+    /* pxtorem?disable=false&rootValue=32 */
+    @media (min-width: 750px) {
+      .class3 {
+        font-size: 16px;
+        line-height: 22px;
+        .nested {
+          font-size: 16px;
+        }
+      }
+    }
+    
+    /* pxtorem?disable=true */
+    .class2 {
+      margin: -10px 20px;
+      padding: 5rem 0.5px;
+      border: 3px solid black;
+      font-size: 14px;
+      line-height: 20px;
+      .nested {
+        font-size: 16px;
+      }
+    }`
+
+    const expected = `.class {
+      margin: -0.625rem 1.25rem;
+      padding: 5rem 0.03125rem;
+      border: 0.1875rem solid black;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
+    .mmm {
+      font-size: 32px;
+      line-height: 1em;
+    }
+    .mmm .nested {
+        font-size: 1rem;
+      }
+    @media (min-width: 750px) {
+      .class3 {
+        font-size: 0.5rem;
+        line-height: 0.6875rem;
+      }
+        .class3 .nested {
+          font-size: 0.5rem;
+        }
+    }
+    .class2 {
+      margin: -10px 20px;
+      padding: 5rem 0.5px;
+      border: 3px solid black;
+      font-size: 14px;
+      line-height: 20px;
+    }
+    .class2 .nested {
+        font-size: 16px;
+      }`
+    const processed = postcss(pxtorem(), nested).process(css).css
+
+    expect(processed).toBe(expected)
+  })
 })
 
 describe('inline comment', () => {

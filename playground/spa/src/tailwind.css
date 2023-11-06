@@ -1,4 +1,11 @@
 @tailwind base;
+
 @tailwind components;
+
 @tailwind utilities;
+
 @tailwind variants;
+
+.box {
+  @apply flex flex-col border-2 rounded-lg p-[8px] border-zinc-400;
+}

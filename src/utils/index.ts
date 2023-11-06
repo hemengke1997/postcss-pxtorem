@@ -201,7 +201,6 @@ export type H = {
   [currentOptions]: {
     isExcludeFile: boolean
     pxReplace: ReturnType<typeof createPxReplace> | undefined
-    rootValue: number | undefined
     originOpts: ReturnType<typeof initOptions>
   }
 }
@@ -216,29 +215,32 @@ export function setupCurrentOptions(
     comment?: ChildNode | Comment
   },
 ) {
-  const opts = h[currentOptions].originOpts
-
   const filePath = node?.source?.input.file
 
   if (isOptionComment(comment)) {
     h[currentOptions].originOpts = {
-      ...opts,
-      ...getOptionsFromComment(comment, opts.parseOptions),
+      ...h[currentOptions].originOpts,
+      ...getOptionsFromComment(comment, h[currentOptions].originOpts.parseOptions),
     }
   }
 
-  const exclude = opts.exclude
-  const include = opts.include
+  const { originOpts } = h[currentOptions]
+
+  const { exclude, include, rootValue, disable } = originOpts
 
   h[currentOptions].isExcludeFile = judgeIsExclude(exclude, include, filePath)
 
-  if (checkIfDisable({ disable: opts.disable, isExcludeFile: h[currentOptions].isExcludeFile })) {
+  if (checkIfDisable({ disable, isExcludeFile: h[currentOptions].isExcludeFile })) {
     return
   }
 
-  h[currentOptions].rootValue = isFunction(opts.rootValue) ? opts.rootValue(node?.source!.input) : opts.rootValue
+  h[currentOptions].originOpts.rootValue = isFunction(rootValue) ? rootValue(node?.source!.input) : rootValue
 
-  h[currentOptions].pxReplace = createPxReplace(h[currentOptions].rootValue, opts.unitPrecision, opts.minPixelValue)
+  h[currentOptions].pxReplace = createPxReplace(
+    h[currentOptions].originOpts.rootValue,
+    originOpts.unitPrecision,
+    originOpts.minPixelValue,
+  )
 }
 
 enum DataType {
