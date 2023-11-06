@@ -105,12 +105,6 @@ importers:
       postcss:
         specifier: ^8.4.21
         version: 8.4.30
-      postcss-import:
-        specifier: ^15.1.0
-        version: 15.1.0(postcss@8.4.30)
-      postcss-nested:
-        specifier: ^6.0.1
-        version: 6.0.1(postcss@8.4.30)
       tailwindcss:
         specifier: ^3.2.7
         version: 3.2.7(postcss@8.4.30)(ts-node@10.9.1)
@@ -123,6 +117,52 @@ importers:
       vite-plugin-public-typescript:
         specifier: ^1.5.5
         version: 1.5.5(vite@4.4.9)
+
+  playground/temp-spa:
+    dependencies:
+      classnames:
+        specifier: ^2.3.2
+        version: 2.3.2
+      modern-flexible:
+        specifier: ^0.0.3
+        version: 0.0.3
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+      react-use:
+        specifier: ^17.4.0
+        version: 17.4.0(react-dom@18.2.0)(react@18.2.0)
+    devDependencies:
+      '@minko-fe/postcss-pxtorem':
+        specifier: workspace:*
+        version: link:../..
+      '@types/react':
+        specifier: ^18.0.29
+        version: 18.0.29
+      '@types/react-dom':
+        specifier: ^18.0.11
+        version: 18.0.11
+      '@vitejs/plugin-react':
+        specifier: ^3.1.0
+        version: 3.1.0(vite@4.5.0)
+      postcss:
+        specifier: ^8.4.21
+        version: 8.4.30
+      tailwindcss:
+        specifier: ^3.2.7
+        version: 3.2.7(postcss@8.4.30)(ts-node@10.9.1)
+      typescript:
+        specifier: ^4.9.5
+        version: 4.9.5
+      vite:
+        specifier: ^4.4.9
+        version: 4.5.0(@types/node@18.15.7)
+      vite-plugin-public-typescript:
+        specifier: ^1.5.5
+        version: 1.5.5(vite@4.5.0)
 
 packages:
 
@@ -1432,6 +1472,22 @@ packages:
       magic-string: 0.27.0
       react-refresh: 0.14.0
       vite: 4.4.9(@types/node@18.15.7)
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
+  /@vitejs/plugin-react@3.1.0(vite@4.5.0):
+    resolution: {integrity: sha512-AfgcRL8ZBhAlc3BFdigClmTUMISmmzHn7sB2h9U1odvc5U/MjWXsAaz18b/WoppUTDBzxOJwo2VdClfUcItu9g==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    peerDependencies:
+      vite: ^4.1.0-beta.0
+    dependencies:
+      '@babel/core': 7.21.3
+      '@babel/plugin-transform-react-jsx-self': 7.21.0(@babel/core@7.21.3)
+      '@babel/plugin-transform-react-jsx-source': 7.19.6(@babel/core@7.21.3)
+      magic-string: 0.27.0
+      react-refresh: 0.14.0
+      vite: 4.5.0(@types/node@18.15.7)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -5036,18 +5092,6 @@ packages:
       resolve: 1.22.6
     dev: true
 
-  /postcss-import@15.1.0(postcss@8.4.30):
-    resolution: {integrity: sha512-hpr+J05B2FVYUAXHeK1YyI267J/dDDhMU6B6civm8hSY1jYJnBXxzKDKDswzJmtLHryrjhnDjqqp/49t8FALew==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      postcss: ^8.0.0
-    dependencies:
-      postcss: 8.4.30
-      postcss-value-parser: 4.2.0
-      read-cache: 1.0.0
-      resolve: 1.22.6
-    dev: true
-
   /postcss-js@4.0.1(postcss@8.4.30):
     resolution: {integrity: sha512-dDLF8pEO191hJMtlHFPRa8xsizHaM82MLfNkUHdUtVEV3tgTp5oj+8qbEqYM57SLfc74KSbw//4SeJma2LRVIw==}
     engines: {node: ^12 || ^14 || >= 16}
@@ -6371,6 +6415,25 @@ packages:
       parse5: 7.1.2
       tiny-glob: 0.2.9
       vite: 4.4.9(@types/node@18.15.7)
+      watcher: 2.3.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
+  /vite-plugin-public-typescript@1.5.5(vite@4.5.0):
+    resolution: {integrity: sha512-asfg7UarJyxkRc2GlrQMvXWWTfAOmrkBz8OFQV6ps+Hu7UDKSOSvZSlcJTMGve0S4Cfb9QkdbTFVkWH1/Dp9iA==}
+    requiresBuild: true
+    peerDependencies:
+      vite: 3 || 4
+    dependencies:
+      debug: 4.3.4
+      esbuild: 0.19.3
+      fs-extra: 11.1.1
+      magic-string: 0.30.3
+      on-change: 4.0.2
+      parse5: 7.1.2
+      tiny-glob: 0.2.9
+      vite: 4.5.0(@types/node@18.15.7)
       watcher: 2.3.0
     transitivePeerDependencies:
       - supports-color
