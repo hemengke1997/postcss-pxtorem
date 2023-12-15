@@ -42,7 +42,6 @@
     "test:unit": "vitest run",
     "test:serve": "vitest run -c vitest.config.e2e.ts",
     "test:build": "cross-env VITE_TEST_BUILD=1 vitest run -c vitest.config.e2e.ts",
-    "preinstall": "npx only-allow pnpm",
     "lint": "eslint .",
     "fix": "eslint --fix .",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
