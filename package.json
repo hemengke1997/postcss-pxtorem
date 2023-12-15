@@ -73,7 +73,7 @@
     "typescript": "^5.2.2",
     "vite": "^4.4.9",
     "vitest": "^0.34.5",
-    "vitest-e2e": "^0.0.8"
+    "vitest-e2e": "^0.0.10"
   },
   "engines": {
     "node": ">=16.0.0"

@@ -67,8 +67,8 @@ importers:
         specifier: ^0.34.5
         version: 0.34.6
       vitest-e2e:
-        specifier: ^0.0.8
-        version: 0.0.8(vite@4.5.0)(vitest@0.34.6)
+        specifier: ^0.0.10
+        version: 0.0.10(vite@4.5.0)(vitest@0.34.6)
 
   playground: {}
 
@@ -6511,8 +6511,8 @@ packages:
       fsevents: 2.3.3
     dev: true
 
-  /vitest-e2e@0.0.8(vite@4.5.0)(vitest@0.34.6):
-    resolution: {integrity: sha512-yxVS1wqOKDk8tNnVbR5IdNePBj/9f7cIsHBO1ZJ9LL7toXbYTtWZuDo8mUBGoP+z/VlMCk1XFJmlYLfCFy+FFg==}
+  /vitest-e2e@0.0.10(vite@4.5.0)(vitest@0.34.6):
+    resolution: {integrity: sha512-b+17/SBaeos/FS8Ubc4lPpysPGynI6LJEhOTRh7fet/wJCOwhcVOg0NiV6ocqKEm7IymM2Gvlpryj6P+JphL9g==}
     engines: {node: '>=16.0.0'}
     requiresBuild: true
     peerDependencies:
