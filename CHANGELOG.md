@@ -1,3 +1,12 @@
+## [1.3.2](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.3.1...v1.3.2) (2023-12-15)
+
+
+### Bug Fixes
+
+* remove pnpm restriction ([4ce7555](https://github.com/hemengke1997/postcss-pxtorem/commit/4ce75553f32ec4e9cc42efced87a4259b93782df))
+
+
+
 ## [1.3.1](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.3.0...v1.3.1) (2023-11-06)
 
 
