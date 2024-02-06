@@ -1,3 +1,17 @@
+# [1.4.0](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.3.2...v1.4.0) (2024-02-06)
+
+
+### Code Refactoring
+
+*  `exclude` priority ([03a7032](https://github.com/hemengke1997/postcss-pxtorem/commit/03a7032284668d510cffa5da9a770a60f373b014))
+
+
+### BREAKING CHANGES
+
+* `exclude`'s priority higher than `include`
+
+
+
 ## [1.3.2](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.3.1...v1.3.2) (2023-12-15)
 
 
