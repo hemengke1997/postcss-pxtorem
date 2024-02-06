@@ -6,7 +6,7 @@ module.exports = {
     },
     '@minko-fe/postcss-pxtorem': {
       convertUnitOnEnd: {
-        sourceUnit: /[Pp][Xx]$/,
+        sourceUnit: /px$/i,
         targetUnit: 'px',
       },
     },

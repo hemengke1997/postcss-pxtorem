@@ -1,6 +1,7 @@
-// Taken from query-string
+// Token from query-string (MIT)
 import decodeComponent from 'decode-uri-component'
 import splitOnFirst from 'split-on-first'
+import { isArray, isObject } from '.'
 
 function validateArrayFormatSeparator(value: string | undefined) {
   if (typeof value !== 'string' || value.length !== 1) {
@@ -251,7 +252,7 @@ export function parse(query: any, options: any): any {
   return (options.sort === true ? Object.keys(returnValue).sort() : Object.keys(returnValue).sort(options.sort)).reduce(
     (result, key) => {
       const value = returnValue[key]
-      if (Boolean(value) && typeof value === 'object' && !Array.isArray(value)) {
+      if (Boolean(value) && isObject(value) && !isArray(value)) {
         // Sort object keys, not values
         result[key] = keysSorter(value)
       } else {
@@ -399,7 +400,7 @@ function parseValue(value, options: ParseOptions) {
 }
 
 function keysSorter(input) {
-  if (Array.isArray(input)) {
+  if (isArray(input)) {
     return input.sort()
   }
 

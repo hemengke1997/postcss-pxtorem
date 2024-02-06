@@ -2,7 +2,7 @@ import postcss, { type Input } from 'postcss'
 import nested from 'postcss-nested'
 import { describe, expect, test } from 'vitest'
 import pxtorem from '../src'
-import { filterPropList } from '../src/utils/filter-prop-list'
+import { filterRule } from '../src/utils'
 
 const basicCSS = '.rule { font-size: 15px }'
 const basicExpected = '.rule { font-size: 0.9375rem }'
@@ -87,7 +87,7 @@ describe('pxtorem', () => {
     expect(processed).toBe(expected)
   })
 
-  test('should include higher priority than exclude', () => {
+  test('should include exec first then exclude', () => {
     const options = {
       exclude: 'node_modules',
       include: 'node_modules',
@@ -96,7 +96,23 @@ describe('pxtorem', () => {
     const processed = postcss(pxtorem(options)).process(basicCSS, {
       from: 'node_modules/path',
     }).css
-    expect(processed).toBe(basicExpected)
+    expect(processed).toBe(basicCSS)
+  })
+
+  test('should exclude filePath which in include', () => {
+    const options = {
+      include: /path/,
+      exclude: 'path/a',
+    }
+    const processedA = postcss(pxtorem(options)).process(basicCSS, {
+      from: 'path/a',
+    }).css
+    const processedB = postcss(pxtorem(options)).process(basicCSS, {
+      from: 'path/b',
+    }).css
+
+    expect(processedA).toBe(basicCSS)
+    expect(processedB).toBe(basicExpected)
   })
 
   test('should disable all', () => {
@@ -261,49 +277,49 @@ describe('filter-prop-list', () => {
   test('should find "exact" matches from propList', () => {
     const propList = ['font-size', 'margin', '!padding', '*border*', '*', '*y', '!*font*']
     const expected = 'font-size,margin'
-    expect(filterPropList.exact(propList).join()).toBe(expected)
+    expect(filterRule.exact(propList).join()).toBe(expected)
   })
 
   test('should find "contain" matches from propList and reduce to string', () => {
     const propList = ['font-size', '*margin*', '!padding', '*border*', '*', '*y', '!*font*']
     const expected = 'margin,border'
-    expect(filterPropList.contain(propList).join()).toBe(expected)
+    expect(filterRule.contain(propList).join()).toBe(expected)
   })
 
   test('should find "start" matches from propList and reduce to string', () => {
     const propList = ['font-size', '*margin*', '!padding', 'border*', '*', '*y', '!*font*']
     const expected = 'border'
-    expect(filterPropList.startWith(propList).join()).toBe(expected)
+    expect(filterRule.startWith(propList).join()).toBe(expected)
   })
 
   test('should find "end" matches from propList and reduce to string', () => {
     const propList = ['font-size', '*margin*', '!padding', 'border*', '*', '*y', '!*font*']
     const expected = 'y'
-    expect(filterPropList.endWith(propList).join()).toBe(expected)
+    expect(filterRule.endWith(propList).join()).toBe(expected)
   })
 
   test('should find "not" matches from propList and reduce to string', () => {
     const propList = ['font-size', '*margin*', '!padding', 'border*', '*', '*y', '!*font*']
     const expected = 'padding'
-    expect(filterPropList.notExact(propList).join()).toBe(expected)
+    expect(filterRule.notExact(propList).join()).toBe(expected)
   })
 
   test('should find "not contain" matches from propList and reduce to string', () => {
     const propList = ['font-size', '*margin*', '!padding', '!border*', '*', '*y', '!*font*']
     const expected = 'font'
-    expect(filterPropList.notContain(propList).join()).toBe(expected)
+    expect(filterRule.notContain(propList).join()).toBe(expected)
   })
 
   test('should find "not start" matches from propList and reduce to string', () => {
     const propList = ['font-size', '*margin*', '!padding', '!border*', '*', '*y', '!*font*']
     const expected = 'border'
-    expect(filterPropList.notStartWith(propList).join()).toBe(expected)
+    expect(filterRule.notStartWith(propList).join()).toBe(expected)
   })
 
   test('should find "not end" matches from propList and reduce to string', () => {
     const propList = ['font-size', '*margin*', '!padding', '!border*', '*', '!*y', '!*font*']
     const expected = 'y'
-    expect(filterPropList.notEndWith(propList).join()).toBe(expected)
+    expect(filterRule.notEndWith(propList).join()).toBe(expected)
   })
 })
 
@@ -375,9 +391,9 @@ describe('include', () => {
     expect(processed).toBe(basicExpected)
   })
 
-  test('should convert specified file path', () => {
+  test('should not convert while filePath is not in include', () => {
     const options = {
-      include: 'node_modules/pathA',
+      include: 'node_modules/other',
     }
     const processed = postcss(pxtorem(options)).process(basicCSS, {
       from: 'node_modules/path',
@@ -732,7 +748,7 @@ describe('convertUnitOnEnd', () => {
     const processed = postcss(
       pxtorem({
         convertUnitOnEnd: {
-          sourceUnit: /[Pp][Xx]$/,
+          sourceUnit: /px$/i,
           targetUnit: 'px',
         },
       }),
