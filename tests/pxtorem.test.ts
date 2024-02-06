@@ -1,5 +1,6 @@
 import postcss, { type Input } from 'postcss'
 import nested from 'postcss-nested'
+import { normalizePath } from 'vite'
 import { describe, expect, test } from 'vitest'
 import pxtorem from '../src'
 import { filterRule } from '../src/utils'
@@ -99,10 +100,10 @@ describe('pxtorem', () => {
     expect(processed).toBe(basicCSS)
   })
 
-  test.only('should exclude filePath which in include', () => {
+  test('should exclude filePath which in include', () => {
     const options = {
-      include: (file: string) => file.includes('path'),
-      exclude: 'path/a',
+      include: /path/,
+      exclude: (file: string) => normalizePath(file).includes('path/a'),
     }
     const processedA = postcss(pxtorem(options)).process(basicCSS, {
       from: 'path/a',

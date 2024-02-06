@@ -28,12 +28,12 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        # os: [ubuntu-latest]
-        # node_version: [18]
+        os: [ubuntu-latest]
+        node_version: [18]
         include:
           # Active LTS + other OS
-          # - os: macos-latest
-          #   node_version: 18
+          - os: macos-latest
+            node_version: 18
           - os: windows-latest
             node_version: 18
       fail-fast: true
@@ -59,23 +59,23 @@ jobs:
         run: pnpm install
 
       # Install playwright's binary under custom directory to cache
-      # - name: Set Playwright path (non-windows)
-      #   if: runner.os != 'Windows'
-      #   run: echo "PLAYWRIGHT_BROWSERS_PATH=$HOME/.cache/playwright-bin" >> $GITHUB_ENV
-      # - name: Set Playwright path (windows)
-      #   if: runner.os == 'Windows'
-      #   run: echo "PLAYWRIGHT_BROWSERS_PATH=$HOME\.cache\playwright-bin" >> $env:GITHUB_ENV
+      - name: Set Playwright path (non-windows)
+        if: runner.os != 'Windows'
+        run: echo "PLAYWRIGHT_BROWSERS_PATH=$HOME/.cache/playwright-bin" >> $GITHUB_ENV
+      - name: Set Playwright path (windows)
+        if: runner.os == 'Windows'
+        run: echo "PLAYWRIGHT_BROWSERS_PATH=$HOME\.cache\playwright-bin" >> $env:GITHUB_ENV
 
-      # - name: Cache Playwright's binary
-      #   uses: actions/cache@v3
-      #   with:
-      #     # Playwright removes unused browsers automatically
-      #     # So does not need to add playwright version to key
-      #     key: ${{ runner.os }}-playwright-bin-v1
-      #     path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
+      - name: Cache Playwright's binary
+        uses: actions/cache@v3
+        with:
+          # Playwright removes unused browsers automatically
+          # So does not need to add playwright version to key
+          key: ${{ runner.os }}-playwright-bin-v1
+          path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
 
-      # - name: Install Playwright
-      #   run: pnpx playwright@1.39.0 install chromium
+      - name: Install Playwright
+        run: pnpx playwright@1.39.0 install chromium
 
       - name: Build
         run: pnpm run build
@@ -83,34 +83,34 @@ jobs:
       - name: Test
         run: pnpm run test:unit
 
-      # - name: Test serve
-      #   run: pnpm run test:serve
+      - name: Test serve
+        run: pnpm run test:serve
 
-      # - name: Test build
-      #   run: pnpm run test:build
+      - name: Test build
+        run: pnpm run test:build
 
-  # lint:
-  #   timeout-minutes: 10
-  #   runs-on: ubuntu-latest
-  #   name: 'Lint: node-LTS, ubuntu-latest'
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #       with:
-  #         fetch-depth: 0
+  lint:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    name: 'Lint: node-LTS, ubuntu-latest'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-  #     - name: Install pnpm
-  #       uses: pnpm/action-setup@v2
-  #       with:
-  #         version: 8.6.2
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.6.2
 
-  #     - name: Set node version to LTS
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: lts/*
-  #         cache: pnpm
+      - name: Set node version to LTS
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          cache: pnpm
 
-  #     - name: Install deps
-  #       run: pnpm install
+      - name: Install deps
+        run: pnpm install
 
-  #     - name: Lint
-  #       run: pnpm run lint
+      - name: Lint
+        run: pnpm run lint
