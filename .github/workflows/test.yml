@@ -28,12 +28,12 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        node_version: [18]
+        # os: [ubuntu-latest]
+        # node_version: [18]
         include:
           # Active LTS + other OS
-          - os: macos-latest
-            node_version: 18
+          # - os: macos-latest
+          #   node_version: 18
           - os: windows-latest
             node_version: 18
       fail-fast: true

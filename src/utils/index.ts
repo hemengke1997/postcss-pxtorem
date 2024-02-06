@@ -195,8 +195,9 @@ function isXClude(Xclude: XCludeType, filePath: string | undefined) {
  * @returns if filePath is excluded, return true, else return false
  */
 export function judgeIsExclude<T extends XCludeType>(exclude: T, include: T, filePath: string | undefined) {
+  console.log({ exclude, include, filePath })
   // exec exclude filter first.
-  // { include: /path/, exclude: 'path/a' } means only path/a will be excluded
+  // { include: /path/, exclude: 'path/a' } means path/a will be excluded
   if (isXClude(exclude, filePath)) {
     // excluded
     return true

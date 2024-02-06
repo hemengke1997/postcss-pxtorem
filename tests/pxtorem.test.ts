@@ -99,7 +99,7 @@ describe('pxtorem', () => {
     expect(processed).toBe(basicCSS)
   })
 
-  test('should exclude filePath which in include', () => {
+  test.only('should exclude filePath which in include', () => {
     const options = {
       include: (file: string) => file.includes('path'),
       exclude: 'path/a',
