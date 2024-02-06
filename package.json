@@ -40,7 +40,7 @@
     "build:pages": "pnpm run build && cd playground/spa && pnpm run build",
     "dev:test": "vitest",
     "test": "run-s test:unit test:serve test:build",
-    "test:unit": "vitest run",
+    "test:unit": "vitest run --allowOnly",
     "test:serve": "vitest run -c vitest.config.e2e.ts",
     "test:build": "cross-env VITE_TEST_BUILD=1 vitest run -c vitest.config.e2e.ts",
     "lint": "eslint .",
