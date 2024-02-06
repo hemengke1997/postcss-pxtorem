@@ -101,7 +101,7 @@ describe('pxtorem', () => {
 
   test('should exclude filePath which in include', () => {
     const options = {
-      include: /path/,
+      include: (file: string) => file.includes('path'),
       exclude: 'path/a',
     }
     const processedA = postcss(pxtorem(options)).process(basicCSS, {
