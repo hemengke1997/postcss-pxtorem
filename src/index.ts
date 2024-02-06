@@ -1,10 +1,11 @@
-import { type Input, type Plugin as PostcssPlugin, type Rule } from 'postcss'
+import { type Plugin as PostcssPlugin, type Rule } from 'postcss'
+import { type PxtoremOptions } from './types'
 import {
+  OPTION_SYMBOL,
   blacklistedSelector,
   checkIfDisable,
   convertUnit,
-  createPropListMatcher,
-  currentOptions,
+  createFilterMatcher,
   declarationExists,
   initOptions,
   isArray,
@@ -13,31 +14,11 @@ import {
   setupCurrentOptions,
 } from './utils'
 import { DISABLE_NEXT_COMMENT } from './utils/constant'
-import { type ParseOptions } from './utils/parse-query'
 import { getUnitRegexp } from './utils/pixel-unit-regex'
 
-export interface ConvertUnit {
-  sourceUnit: string | RegExp
-  targetUnit: string
-}
+export type { PxtoremOptions }
 
-export type PxtoremOptions = Partial<{
-  rootValue: number | ((input: Input | undefined) => number)
-  unitToConvert: string
-  unitPrecision: number
-  selectorBlackList: (string | RegExp)[]
-  propList: string[]
-  replace: boolean
-  atRules: boolean | string[]
-  minPixelValue: number
-  include: string | RegExp | ((filePath: string) => boolean) | null
-  exclude: string | RegExp | ((filePath: string) => boolean) | null
-  disable: boolean
-  convertUnitOnEnd: ConvertUnit | ConvertUnit[] | false | null
-  parseOptions: ParseOptions
-}>
-
-export const defaultOptions: Required<PxtoremOptions> = {
+export const DEFAULT_OPTIONS: Required<PxtoremOptions> = {
   rootValue: 16,
   unitToConvert: 'px',
   unitPrecision: 5,
@@ -49,7 +30,7 @@ export const defaultOptions: Required<PxtoremOptions> = {
   include: null,
   exclude: null,
   disable: false,
-  convertUnitOnEnd: null,
+  convertUnitOnEnd: false,
   parseOptions: {},
 }
 
@@ -64,7 +45,9 @@ function pxtorem(options?: PxtoremOptions) {
       const node = r.root()
       const firstNode = node.nodes[0]
 
-      h[currentOptions] = {
+      // `h` is a helper for keeping the options in current process context
+      // fixed build mess in vite env
+      h[OPTION_SYMBOL] = {
         isExcludeFile: false,
         pxReplace: undefined,
         originOpts: ORIGINAL_OPTIONS,
@@ -81,13 +64,13 @@ function pxtorem(options?: PxtoremOptions) {
       }
     },
     Declaration(decl, h) {
-      const opts = h[currentOptions].originOpts
+      const opts = h[OPTION_SYMBOL].originOpts
 
-      if (checkIfDisable({ disable: opts.disable, isExcludeFile: h[currentOptions].isExcludeFile, r: decl })) {
+      if (checkIfDisable({ disable: opts.disable, isExcludeFile: h[OPTION_SYMBOL].isExcludeFile, r: decl })) {
         return
       }
 
-      const satisfyPropList = createPropListMatcher(opts.propList)
+      const satisfyPropList = createFilterMatcher(opts.propList)
 
       if (
         !decl.value.includes(opts.unitToConvert) ||
@@ -105,7 +88,7 @@ function pxtorem(options?: PxtoremOptions) {
       }
 
       const pxRegex = getUnitRegexp(opts.unitToConvert)
-      const value = h[currentOptions].pxReplace ? decl.value.replace(pxRegex, h[currentOptions].pxReplace) : decl.value
+      const value = h[OPTION_SYMBOL].pxReplace ? decl.value.replace(pxRegex, h[OPTION_SYMBOL].pxReplace) : decl.value
 
       if (declarationExists(decl.parent!, decl.prop, value)) return
 
@@ -116,10 +99,10 @@ function pxtorem(options?: PxtoremOptions) {
       }
     },
     DeclarationExit(decl, h) {
-      const opts = h[currentOptions].originOpts
+      const opts = h[OPTION_SYMBOL].originOpts
       const { convertUnitOnEnd } = opts
       if (convertUnitOnEnd) {
-        if (Array.isArray(convertUnitOnEnd)) {
+        if (isArray(convertUnitOnEnd)) {
           convertUnitOnEnd.forEach((conv) => {
             decl.value = convertUnit(decl.value, conv)
           })
@@ -129,17 +112,17 @@ function pxtorem(options?: PxtoremOptions) {
       }
     },
     AtRule(atRule, h) {
-      const opts = h[currentOptions].originOpts
+      const opts = h[OPTION_SYMBOL].originOpts
 
-      if (checkIfDisable({ disable: opts.disable, isExcludeFile: h[currentOptions].isExcludeFile, r: atRule })) {
+      if (checkIfDisable({ disable: opts.disable, isExcludeFile: h[OPTION_SYMBOL].isExcludeFile, r: atRule })) {
         return
       }
 
       function replacePxInRules() {
         if (!atRule.params.includes(opts.unitToConvert)) return
         const pxRegex = getUnitRegexp(opts.unitToConvert)
-        atRule.params = h[currentOptions].pxReplace
-          ? atRule.params.replace(pxRegex, h[currentOptions].pxReplace)
+        atRule.params = h[OPTION_SYMBOL].pxReplace
+          ? atRule.params.replace(pxRegex, h[OPTION_SYMBOL].pxReplace)
           : atRule.params
       }
 

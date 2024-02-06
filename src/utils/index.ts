@@ -7,17 +7,44 @@ import {
   type Root,
   type Rule,
 } from 'postcss'
-import { type ConvertUnit, type PxtoremOptions, defaultOptions } from '..'
+import { DEFAULT_OPTIONS } from '..'
+import { type ConvertUnit, type PxtoremOptions, type XCludeType } from '../types'
 import { MAYBE_REGEXP } from './constant'
-import { filterPropList } from './filter-prop-list'
 import { type ParseOptions, parse } from './parse-query'
 
 function reRegExp() {
   return /^\/((?:\\\/|[^/])+)\/([gimy]*)$/
 }
 
+export const filterRule = Object.freeze({
+  exact(list: string[]) {
+    return list.filter((m) => m.match(/^[^!*]+$/))
+  },
+  contain(list: string[]) {
+    return list.filter((m) => m.match(/^\*.+\*$/)).map((m) => m.slice(1, -1))
+  },
+  endWith(list: string[]) {
+    return list.filter((m) => m.match(/^\*[^*]+$/)).map((m) => m.slice(1))
+  },
+  startWith(list: string[]) {
+    return list.filter((m) => m.match(/^[^!*]+\*$/)).map((m) => m.slice(0, Math.max(0, m.length - 1)))
+  },
+  notExact(list: string[]) {
+    return list.filter((m) => m.match(/^![^*].*$/)).map((m) => m.slice(1))
+  },
+  notContain(list: string[]) {
+    return list.filter((m) => m.match(/^!\*.+\*$/)).map((m) => m.slice(2, -1))
+  },
+  notEndWith(list: string[]) {
+    return list.filter((m) => m.match(/^!\*[^*]+$/)).map((m) => m.slice(2))
+  },
+  notStartWith(list: string[]) {
+    return list.filter((m) => m.match(/^![^*]+\*$/)).map((m) => m.slice(1, -1))
+  },
+})
+
 export function initOptions(options?: PxtoremOptions) {
-  return Object.assign({}, defaultOptions, options)
+  return Object.assign({}, DEFAULT_OPTIONS, options)
 }
 
 export function isOptionComment(node: ChildNode | undefined): node is Comment {
@@ -53,9 +80,9 @@ export function getOptionsFromComment(comment: Comment, parseOptions: ParseOptio
     let query = comment.text.slice(index)
 
     if (!query || index === -1) return ret
-    query = query.replaceAll(/\s+/g, '')
+    query = query.replace(/\s+/g, '')
 
-    const defaultKeys = Object.keys(defaultOptions)
+    const defaultKeys = Object.keys(DEFAULT_OPTIONS)
     const parsed = parse(query, {
       parseBooleans: true,
       parseNumbers: true,
@@ -68,7 +95,7 @@ export function getOptionsFromComment(comment: Comment, parseOptions: ParseOptio
       if (defaultKeys.includes(k)) {
         let cur = parsed[k]
         if (MAYBE_REGEXP.includes(k)) {
-          if (Array.isArray(cur)) {
+          if (isArray(cur)) {
             cur = cur.map((t) => {
               return parseRegExp(t)
             }) as any
@@ -86,18 +113,18 @@ export function getOptionsFromComment(comment: Comment, parseOptions: ParseOptio
   }
 }
 
-export function createPropListMatcher(propList: string[]) {
-  const hasWild = propList.includes('*')
-  const matchAll = hasWild && propList.length === 1
+export function createFilterMatcher(filterList: string[]) {
+  const hasWild = filterList.includes('*')
+  const matchAll = hasWild && filterList.length === 1
   const lists = {
-    exact: filterPropList.exact(propList),
-    contain: filterPropList.contain(propList),
-    startWith: filterPropList.startWith(propList),
-    endWith: filterPropList.endWith(propList),
-    notExact: filterPropList.notExact(propList),
-    notContain: filterPropList.notContain(propList),
-    notStartWith: filterPropList.notStartWith(propList),
-    notEndWith: filterPropList.notEndWith(propList),
+    exact: filterRule.exact(filterList),
+    contain: filterRule.contain(filterList),
+    startWith: filterRule.startWith(filterList),
+    endWith: filterRule.endWith(filterList),
+    notExact: filterRule.notExact(filterList),
+    notContain: filterRule.notContain(filterList),
+    notStartWith: filterRule.notStartWith(filterList),
+    notEndWith: filterRule.notEndWith(filterList),
   }
   return function (prop: string) {
     if (matchAll) return true
@@ -153,31 +180,36 @@ export function declarationExists(decls: Container<ChildNode>, prop: string, val
   })
 }
 
-function isXClude(Xclude: PxtoremOptions['include'], filePath: string | undefined) {
+function isXClude(Xclude: XCludeType, filePath: string | undefined) {
   return (
     Xclude &&
     filePath &&
     ((isFunction(Xclude) && Xclude(filePath)) ||
       (isString(Xclude) && filePath.includes(Xclude)) ||
-      (isRegExp(Xclude) && filePath.match(Xclude)))
+      (isRegExp(Xclude) && Xclude.test(filePath)))
   )
 }
 
-export function judgeIsExclude<T extends PxtoremOptions['include']>(
-  exclude: T,
-  include: T,
-  filePath: string | undefined,
-) {
+/**
+ * Judge if the file is excluded
+ * @returns if filePath is excluded, return true, else return false
+ */
+export function judgeIsExclude<T extends XCludeType>(exclude: T, include: T, filePath: string | undefined) {
+  // exec exclude filter first.
+  // { include: /path/, exclude: 'path/a' } means path/a will be excluded
+  if (isXClude(exclude, filePath)) {
+    // excluded
+    return true
+  }
+
   if (include) {
     if (isXClude(include, filePath)) {
+      // included, return false
       return false
     }
     return true
   }
 
-  if (isXClude(exclude, filePath)) {
-    return true
-  }
   return false
 }
 
@@ -195,10 +227,10 @@ export function checkIfDisable(p: { disable: boolean; isExcludeFile: boolean; r?
   return disable || isExcludeFile || isRepeatRun(r)
 }
 
-export const currentOptions = Symbol('currentOptions')
+export const OPTION_SYMBOL = Symbol('OPTION_SYMBOL')
 
 export type H = {
-  [currentOptions]: {
+  [OPTION_SYMBOL]: {
     isExcludeFile: boolean
     pxReplace: ReturnType<typeof createPxReplace> | undefined
     originOpts: ReturnType<typeof initOptions>
@@ -215,29 +247,27 @@ export function setupCurrentOptions(
     comment?: ChildNode | Comment
   },
 ) {
-  const filePath = node?.source?.input.file
-
   if (isOptionComment(comment)) {
-    h[currentOptions].originOpts = {
-      ...h[currentOptions].originOpts,
-      ...getOptionsFromComment(comment, h[currentOptions].originOpts.parseOptions),
+    h[OPTION_SYMBOL].originOpts = {
+      ...h[OPTION_SYMBOL].originOpts,
+      ...getOptionsFromComment(comment, h[OPTION_SYMBOL].originOpts.parseOptions),
     }
   }
 
-  const { originOpts } = h[currentOptions]
+  const { originOpts } = h[OPTION_SYMBOL]
 
-  const { exclude, include, rootValue, disable } = originOpts
+  const { include, exclude, rootValue, disable } = originOpts
 
-  h[currentOptions].isExcludeFile = judgeIsExclude(exclude, include, filePath)
+  h[OPTION_SYMBOL].isExcludeFile = judgeIsExclude(exclude, include, node?.source?.input.file)
 
-  if (checkIfDisable({ disable, isExcludeFile: h[currentOptions].isExcludeFile })) {
+  if (checkIfDisable({ disable, isExcludeFile: h[OPTION_SYMBOL].isExcludeFile })) {
     return
   }
 
-  h[currentOptions].originOpts.rootValue = isFunction(rootValue) ? rootValue(node?.source!.input) : rootValue
+  h[OPTION_SYMBOL].originOpts.rootValue = isFunction(rootValue) ? rootValue(node?.source!.input) : rootValue
 
-  h[currentOptions].pxReplace = createPxReplace(
-    h[currentOptions].originOpts.rootValue,
+  h[OPTION_SYMBOL].pxReplace = createPxReplace(
+    h[OPTION_SYMBOL].originOpts.rootValue,
     originOpts.unitPrecision,
     originOpts.minPixelValue,
   )
@@ -269,14 +299,6 @@ export function isString(data: unknown): data is string {
 
 export function isBoolean(data: unknown): data is boolean {
   return is(data, DataType.boolean)
-}
-
-export function isNull(data: unknown): data is null {
-  return is(data, DataType.null)
-}
-
-export function isUndefined(data: unknown): data is undefined {
-  return is(data, DataType.undefined)
 }
 
 export function isObject(data: unknown): data is Object {
