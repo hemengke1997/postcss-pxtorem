@@ -1,3 +1,4 @@
+import { isArray, isFunction, isRegExp, isString } from '@minko-fe/lodash-pro'
 import {
   type AtRule,
   type ChildNode,
@@ -16,7 +17,7 @@ function reRegExp() {
   return /^\/((?:\\\/|[^/])+)\/([gimy]*)$/
 }
 
-export const filterRule = Object.freeze({
+export const filterPropList = Object.freeze({
   exact(list: string[]) {
     return list.filter((m) => m.match(/^[^!*]+$/))
   },
@@ -55,10 +56,10 @@ const processd = Symbol('processed')
 
 export function isRepeatRun(r?: Rule | Declaration | AtRule) {
   if (!r) return false
-  if ((r as unknown as Record<symbol, boolean>)[processd]) {
+  if (Reflect.get(r, processd)) {
     return true
   }
-  ;(r as unknown as Record<symbol, boolean>)[processd] = true
+  Reflect.set(r, processd, true)
   return false
 }
 
@@ -113,18 +114,18 @@ export function getOptionsFromComment(comment: Comment, parseOptions: ParseOptio
   }
 }
 
-export function createFilterMatcher(filterList: string[]) {
+export function createPropListMatcher(filterList: string[]) {
   const hasWild = filterList.includes('*')
   const matchAll = hasWild && filterList.length === 1
   const lists = {
-    exact: filterRule.exact(filterList),
-    contain: filterRule.contain(filterList),
-    startWith: filterRule.startWith(filterList),
-    endWith: filterRule.endWith(filterList),
-    notExact: filterRule.notExact(filterList),
-    notContain: filterRule.notContain(filterList),
-    notStartWith: filterRule.notStartWith(filterList),
-    notEndWith: filterRule.notEndWith(filterList),
+    exact: filterPropList.exact(filterList),
+    contain: filterPropList.contain(filterList),
+    startWith: filterPropList.startWith(filterList),
+    endWith: filterPropList.endWith(filterList),
+    notExact: filterPropList.notExact(filterList),
+    notContain: filterPropList.notContain(filterList),
+    notStartWith: filterPropList.notStartWith(filterList),
+    notEndWith: filterPropList.notEndWith(filterList),
   }
   return function (prop: string) {
     if (matchAll) return true
@@ -213,13 +214,13 @@ export function judgeIsExclude<T extends XCludeType>(exclude: T, include: T, fil
   return false
 }
 
-export function convertUnit(value: string, convert: ConvertUnit) {
-  if (typeof convert.sourceUnit === 'string') {
-    return value.replace(new RegExp(`${convert.sourceUnit}$`), convert.targetUnit)
-  } else if (isRegExp(convert.sourceUnit)) {
-    return value.replace(new RegExp(convert.sourceUnit), convert.targetUnit)
+export function convertUnitFn(value: string, convert: ConvertUnit) {
+  if (typeof convert.source === 'string') {
+    return value.replace(new RegExp(`${convert.source}$`), convert.target)
+  } else if (isRegExp(convert.source)) {
+    return value.replace(new RegExp(convert.source), convert.target)
   }
-  return value
+  throw new Error('convertUnit source must be string or RegExp')
 }
 
 export function checkIfDisable(p: { disable: boolean; isExcludeFile: boolean; r?: Parameters<typeof isRepeatRun>[0] }) {
@@ -271,48 +272,4 @@ export function setupCurrentOptions(
     originOpts.unitPrecision,
     originOpts.minPixelValue,
   )
-}
-
-enum DataType {
-  number = 'Number',
-  string = 'String',
-  boolean = 'Boolean',
-  null = 'Null',
-  undefined = 'Undefined',
-  object = 'Object',
-  array = 'Array',
-  regexp = 'RegExp',
-  function = 'Function',
-}
-
-function is(val: unknown, type: string) {
-  return Object.prototype.toString.call(val) === `[object ${type}]`
-}
-
-export function isNumber(data: unknown): data is number {
-  return is(data, DataType.number)
-}
-
-export function isString(data: unknown): data is string {
-  return is(data, DataType.string)
-}
-
-export function isBoolean(data: unknown): data is boolean {
-  return is(data, DataType.boolean)
-}
-
-export function isObject(data: unknown): data is Object {
-  return is(data, DataType.object)
-}
-
-export function isArray(data: unknown): data is Array<any> {
-  return is(data, DataType.array)
-}
-
-export function isRegExp(data: unknown): data is RegExp {
-  return is(data, DataType.regexp)
-}
-
-export function isFunction(data: unknown): data is Function {
-  return is(data, DataType.function)
 }

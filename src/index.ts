@@ -1,15 +1,14 @@
+import { cloneDeep, isArray, isBoolean } from '@minko-fe/lodash-pro'
 import { type Plugin as PostcssPlugin, type Rule } from 'postcss'
 import { type PxtoremOptions } from './types'
 import {
   OPTION_SYMBOL,
   blacklistedSelector,
   checkIfDisable,
-  convertUnit,
-  createFilterMatcher,
+  convertUnitFn,
+  createPropListMatcher,
   declarationExists,
   initOptions,
-  isArray,
-  isBoolean,
   isPxtoremReg,
   setupCurrentOptions,
 } from './utils'
@@ -30,14 +29,14 @@ export const DEFAULT_OPTIONS: Required<PxtoremOptions> = {
   include: null,
   exclude: null,
   disable: false,
-  convertUnitOnEnd: false,
+  convertUnit: false,
   parseOptions: {},
 }
 
 const postcssPlugin = 'postcss-pxtorem'
 
 function pxtorem(options?: PxtoremOptions) {
-  const ORIGINAL_OPTIONS = initOptions(options)
+  const RAW_OPTIONS = initOptions(options)
 
   const plugin: PostcssPlugin = {
     postcssPlugin,
@@ -50,7 +49,7 @@ function pxtorem(options?: PxtoremOptions) {
       h[OPTION_SYMBOL] = {
         isExcludeFile: false,
         pxReplace: undefined,
-        originOpts: ORIGINAL_OPTIONS,
+        originOpts: cloneDeep(RAW_OPTIONS), // avoid reference pollution
       }
 
       setupCurrentOptions(h as any, { node, comment: firstNode })
@@ -70,7 +69,7 @@ function pxtorem(options?: PxtoremOptions) {
         return
       }
 
-      const satisfyPropList = createFilterMatcher(opts.propList)
+      const satisfyPropList = createPropListMatcher(opts.propList)
 
       if (
         !decl.value.includes(opts.unitToConvert) ||
@@ -100,14 +99,14 @@ function pxtorem(options?: PxtoremOptions) {
     },
     DeclarationExit(decl, h) {
       const opts = h[OPTION_SYMBOL].originOpts
-      const { convertUnitOnEnd } = opts
-      if (convertUnitOnEnd) {
-        if (isArray(convertUnitOnEnd)) {
-          convertUnitOnEnd.forEach((conv) => {
-            decl.value = convertUnit(decl.value, conv)
-          })
+      const { convertUnit } = opts
+      if (convertUnit) {
+        if (isArray(convertUnit)) {
+          decl.value = convertUnit.reduce((c, conv) => {
+            return convertUnitFn(c, conv)
+          }, decl.value)
         } else {
-          decl.value = convertUnit(decl.value, convertUnitOnEnd)
+          decl.value = convertUnitFn(decl.value, convertUnit)
         }
       }
     },

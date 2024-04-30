@@ -1,7 +1,7 @@
 // Token from query-string (MIT)
+import { isArray, isObject } from '@minko-fe/lodash-pro'
 import decodeComponent from 'decode-uri-component'
 import splitOnFirst from 'split-on-first'
-import { isArray, isObject } from '.'
 
 function validateArrayFormatSeparator(value: string | undefined) {
   if (typeof value !== 'string' || value.length !== 1) {
@@ -230,8 +230,8 @@ export function parse(query: any, options: any): any {
       value === undefined
         ? (null as any)
         : ['comma', 'separator', 'bracket-separator'].includes(options.arrayFormat!)
-        ? value
-        : decode(value, options)
+          ? value
+          : decode(value, options)
     formatter(decode(key, options), value, returnValue)
   }
 
@@ -337,8 +337,8 @@ function parserForArrayFormat(options: ParseOptions) {
           isArray || isEncodedArray
             ? value.split(options.arrayFormatSeparator).map((item) => decode(item, options))
             : value === null
-            ? value
-            : decode(value, options)
+              ? value
+              : decode(value, options)
         accumulator[key] = newValue
       }
     }

@@ -2,8 +2,8 @@ import { type Input } from 'postcss'
 import { type ParseOptions } from './utils/parse-query'
 
 export interface ConvertUnit {
-  sourceUnit: string | RegExp
-  targetUnit: string
+  source: string | RegExp
+  target: string
 }
 
 export type XCludeType = string | RegExp | ((filePath: string) => boolean) | null
@@ -20,6 +20,6 @@ export type PxtoremOptions = Partial<{
   include: XCludeType
   exclude: XCludeType
   disable: boolean
-  convertUnitOnEnd: ConvertUnit | ConvertUnit[] | false
+  convertUnit: ConvertUnit | ConvertUnit[] | false
   parseOptions: ParseOptions
 }>

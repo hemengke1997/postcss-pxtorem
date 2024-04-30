@@ -60,7 +60,7 @@ export default {
 | exclude           | `string` \| `RegExp` \| `((filePath: string) => boolean) \| null`   | /node_modules/i | The file path to ignore and leave as px. Refer to: [exclude](#exclude)                                                                           |
 | include           | `string` \| `RegExp` \| `((filePath: string) => boolean)` \| `null` | null            | The file path to convert px to rem, in contrast to `exclude`, priority lower than `exclude`.                                                     |
 | disable           | `boolean`                                                           | false           | disable plugin, used to disable plugin dynamically                                                                                               |
-| convertUnitOnEnd  | `ConvertUnit` \| `ConvertUnit[]` \| false                           | false           | convert unit when plugin process end                                                                                                             |
+| convertUnit       | `ConvertUnit` \| `ConvertUnit[]` \| false                           | false           | convert unit when plugin process end                                                                                                             |
 
 #### propList
 
@@ -139,9 +139,9 @@ import pxtorem from '@minko-fe/postcss-pxtorem'
 export default {
   plugins: [
     pxtorem({
-      convertUnitOnEnd: {
-        sourceUnit: /px$/i,
-        targetUnit: 'px',
+      convertUnit: {
+        source: /px$/i,
+        target: 'px',
       },
     }),
   ],

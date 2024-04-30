@@ -3,7 +3,7 @@ import nested from 'postcss-nested'
 import { normalizePath } from 'vite'
 import { describe, expect, test } from 'vitest'
 import pxtorem from '../src'
-import { filterRule } from '../src/utils'
+import { filterPropList } from '../src/utils'
 
 const basicCSS = '.rule { font-size: 15px }'
 const basicExpected = '.rule { font-size: 0.9375rem }'
@@ -278,49 +278,49 @@ describe('filter-prop-list', () => {
   test('should find "exact" matches from propList', () => {
     const propList = ['font-size', 'margin', '!padding', '*border*', '*', '*y', '!*font*']
     const expected = 'font-size,margin'
-    expect(filterRule.exact(propList).join()).toBe(expected)
+    expect(filterPropList.exact(propList).join()).toBe(expected)
   })
 
   test('should find "contain" matches from propList and reduce to string', () => {
     const propList = ['font-size', '*margin*', '!padding', '*border*', '*', '*y', '!*font*']
     const expected = 'margin,border'
-    expect(filterRule.contain(propList).join()).toBe(expected)
+    expect(filterPropList.contain(propList).join()).toBe(expected)
   })
 
   test('should find "start" matches from propList and reduce to string', () => {
     const propList = ['font-size', '*margin*', '!padding', 'border*', '*', '*y', '!*font*']
     const expected = 'border'
-    expect(filterRule.startWith(propList).join()).toBe(expected)
+    expect(filterPropList.startWith(propList).join()).toBe(expected)
   })
 
   test('should find "end" matches from propList and reduce to string', () => {
     const propList = ['font-size', '*margin*', '!padding', 'border*', '*', '*y', '!*font*']
     const expected = 'y'
-    expect(filterRule.endWith(propList).join()).toBe(expected)
+    expect(filterPropList.endWith(propList).join()).toBe(expected)
   })
 
   test('should find "not" matches from propList and reduce to string', () => {
     const propList = ['font-size', '*margin*', '!padding', 'border*', '*', '*y', '!*font*']
     const expected = 'padding'
-    expect(filterRule.notExact(propList).join()).toBe(expected)
+    expect(filterPropList.notExact(propList).join()).toBe(expected)
   })
 
   test('should find "not contain" matches from propList and reduce to string', () => {
     const propList = ['font-size', '*margin*', '!padding', '!border*', '*', '*y', '!*font*']
     const expected = 'font'
-    expect(filterRule.notContain(propList).join()).toBe(expected)
+    expect(filterPropList.notContain(propList).join()).toBe(expected)
   })
 
   test('should find "not start" matches from propList and reduce to string', () => {
     const propList = ['font-size', '*margin*', '!padding', '!border*', '*', '*y', '!*font*']
     const expected = 'border'
-    expect(filterRule.notStartWith(propList).join()).toBe(expected)
+    expect(filterPropList.notStartWith(propList).join()).toBe(expected)
   })
 
   test('should find "not end" matches from propList and reduce to string', () => {
     const propList = ['font-size', '*margin*', '!padding', '!border*', '*', '!*y', '!*font*']
     const expected = 'y'
-    expect(filterRule.notEndWith(propList).join()).toBe(expected)
+    expect(filterPropList.notEndWith(propList).join()).toBe(expected)
   })
 })
 
@@ -742,15 +742,15 @@ describe('unitToConvert', () => {
   })
 })
 
-describe('convertUnitOnEnd', () => {
+describe('convertUnit', () => {
   test('should convert PX to px with RegExp', () => {
     const css = '.rule { font-size: 2PX; width: 4Px }'
     const expected = '.rule { font-size: 2px; width: 4px }'
     const processed = postcss(
       pxtorem({
-        convertUnitOnEnd: {
-          sourceUnit: /px$/i,
-          targetUnit: 'px',
+        convertUnit: {
+          source: /px$/i,
+          target: 'px',
         },
       }),
     ).process(css).css
@@ -763,10 +763,31 @@ describe('convertUnitOnEnd', () => {
     const expected = '.rule { font-size: 2px }'
     const processed = postcss(
       pxtorem({
-        convertUnitOnEnd: {
-          sourceUnit: 'PX',
-          targetUnit: 'px',
+        convertUnit: {
+          source: 'PX',
+          target: 'px',
         },
+      }),
+    ).process(css).css
+
+    expect(processed).toBe(expected)
+  })
+
+  test('should convert unit by order', () => {
+    const css = '.rule { font-size: 2PX; width: 4rpx }'
+    const expected = '.rule { font-size: 2px; width: 4px }'
+    const processed = postcss(
+      pxtorem({
+        convertUnit: [
+          {
+            source: /px$/i,
+            target: 'px',
+          },
+          {
+            source: /rpx$/i,
+            target: 'px',
+          },
+        ],
       }),
     ).process(css).css
 

@@ -61,7 +61,7 @@ export default {
 | exclude           | `string` \| `RegExp` \| `((filePath: string) => boolean)` \| `null` | null    | 忽略的文件路径。参考：[exclude](#exclude)                                                          |
 | include           | `string` \| `RegExp` \| `((filePath: string) => boolean)` \| `null` | null    | 包括的文件路径，与 `exclude` 相反，优先级低于 `exclude`                                            |
 | disable           | `boolean`                                                           | false   | 关闭插件，可用于动态禁用插件                                                                       |
-| convertUnitOnEnd  | `ConvertUnit` \| `ConvertUnit[]` \| false                           | false   | 插件处理的最后阶段转换单位                                                                         |
+| convertUnit       | `ConvertUnit` \| `ConvertUnit[]` \| false                           | false   | 插件处理的最后阶段转换单位                                                                         |
 
 #### propList
 
@@ -140,9 +140,9 @@ import pxtorem from '@minko-fe/postcss-pxtorem'
 export default {
   plugins: [
     pxtorem({
-      convertUnitOnEnd: {
-        sourceUnit: /px$/i,
-        targetUnit: 'px',
+      convertUnit: {
+        source: /px$/i,
+        target: 'px',
       },
     }),
   ],

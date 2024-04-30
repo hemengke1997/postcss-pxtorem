@@ -1,5 +1,6 @@
 import { useLayoutEffect, useState } from 'react'
 import { useWindowSize } from 'react-use'
+import { Button } from 'react-vant'
 import A from './components/A'
 import B from './components/B'
 import C from './components/C'
@@ -54,6 +55,11 @@ function App() {
       <C />
       <D />
       <E />
+
+      <div className={'box'}>
+        <div>Vant</div>
+        <Button type='primary'>按钮很大</Button>
+      </div>
     </div>
   )
 }
