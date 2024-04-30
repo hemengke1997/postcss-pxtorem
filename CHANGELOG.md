@@ -1,3 +1,7 @@
+# [1.5.0](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.4.0...v1.5.0) (2024-04-30)
+
+
+
 # [1.4.0](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.3.2...v1.4.0) (2024-02-06)
 
 
