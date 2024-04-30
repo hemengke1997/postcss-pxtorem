@@ -1,6 +1,8 @@
+const path = require('node:path')
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [`${__dirname}/src/**/*.{js,ts,jsx,tsx}`],
+  content: [path.join(__dirname, 'src/**/*.{js,ts,jsx,tsx}')],
   corePlugins: {
     preflight: true,
   },

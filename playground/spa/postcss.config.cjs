@@ -1,8 +1,10 @@
+const path = require('node:path')
+
 module.exports = {
   plugins: {
     'tailwindcss/nesting': {},
     'tailwindcss': {
-      config: `${__dirname}/tailwind.config.cjs`,
+      config: path.join(__dirname, 'tailwind.config.cjs'),
     },
     '@minko-fe/postcss-pxtorem': {
       rootValue: ({ file }) => {
