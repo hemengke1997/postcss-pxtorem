@@ -1,5 +1,12 @@
 # [1.5.0](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.4.0...v1.5.0) (2024-04-30)
 
+### Fix
+
+- context helper reference pollution
+
+### BREAKING CHANGES
+
+- rename `convertUnitOnEnd` to `convertUnit`
 
 
 # [1.4.0](https://github.com/hemengke1997/postcss-pxtorem/compare/v1.3.2...v1.4.0) (2024-02-06)
